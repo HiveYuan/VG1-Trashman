@@ -20,7 +20,6 @@ namespace Trashman
         float restTime = 0.9f;
         float restTimer = 0;
 
-        Vector2 way2Go;
         Animator animator;
 
 
@@ -31,6 +30,7 @@ namespace Trashman
             sprite = GetComponent<SpriteRenderer>();
             _boxCollider = GetComponent<BoxCollider2D>();
             animator = GetComponent<Animator>();
+
         }
 
         void FixedUpdate() {
@@ -47,16 +47,17 @@ namespace Trashman
             }*/
         }
 
+
         // Update is called once per frame
         void Update()
         {
-            
+
             if (timeElapsed < lerpDuration) {
-                _rigidbody2D.MovePosition(Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration));
+                transform.position = Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
             } else {
                 lastPos = targetPos;
-                _rigidbody2D.MovePosition(targetPos);
+                transform.position = targetPos;
                 timeElapsed = 0;
             }
 
