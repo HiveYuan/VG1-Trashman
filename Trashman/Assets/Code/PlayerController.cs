@@ -38,11 +38,25 @@ namespace Trashman
             animator.SetFloat("Way2GoX", targetPos.x - transform.position.x);
             animator.SetFloat("Way2GoY", targetPos.y - transform.position.y);
 
+            
+
+            /*if (_rigidbody2D.velocity.magnitude > 0) {
+                animator.speed = _rigidbody2D.velocity.magnitude / 3f;
+            } else {
+                animator.speed = 1f;
+            }*/
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            
             if (timeElapsed < lerpDuration) {
                 _rigidbody2D.MovePosition(Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration));
                 timeElapsed += Time.deltaTime;
             } else {
                 lastPos = targetPos;
+                _rigidbody2D.MovePosition(targetPos);
                 timeElapsed = 0;
             }
 
@@ -70,19 +84,6 @@ namespace Trashman
                 }
                 restTimer = 0;
             }
-
-            /*if (_rigidbody2D.velocity.magnitude > 0) {
-                animator.speed = _rigidbody2D.velocity.magnitude / 3f;
-            } else {
-                animator.speed = 1f;
-            }*/
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            
-
         }
 
     }
