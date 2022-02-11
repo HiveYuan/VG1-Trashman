@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,9 +11,16 @@ namespace Trashman
         Rigidbody2D _rigidbody2D;
         SpriteRenderer sprite;
         BoxCollider2D _boxCollider;
-        [SerializeField]
-        Vector2 targetPos = new Vector2(-2.7f, 1.9f);
+
+        public Vector2 targetPos = new Vector2(-2.7f, 1.9f);
         Vector2 lastPos = new Vector2(-2.7f, 1.9f);
+
+        // health bar
+        public float maxHealth = 40f;
+        public float currentHealth;
+
+        public Health health;
+
 
         float timeElapsed = 0;
         float lerpDuration = 1;
@@ -20,7 +28,8 @@ namespace Trashman
         float restTime = 0.9f;
         float restTimer = 0;
 
-        Animator animator;
+        Animator _animator;
+
 
 
         // Start is called before the first frame update
@@ -29,28 +38,11 @@ namespace Trashman
             _rigidbody2D = GetComponent<Rigidbody2D>();
             sprite = GetComponent<SpriteRenderer>();
             _boxCollider = GetComponent<BoxCollider2D>();
-            animator = GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
 
         }
 
         void FixedUpdate() {
-
-            animator.SetFloat("Way2GoX", targetPos.x - transform.position.x);
-            animator.SetFloat("Way2GoY", targetPos.y - transform.position.y);
-
-            
-
-            /*if (_rigidbody2D.velocity.magnitude > 0) {
-                animator.speed = _rigidbody2D.velocity.magnitude / 3f;
-            } else {
-                animator.speed = 1f;
-            }*/
-        }
-
-
-        // Update is called once per frame
-        void Update()
-        {
 
             if (timeElapsed < lerpDuration) {
                 transform.position = Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration);
@@ -81,12 +73,51 @@ namespace Trashman
                 if (hit.transform == null) {
                     lastPos = targetPos;
                     targetPos += new Vector2(h, v);
-
+                    LoseHealth(2f);
                 }
                 restTimer = 0;
             }
+            
         }
 
+
+        // Update is called once per frame
+        void Update()
+        {
+            if((Math.Abs(transform.position.x - targetPos.x) < 0.001f) && (Math.Abs(transform.position.y - targetPos.y) < 0.001f)) {
+                _animator.ResetTrigger("Move");
+            } else {
+                _animator.SetTrigger("Move");
+                _animator.SetFloat("Way2GoX", targetPos.x - transform.position.x);
+                _animator.SetFloat("Way2GoY", targetPos.y - transform.position.y);
+            }
+
+
+            /*if (_rigidbody2D.velocity.magnitude > 0) {
+                animator.speed = _rigidbody2D.velocity.magnitude / 3f;
+            } else {
+                animator.speed = 1f;
+            }*/
+
+        }
+
+        // Health - By Hou
+        void GainHealth( float hp ) {
+            if (currentHealth < maxHealth) {
+                currentHealth += hp;
+            }
+
+            health.SetHealth(currentHealth, maxHealth);
+        }
+
+        // Health - By Hou
+        void LoseHealth( float hp ) {
+            if (currentHealth > 0f) {
+                currentHealth -= hp;
+            }
+
+            health.SetHealth(currentHealth, maxHealth);
+        }
     }
 }
 
