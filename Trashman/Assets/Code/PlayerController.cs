@@ -69,11 +69,23 @@ namespace Trashman
                 _boxCollider.enabled = false;
                 RaycastHit2D hit = Physics2D.Linecast(targetPos, targetPos + new Vector2(h, v));
                 _boxCollider.enabled = true;
-
-                if (hit.transform == null) {
+                Debug.Log(hit.collider);
+                if (hit.collider == null) {
                     lastPos = targetPos;
                     targetPos += new Vector2(h, v);
                     LoseHealth(2f);
+                } else {
+                    switch (hit.collider.tag) {
+                        case "Wall":
+                            break;
+
+                        case "Food":
+                            GainHealth(6f);
+                            targetPos += new Vector2(h, v);
+                            Destroy(hit.transform.gameObject);
+                            break;
+                    }
+
                 }
                 restTimer = 0;
             }
@@ -106,7 +118,10 @@ namespace Trashman
             if (currentHealth < maxHealth) {
                 currentHealth += hp;
             }
-
+            //added 0215
+            if (currentHealth > maxHealth) {
+                currentHealth = maxHealth;
+            }
             health.SetHealth(currentHealth, maxHealth);
         }
 
