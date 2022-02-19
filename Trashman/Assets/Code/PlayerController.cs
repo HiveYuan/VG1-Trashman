@@ -97,7 +97,7 @@ namespace Trashman
         // Update is called once per frame
         void Update()
         {
-            // update health bar when key is pressed
+            /*// update health bar when key is pressed
             if (Input.GetKeyDown("="))
             {
                 GainHealth(2f);
@@ -105,7 +105,7 @@ namespace Trashman
             else if (Input.GetKeyDown("-"))
             {
                 LoseHealth(2f);
-            }
+            }*/
 
             if ((Math.Abs(transform.position.x - targetPos.x) < 0.001f) && (Math.Abs(transform.position.y - targetPos.y) < 0.001f)) {
                 _animator.ResetTrigger("Move");
