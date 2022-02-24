@@ -2128,7 +2128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2df491871673f1145b47466fabf49382, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  msgBox: {fileID: 1967504678}
+  msgBox: {fileID: 5428849601267248069, guid: b094e61d5f5728342b4e41cd4170688e, type: 3}
 --- !u!4 &885867096
 Transform:
   m_ObjectHideFlags: 0
@@ -2281,8 +2281,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotHolder: {fileID: 1933385634}
-  itemToAdd: {fileID: 11400000, guid: e5aaa9a3918624731810d91016498096, type: 2}
-  itemToRemove: {fileID: 11400000, guid: 25678c26a39814f41b5ee89724553464, type: 2}
   items:
   - item: {fileID: 11400000, guid: 25678c26a39814f41b5ee89724553464, type: 2}
     quantity: 2
@@ -3713,11 +3711,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &1967504678 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5428849601267248069, guid: b094e61d5f5728342b4e41cd4170688e, type: 3}
-  m_PrefabInstance: {fileID: 5428849599916676614}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1992621177 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1527088998621058710, guid: 500eaf88351bf44f9b22b40d274612fe, type: 3}
