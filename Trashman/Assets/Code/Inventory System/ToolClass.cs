@@ -14,9 +14,10 @@ public class ToolClass : ItemClass
         bomb
     }
 
-    public ToolClass(string name, ToolType type): base(name)
+    public ToolClass(string name, ToolType type, Sprite icon): base(name)
     {
         itemName = name;
+        itemIcon = icon;
         toolType = type;
     }
 

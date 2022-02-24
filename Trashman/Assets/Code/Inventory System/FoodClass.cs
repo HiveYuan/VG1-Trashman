@@ -16,9 +16,10 @@ public class FoodClass : ItemClass
 
     public float healthAdded;
 
-    public FoodClass(string name, FoodType type, float hp) : base(name)
+    public FoodClass(string name, FoodType type, float hp, Sprite icon) : base(name)
     {
         itemName = name;
+        itemIcon = icon;
         foodType = type;
         healthAdded = hp;
     }

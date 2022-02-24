@@ -7,15 +7,19 @@ using TMPro;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private GameObject slotHolder;
-    [SerializeField] private ItemClass itemToAdd;
-    [SerializeField] private ItemClass itemToRemove;
-
     public List<SlotClass> items = new();
-
     private GameObject[] slots;
+
+    ItemClass apple;
+    ItemClass burger;
+    ItemClass knife;
 
     public void Start()
     {
+        apple = Resources.Load<ItemClass>("Classes/WholeApple");
+        burger = Resources.Load<ItemClass>("Classes/WholeBurger");
+        knife = Resources.Load<ItemClass>("Classes/WhiteKnife");
+
         slots = new GameObject[slotHolder.transform.childCount];
         // set all the slots
         for (int i = 0; i < slotHolder.transform.childCount; i++)
@@ -23,29 +27,35 @@ public class InventoryManager : MonoBehaviour
             slots[i] = slotHolder.transform.GetChild(i).gameObject;
         }
 
-        Add(itemToAdd);
-        Remove(itemToRemove);
-
         RefreshUI();
     }
 
     public void Update()
     {
-        // TODO: add items from script using keyboard but not initialize from Unity UI
-        // TODO: how to refer custom class asset?
-        for (int i = 1; i < 1+ items.Count; i++)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            if (Input.GetKeyDown("" + i))
-            {
-                Add(items[i - 1].GetItem());
-            }
+            Add(apple);
         }
-        for (int i = 1+ items.Count; i < 1 + items.Count + items.Count; i++)
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            if (Input.GetKeyDown("" + i))
-            {
-                Remove(items[i - 1 - items.Count].GetItem());
-            }
+            Add(burger);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Add(knife);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Remove(apple);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            Remove(burger);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            Remove(knife);
         }
     }
 
