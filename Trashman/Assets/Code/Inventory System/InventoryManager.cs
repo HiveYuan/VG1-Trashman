@@ -10,18 +10,17 @@ public class InventoryManager : MonoBehaviour
     public List<SlotClass> items = new();
     private GameObject[] slots;
 
-    ItemClass apple;
-    ItemClass burger;
-    ItemClass knife;
+    public Dictionary<string, FoodClass> foods;
+    public Dictionary<string, ToolClass> tools;
 
     public void Start()
     {
-        apple = Resources.Load<ItemClass>("Classes/WholeApple");
-        burger = Resources.Load<ItemClass>("Classes/WholeBurger");
-        knife = Resources.Load<ItemClass>("Classes/WhiteKnife");
+        // Load all items from assets
+        foods = LoadFoodAssets();
+        tools = LoadToolAssets();
 
-        slots = new GameObject[slotHolder.transform.childCount];
         // set all the slots
+        slots = new GameObject[slotHolder.transform.childCount];
         for (int i = 0; i < slotHolder.transform.childCount; i++)
         {
             slots[i] = slotHolder.transform.GetChild(i).gameObject;
@@ -32,31 +31,33 @@ public class InventoryManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        
+    }
+
+    public Dictionary<string, FoodClass> LoadFoodAssets()
+    {
+        Dictionary<string, FoodClass> foodDic = new Dictionary<string, FoodClass>();
+        ItemClass[] itemAssets = Resources.LoadAll<ItemClass>("Items/Food");
+        foreach (ItemClass asset in itemAssets)
         {
-            Add(apple);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            Add(burger);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            Add(knife);
+            FoodClass food = asset.GetFood();
+            foodDic.Add(food.itemName, food);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        return foodDic;
+    }
+
+    public Dictionary<string, ToolClass> LoadToolAssets()
+    {
+        Dictionary<string, ToolClass> toolDic = new Dictionary<string, ToolClass>();
+        ItemClass[] itemAssets = Resources.LoadAll<ItemClass>("Items/Tool");
+        foreach (ItemClass asset in itemAssets)
         {
-            Remove(apple);
+            ToolClass tool = asset.GetTool();
+            toolDic.Add(tool.itemName, tool);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            Remove(burger);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            Remove(knife);
-        }
+
+        return toolDic;
     }
 
     public void RefreshUI()
@@ -97,17 +98,18 @@ public class InventoryManager : MonoBehaviour
         RefreshUI();
     }
 
-    public bool Remove(ItemClass item)
+    public ItemClass Remove(int idx)
     {
-        // check if inventory contains this item
-        SlotClass slot = Contains(item);
-        if (slot != null)
+        ItemClass item = null;
+        if (items.Count >= idx)
         {
+            SlotClass slot = items[idx - 1];
+            item = slot.GetItem();
             if (slot.GetQuantity() > 1)
             {
                 slot.SubQuantity(1);
             }
-            else
+            else if (slot.GetQuantity() == 1)
             {
                 items.Remove(slot);
             }
@@ -115,11 +117,11 @@ public class InventoryManager : MonoBehaviour
         else
         {
             //TODO: Error handling, player try to use non-existing item
-            return false;
+            return item;
         }
 
         RefreshUI();
-        return true;
+        return item;
     }
 
     public SlotClass Contains(ItemClass item)

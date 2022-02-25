@@ -20,6 +20,7 @@ namespace Trashman
         public float currentHealth = 40f;
 
         public Health health;
+        public InventoryManager inventory;
 
 
         float timeElapsed = 0;
@@ -80,7 +81,14 @@ namespace Trashman
                                 break;
 
                             case "Food":
-                                GainHealth(6f);
+                                // Pickup item - By Hou
+                                // TODO: unify items name
+                                if (hit.collider.name == "Burger")
+                                {
+                                    inventory.Add(inventory.foods["WholeBurger"]);   
+                                }
+
+                                //GainHealth(6f);
                                 targetPos += new Vector2(h, v);
                                 Destroy(hit.transform.gameObject);
                                 break;
@@ -97,15 +105,6 @@ namespace Trashman
         // Update is called once per frame
         void Update()
         {
-            /*// update health bar when key is pressed
-            if (Input.GetKeyDown("="))
-            {
-                GainHealth(2f);
-            }
-            else if (Input.GetKeyDown("-"))
-            {
-                LoseHealth(2f);
-            }*/
 
             if ((Math.Abs(transform.position.x - targetPos.x) < 0.001f) && (Math.Abs(transform.position.y - targetPos.y) < 0.001f)) {
                 _animator.ResetTrigger("Move");
@@ -113,6 +112,33 @@ namespace Trashman
                 _animator.SetTrigger("Move");
                 _animator.SetFloat("Way2GoX", targetPos.x - transform.position.x);
                 _animator.SetFloat("Way2GoY", targetPos.y - transform.position.y);
+            }
+
+            // Use item in inventory - By Hou
+            for (int i = 1; i < 10; i++)
+            {
+                if (Input.GetKeyDown("" + i))
+                {
+                    ItemClass item = inventory.Remove(i);
+                    if (item != null)
+                    {
+                        if (item.itemType == "food")
+                        {
+                            GainHealth(((FoodClass)item).GetFood().healthAdded);
+                        }
+                        else
+                        {
+                            //TODO: Use tool
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        //TODO: User try to use non-existing item
+                        //TODO: Add detection for whether this item can be used
+                        print("Player try to use non-existing item.");
+                    }
+                }
             }
 
 

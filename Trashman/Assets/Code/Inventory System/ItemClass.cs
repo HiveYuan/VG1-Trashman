@@ -8,8 +8,9 @@ public abstract class ItemClass : ScriptableObject
     public string itemName;
     public Sprite itemIcon;
     public string itemIntro;
+    public string itemType;
 
-    public ItemClass(string name) { }
+    //public ItemClass(string name) { }
 
     public abstract ItemClass GetItem();
     public abstract FoodClass GetFood();
