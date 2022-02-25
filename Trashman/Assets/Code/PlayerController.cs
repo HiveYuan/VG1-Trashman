@@ -3,14 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Direction {
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3
+}
+
 namespace Trashman
 {
     public class PlayerController : MonoBehaviour
     {
         //outlet
         Rigidbody2D _rigidbody2D;
-        SpriteRenderer sprite;
+        SpriteRenderer _spriteRenderer;
         BoxCollider2D _boxCollider;
+        public Transform[] attackZones;
 
         public Vector2 targetPos = new Vector2(-2.7f, 1.9f);
         Vector2 lastPos = new Vector2(-2.7f, 1.9f);
@@ -31,13 +39,16 @@ namespace Trashman
 
         Animator _animator;
 
+        // State Tracking
+        public Direction facingDirection;
+
 
 
         // Start is called before the first frame update
         void Start()
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
-            sprite = GetComponent<SpriteRenderer>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
             _boxCollider = GetComponent<BoxCollider2D>();
             _animator = GetComponent<Animator>();
 
@@ -82,8 +93,15 @@ namespace Trashman
 
                             case "Food":
                                 // Pickup item - By Hou
-                                inventory.Add(inventory.foods[hit.collider.name]);   
+                                inventory.Add(inventory.foods[hit.collider.name]);
 
+                                targetPos += new Vector2(h, v);
+                                Destroy(hit.transform.gameObject);
+                                break;
+
+                            case "Tool":
+                                // Pickup tool
+                                inventory.Add(inventory.tools[hit.collider.name]);
                                 targetPos += new Vector2(h, v);
                                 Destroy(hit.transform.gameObject);
                                 break;
@@ -93,7 +111,7 @@ namespace Trashman
                     restTimer = 0;
                 }
             }
-            
+
         }
 
 
@@ -123,7 +141,25 @@ namespace Trashman
                         }
                         else
                         {
-                            //TODO: Use tool
+                            //_animator.SetTrigger("attack");
+
+                            // Convert enrumeration to an index
+                            int facingDirectionIndex = (int)facingDirection;
+
+                            // Get attack zone from index
+                            Transform attackZone = attackZones[facingDirectionIndex];
+
+                            // What objects are within a circle at that attack zone
+                            Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
+
+                            // Handle each hit target
+                            foreach(Collider2D hit in hits) {
+                                //bool knifeFlag = true;
+                                BarrierClass barrier = hit.GetComponent<BarrierClass>();
+                                if(barrier != null && (ToolClass)item.GetTool() == null) {
+                                    barrier.Break();
+                                }
+                            }
                         }
                         break;
                     }
@@ -165,6 +201,18 @@ namespace Trashman
 
             health.SetHealth(currentHealth, maxHealth);
         }
+
+        // Identify the facing direction
+        void LateUpdate() {
+            if(String.Equals(_spriteRenderer.sprite.name, "mario_24")) {
+                facingDirection = Direction.Up;
+            } else if(String.Equals(_spriteRenderer.sprite.name, "mario_1")) {
+                facingDirection = Direction.Down;
+            }else if(String.Equals(_spriteRenderer.sprite.name, "mario_10")) {
+                facingDirection = Direction.Left;
+            }else if(String.Equals(_spriteRenderer.sprite.name, "mario_13")) {
+                facingDirection = Direction.Right;
+            }
+        }
     }
 }
-
