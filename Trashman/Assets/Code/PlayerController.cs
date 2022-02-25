@@ -133,11 +133,12 @@ namespace Trashman
             {
                 if (Input.GetKeyDown("" + i))
                 {
-                    ItemClass item = inventory.Remove(i);
+                    ItemClass item = inventory.Get(i);
                     if (item != null)
                     {
                         if (item.itemType == "food")
                         {
+                            item = inventory.Remove(i);
                             GainHealth(((FoodClass)item).GetFood().healthAdded);
                         }
                         else
@@ -157,8 +158,12 @@ namespace Trashman
                             foreach(Collider2D hit in hits) {
                                 //bool knifeFlag = true;
                                 BarrierClass barrier = hit.GetComponent<BarrierClass>();
-                                if(barrier != null && (ToolClass)item.GetTool() == null) {
+                                if(barrier != null) {
+                                    item = inventory.Remove(i);
                                     barrier.Break();
+                                }
+                                else {
+                                    print("There is no barrier to be destroyed.");
                                 }
                             }
                         }

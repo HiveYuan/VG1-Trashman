@@ -31,7 +31,7 @@ public class InventoryManager : MonoBehaviour
 
     public void Update()
     {
-        
+
     }
 
     public Dictionary<string, FoodClass> LoadFoodAssets()
@@ -134,5 +134,18 @@ public class InventoryManager : MonoBehaviour
             }
         }
         return null;
+    }
+
+    public ItemClass Get(int idx)
+    {
+        ItemClass item = null;
+        if (items.Count >= idx)
+        {
+            SlotClass slot = items[idx - 1];
+            item = slot.GetItem();
+        }
+
+        RefreshUI();
+        return item;
     }
 }
