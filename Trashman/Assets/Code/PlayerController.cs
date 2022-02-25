@@ -92,7 +92,7 @@ namespace Trashman
                                 break;
 
                             case "Food":
-                                // Pickup item - By Hou
+                                // Pickup food - By Hou
                                 inventory.Add(inventory.foods[hit.collider.name]);
 
                                 targetPos += new Vector2(h, v);
@@ -100,8 +100,9 @@ namespace Trashman
                                 break;
 
                             case "Tool":
-                                // Pickup tool
+                                // Pickup tool - By Hou
                                 inventory.Add(inventory.tools[hit.collider.name]);
+
                                 targetPos += new Vector2(h, v);
                                 Destroy(hit.transform.gameObject);
                                 break;
