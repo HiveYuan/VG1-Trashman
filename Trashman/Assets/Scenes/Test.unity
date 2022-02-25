@@ -3810,7 +3810,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 812778881780796437, guid: 96771d94480721a4ca7f2d04e46b9c37, type: 3}
       propertyPath: m_Name
-      value: Burger
+      value: WholeBurger
       objectReference: {fileID: 0}
     - target: {fileID: 812778881780796440, guid: 96771d94480721a4ca7f2d04e46b9c37, type: 3}
       propertyPath: m_RootOrder

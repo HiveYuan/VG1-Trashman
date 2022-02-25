@@ -82,13 +82,8 @@ namespace Trashman
 
                             case "Food":
                                 // Pickup item - By Hou
-                                // TODO: unify items name
-                                if (hit.collider.name == "Burger")
-                                {
-                                    inventory.Add(inventory.foods["WholeBurger"]);   
-                                }
+                                inventory.Add(inventory.foods[hit.collider.name]);   
 
-                                //GainHealth(6f);
                                 targetPos += new Vector2(h, v);
                                 Destroy(hit.transform.gameObject);
                                 break;
