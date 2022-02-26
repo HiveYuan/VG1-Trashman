@@ -13,11 +13,12 @@ namespace myGUI{
 
         public Button confirm;
 
+        public GameObject gameManager;
+        
         // Start is called before the first frame update
         void Start()
         {
-            Debug.Log("test start");
-            show("test show", "this is to test show func");
+            gameManager = GameObject.Find("GameManager");
             //gameObject.SetActive(true);
         }
 
@@ -35,7 +36,8 @@ namespace myGUI{
 
         public void onClickConfirm()
         {
-            Debug.Log("confirm test");
+            GameController g = gameManager.GetComponent<GameController>();
+            g.EnableWholeScene();
             Destroy(gameObject);
         }
         

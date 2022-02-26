@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Direction {
@@ -16,6 +17,7 @@ namespace Trashman {
         Rigidbody2D _rigidbody2D;
         SpriteRenderer _spriteRenderer;
         public Transform[] attackZones;
+        public GameController gameController;
 
         float moveSpeed = 5f;
         float healthLoseSpeed = 10f;
@@ -42,6 +44,7 @@ namespace Trashman {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
+            gameController = GameObject.Find("GameManager").GetComponent<GameController>();
 
         }
 
@@ -110,6 +113,14 @@ namespace Trashman {
                                 if (barrier != null) {
                                     item = inventory.Remove(i);
                                     barrier.Break();
+                                    
+                                    //trigger "Get Star" tutorial
+                                    print("trigger last tutorial! " + gameController.tutorialStageChange);
+                                    if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                                    {
+                                        gameController.tutorialStageChange = (int) TutorialStages.GetStar;
+                                    }
+                                    
                                 } else {
                                     print("There is no barrier to be destroyed.");
                                 }
@@ -138,6 +149,12 @@ namespace Trashman {
                 Debug.Log("collision with food");
                 // Pickup food - By Hou
                 inventory.Add(inventory.foods[other.gameObject.name]);
+                
+                //trigger "item use" tutorial
+                if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.HealthLost)
+                {
+                    gameController.tutorialStageChange = (int) TutorialStages.ItemsUse;
+                }
 
                 Destroy(other.gameObject);
             }
@@ -145,6 +162,7 @@ namespace Trashman {
                 Debug.Log("collision with tool");
                 // Pickup tool - By Hou
                 inventory.Add(inventory.tools[other.gameObject.name]);
+
 
                 Destroy(other.gameObject);
             }
@@ -159,7 +177,14 @@ namespace Trashman {
             if (currentHealth > maxHealth) {
                 currentHealth = maxHealth;
             }
+
             health.SetHealth(currentHealth, maxHealth);
+            
+            //trigger "Barrier" tutorial 
+            if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.ItemsUse)
+            {
+                gameController.tutorialStageChange = (int)TutorialStages.AttackBarrier;
+            }
         }
 
         // Health - By Hou
@@ -169,6 +194,11 @@ namespace Trashman {
             }
 
             health.SetHealth(currentHealth, maxHealth);
+
+            if (currentHealth <= 0)
+            {
+                gameController.didSucceedChange = -1;
+            }
         }
 
         // Identify the facing direction
