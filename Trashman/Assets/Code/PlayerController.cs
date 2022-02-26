@@ -15,7 +15,6 @@ namespace Trashman {
         //outlet
         Rigidbody2D _rigidbody2D;
         SpriteRenderer _spriteRenderer;
-        BoxCollider2D _boxCollider;
         public Transform[] attackZones;
 
         float moveSpeed = 5f;
@@ -42,7 +41,6 @@ namespace Trashman {
         void Start() {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            _boxCollider = GetComponent<BoxCollider2D>();
             _animator = GetComponent<Animator>();
 
         }
@@ -61,9 +59,9 @@ namespace Trashman {
             if (currentHealth > 1e-5) {
                 _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
                 if (Math.Abs(h) > float.Epsilon || Math.Abs(v) > float.Epsilon) {
+                    _animator.SetTrigger("Move");
                     x_direction = h;
                     y_direction = v;
-                    _animator.SetTrigger("Move");
                     LoseHealth(Time.deltaTime * healthLoseSpeed);
 
                 } else {
@@ -136,7 +134,6 @@ namespace Trashman {
         }
 
         void OnCollisionEnter2D( Collision2D other ) {
-            Debug.Log("collision in player");
             if (other.gameObject.CompareTag("Food")) {
                 Debug.Log("collision with food");
                 // Pickup food - By Hou
