@@ -24,6 +24,9 @@ namespace Trashman {
         float x_direction = 0f;
         float y_direction = 0f;
 
+        float center_offset_x = 0.7f;
+        float center_offset_y = 0.9f;
+
         // health bar
         public float maxHealth = 40f;
         public float currentHealth = 40f;
@@ -68,7 +71,18 @@ namespace Trashman {
                     LoseHealth(Time.deltaTime * healthLoseSpeed);
 
                 } else {
-                    _animator.ResetTrigger("Move");
+                    float posX = _rigidbody2D.position.x;
+                    float posY = _rigidbody2D.position.y;
+                    if (Math.Abs(Math.Abs(posX - (int)posX) - center_offset_x) > 0.05f) {
+                        _animator.SetTrigger("Move");
+                        _rigidbody2D.velocity = new Vector2(x_direction, 0) * moveSpeed;
+                    } else if (Math.Abs(Math.Abs(posY - (int)posY) - center_offset_y) > 0.05f) {
+                        _animator.SetTrigger("Move");
+                        _rigidbody2D.velocity = new Vector2(0, y_direction) * moveSpeed;
+                    } else {
+                        _rigidbody2D.velocity = new Vector2(0, 0);
+                        _animator.ResetTrigger("Move");
+                    }
                 }
             } else {
                 _rigidbody2D.velocity = new Vector2(0, 0);
