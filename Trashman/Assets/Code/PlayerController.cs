@@ -16,15 +16,16 @@ namespace Trashman {
         //outlet
         Rigidbody2D _rigidbody2D;
         SpriteRenderer _spriteRenderer;
+        CapsuleCollider2D _collider;
         public Transform[] attackZones;
         public GameController gameController;
 
-        float moveSpeed = 5f;
-        float healthLoseSpeed = 10f;
+        float moveSpeed = 4f;
+        float healthLoseSpeed = 8f;
         float x_direction = 0f;
         float y_direction = 0f;
 
-        float center_offset_x = 0.7f;
+        float center_offset_x = 0.3f;
         float center_offset_y = 0.9f;
 
         // health bar
@@ -47,6 +48,7 @@ namespace Trashman {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
+            _collider = GetComponent<CapsuleCollider2D>();
             gameController = GameObject.Find("GameManager").GetComponent<GameController>();
 
         }
@@ -62,29 +64,55 @@ namespace Trashman {
                 h = 0;
             }
             // Debug.Log(currentHealth);
+
+            float posX = _rigidbody2D.position.x - center_offset_x;
+            float posY = _rigidbody2D.position.y - center_offset_y;
+
             if (currentHealth > 1e-5) {
-                _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
                 if (Math.Abs(h) > float.Epsilon || Math.Abs(v) > float.Epsilon) {
-                    _animator.SetTrigger("Move");
                     x_direction = h;
                     y_direction = v;
-                    LoseHealth(Time.deltaTime * healthLoseSpeed);
+                    //in the center
+                    if (Math.Abs(posX - Math.Round(posX)) < 0.05f && Math.Abs(posY - Math.Round(posY)) < 0.05f) {
+                        Debug.Log("detected");
+                        _collider.enabled = false;
+                        RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + new Vector2(h, v));
+                        _collider.enabled = true;
 
-                } else {
-                    float posX = _rigidbody2D.position.x;
-                    float posY = _rigidbody2D.position.y;
-                    if (Math.Abs(Math.Abs(posX - (int)posX) - center_offset_x) > 0.05f) {
+                        //hit wall
+                        if (hit.collider != null && hit.collider.tag == "Wall") {
+                            Debug.Log("collided with wall");
+                            _rigidbody2D.velocity = new Vector2(0, 0);
+                            _animator.ResetTrigger("Move");
+                        } else {
+                            _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
+                            _animator.SetTrigger("Move");
+                            LoseHealth(Time.deltaTime * healthLoseSpeed);
+                        }
+                    } else {
+                        _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
+                        _animator.SetTrigger("Move");
+                        LoseHealth(Time.deltaTime * healthLoseSpeed);
+                    }
+
+
+                } else {    //no key pressed
+                    Debug.Log(Math.Abs(posX - (int)posX) - center_offset_x);
+                    //not stop in the center
+                    if (Math.Abs(posX - Math.Round(posX)) > 0.05f) {
                         _animator.SetTrigger("Move");
                         _rigidbody2D.velocity = new Vector2(x_direction, 0) * moveSpeed;
-                    } else if (Math.Abs(Math.Abs(posY - (int)posY) - center_offset_y) > 0.05f) {
+                        LoseHealth(Time.deltaTime * healthLoseSpeed);
+                    } else if (Math.Abs(posY - Math.Round(posY)) > 0.05f) {
                         _animator.SetTrigger("Move");
                         _rigidbody2D.velocity = new Vector2(0, y_direction) * moveSpeed;
+                        LoseHealth(Time.deltaTime * healthLoseSpeed);
                     } else {
                         _rigidbody2D.velocity = new Vector2(0, 0);
                         _animator.ResetTrigger("Move");
                     }
                 }
-            } else {
+            } else {    //no health
                 _rigidbody2D.velocity = new Vector2(0, 0);
                 _animator.ResetTrigger("Move");
             }
