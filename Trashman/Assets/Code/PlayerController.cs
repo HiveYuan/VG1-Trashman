@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Direction {
     Up = 0,
@@ -33,6 +34,7 @@ namespace Trashman {
         public float currentHealth = 40f;
 
         public Health health;
+        public Image prompt;
         public InventoryManager inventory;
 
 
@@ -45,6 +47,7 @@ namespace Trashman {
 
         // Start is called before the first frame update
         void Start() {
+            prompt.enabled = false;
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
@@ -97,7 +100,7 @@ namespace Trashman {
 
 
                 } else {    //no key pressed
-                    Debug.Log(Math.Abs(posX - (int)posX) - center_offset_x);
+                    //Debug.Log(Math.Abs(posX - (int)posX) - center_offset_x);
                     //not stop in the center
                     if (Math.Abs(posX - Math.Round(posX)) > 0.05f) {
                         _animator.SetTrigger("Move");
@@ -190,8 +193,12 @@ namespace Trashman {
             if (other.gameObject.CompareTag("Food")) {
                 Debug.Log("collision with food");
                 // Pickup food - By Hou
+                if (inventory.foods[other.gameObject.name].isFirstTime) {
+                    print(inventory.foods[other.gameObject.name].itemIntro); //TODO: display UI message box for item intro
+                    inventory.foods[other.gameObject.name].isFirstTime = false;
+                }
                 inventory.Add(inventory.foods[other.gameObject.name]);
-                
+
                 //trigger "item use" tutorial
                 if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.HealthLost)
                 {
@@ -203,6 +210,11 @@ namespace Trashman {
             if (other.gameObject.CompareTag("Tool")) {
                 Debug.Log("collision with tool");
                 // Pickup tool - By Hou
+                if (inventory.tools[other.gameObject.name].isFirstTime)
+                {
+                    print(inventory.tools[other.gameObject.name].itemIntro); //TODO: display UI message box for item intro
+                    inventory.tools[other.gameObject.name].isFirstTime = false;
+                }
                 inventory.Add(inventory.tools[other.gameObject.name]);
 
 
@@ -221,7 +233,8 @@ namespace Trashman {
             }
 
             health.SetHealth(currentHealth, maxHealth);
-            
+            health.SetPrompt(true);
+
             //trigger "Barrier" tutorial 
             if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.ItemsUse)
             {
@@ -236,6 +249,7 @@ namespace Trashman {
             }
 
             health.SetHealth(currentHealth, maxHealth);
+            health.SetPrompt(false);
 
             if (currentHealth <= 0)
             {

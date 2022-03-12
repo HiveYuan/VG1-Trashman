@@ -9,8 +9,7 @@ public abstract class ItemClass : ScriptableObject
     public Sprite itemIcon;
     public string itemIntro;
     public string itemType;
-
-    //public ItemClass(string name) { }
+    public bool isFirstTime;
 
     public abstract ItemClass GetItem();
     public abstract FoodClass GetFood();

@@ -14,14 +14,6 @@ public class ToolClass : ItemClass
         bomb
     }
 
-    //public ToolClass(string name, ToolType type, Sprite icon): base(name)
-    //{
-    //    itemName = name;
-    //    itemIcon = icon;
-    //    itemType = "tool";
-    //    toolType = type;
-    //}
-
     public override ItemClass GetItem() { return this; }
     public override ToolClass GetTool() { return this; }
     public override FoodClass GetFood() { return null; }

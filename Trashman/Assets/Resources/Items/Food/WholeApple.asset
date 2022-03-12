@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: WholeApple
   itemIcon: {fileID: 21300000, guid: f645ed26ca8c3a64eac8cb15fb1b928c, type: 3}
-  itemIntro: 
+  itemIntro: Eat this apple will gain you 2 HP.
   itemType: food
+  isFirstTime: 1
   foodType: 0
   healthAdded: 2

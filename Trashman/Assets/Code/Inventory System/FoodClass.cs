@@ -16,15 +16,6 @@ public class FoodClass : ItemClass
 
     public float healthAdded;
 
-    //public FoodClass(string name, FoodType type, float hp, Sprite icon) : base(name)
-    //{
-    //    itemName = name;
-    //    itemIcon = icon;
-    //    itemType = "food";
-    //    foodType = type;
-    //    healthAdded = hp;
-    //}
-
     public override ItemClass GetItem() { return this; }
     public override FoodClass GetFood() { return this; }
     public override ToolClass GetTool() { return null; }
