@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Trashman;
 using Unity.VisualScripting;
+using myGUI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -72,9 +73,16 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        tutorialStageChange = 0;
+        //true game levels
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            isTutorialOn = 0;
+        }
+
+        //tutorial process
         if (isTutorialOn == 1)
         {
+            tutorialStageChange = 0;
             TriggerNextTutorial(tutorialStage);
         }
     }
@@ -104,12 +112,12 @@ public class GameController : MonoBehaviour
                 break;
             
             case (int)TutorialStages.ItemsUse:
-                _uiManager.CreateMsgBox("Use Item","Now you have the burger in your inventory! Press 2 on keyboard and you'll gain some health. Always remember " +
+                _uiManager.CreateMsgBox("Use Item","Now you have the burger in your inventory! Press the key shows in the burger slot and you'll gain some health. Always remember " +
                                                        "that food can help you go farther and enable you to do more operations in the world since they give you more energy.");
                 break;
             case (int)TutorialStages.AttackBarrier:
                 _uiManager.CreateMsgBox("Barriers","You gained more health! Notice that your way to the destination is not that easy. There may be lots of barriers which hinder you from success." +
-                                                       "But the good news is that you can destroy them by tools. Pick up that sword and then press 1 to destroy the barrier " +
+                                                       "But the good news is that you can destroy them by tools. Pick up that sword and then press the key shows in the sword slot to destroy the barrier " +
                                                        "when you are facing them");
                 break;
             case (int)TutorialStages.GetStar:
@@ -124,14 +132,30 @@ public class GameController : MonoBehaviour
 
     void Succeed()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        _uiManager.CreateMsgBox("Congratulations!","Congratulations! You've passed this level!");
+        // only go to the next level when the player confirm the message box
+        StartCoroutine(successReload());
+
+        IEnumerator successReload()
+        {
+            DisableWholeScene();
+            MessageBox msg = _uiManager.CreateMsgBox("Congratulations!", "Congratulations! You've passed this level!");
+            yield return new WaitUntil(() => msg == null);
+            SceneManager.LoadScene(1); //TODO: load next game
+        }
     }
 
     void Fail()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        _uiManager.CreateMsgBox("Failed!","You lost the game!");
+        // only reload the entire game when the player confirm the message box
+        StartCoroutine(failReload());
+
+        IEnumerator failReload()
+        {
+            DisableWholeScene();
+            MessageBox msg = _uiManager.CreateMsgBox("Failed!", "You lost the game!");
+            yield return new WaitUntil(() => msg == null); 
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
     
     //when msgBox shows, all objects in the scene should be disabled(not controlled by the player)

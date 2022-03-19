@@ -36,7 +36,7 @@ namespace Trashman {
         public Health health;
         public Image prompt;
         public InventoryManager inventory;
-
+        public UIManager _uiManager;
 
         Animator _animator;
 
@@ -77,7 +77,7 @@ namespace Trashman {
                     y_direction = v;
                     //in the center
                     if (Math.Abs(posX - Math.Round(posX)) < 0.05f && Math.Abs(posY - Math.Round(posY)) < 0.05f) {
-                        Debug.Log("detected");
+                        //Debug.Log("detected");
                         _collider.enabled = false;
                         RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + new Vector2(h, v));
                         _collider.enabled = true;
@@ -192,12 +192,14 @@ namespace Trashman {
         void OnCollisionEnter2D( Collision2D other ) {
             if (other.gameObject.CompareTag("Food")) {
                 Debug.Log("collision with food");
+
                 // Pickup food - By Hou
-                if (inventory.foods[other.gameObject.name].isFirstTime) {
-                    print(inventory.foods[other.gameObject.name].itemIntro); //TODO: display UI message box for item intro
-                    inventory.foods[other.gameObject.name].isFirstTime = false;
+                FoodClass food = inventory.foods[other.gameObject.name];
+                if (gameController.isTutorialOn == 0 && food.isFirstTime) {
+                    _uiManager.CreateItemBox(other.gameObject.name, food.itemIntro, food.itemIcon);
+                    food.isFirstTime = false;
                 }
-                inventory.Add(inventory.foods[other.gameObject.name]);
+                inventory.Add(food);
 
                 //trigger "item use" tutorial
                 if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.HealthLost)
@@ -209,14 +211,24 @@ namespace Trashman {
             }
             if (other.gameObject.CompareTag("Tool")) {
                 Debug.Log("collision with tool");
-                // Pickup tool - By Hou
-                if (inventory.tools[other.gameObject.name].isFirstTime)
-                {
-                    print(inventory.tools[other.gameObject.name].itemIntro); //TODO: display UI message box for item intro
-                    inventory.tools[other.gameObject.name].isFirstTime = false;
-                }
-                inventory.Add(inventory.tools[other.gameObject.name]);
 
+                // Pickup tool - By Hou
+                ToolClass tool = inventory.tools[other.gameObject.name];
+                if (gameController.isTutorialOn == 0 && tool.isFirstTime)
+                {
+                    _uiManager.CreateItemBox(other.gameObject.name, tool.itemIntro, tool.itemIcon);
+                    tool.isFirstTime = false;
+                }
+                inventory.Add(tool);
+
+
+                Destroy(other.gameObject);
+            }
+            if (other.gameObject.CompareTag("Target"))
+            {
+                Debug.Log("collision with target");
+                // Reach the target star
+                gameController.didSucceedChange = 1;
 
                 Destroy(other.gameObject);
             }
@@ -228,7 +240,8 @@ namespace Trashman {
                 currentHealth += hp;
             }
             //added 0215
-            if (currentHealth > maxHealth) {
+            if (currentHealth > maxHealth)
+            {
                 currentHealth = maxHealth;
             }
 
@@ -248,10 +261,15 @@ namespace Trashman {
                 currentHealth -= hp;
             }
 
+            if (currentHealth < 0f)
+            {
+                currentHealth = 0f;
+            }
+
             health.SetHealth(currentHealth, maxHealth);
             health.SetPrompt(false);
 
-            if (currentHealth <= 0)
+            if (currentHealth == 0)
             {
                 gameController.didSucceedChange = -1;
             }
