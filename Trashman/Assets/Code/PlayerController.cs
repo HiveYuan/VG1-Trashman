@@ -140,8 +140,6 @@ namespace Trashman {
                             item = inventory.Remove(i);
                             GainHealth(((FoodClass)item).GetFood().healthAdded);
                         } else {
-                            //_animator.SetTrigger("attack");
-
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
@@ -157,15 +155,16 @@ namespace Trashman {
                                 BarrierClass barrier = hit.GetComponent<BarrierClass>();
                                 if (barrier != null) {
                                     item = inventory.Remove(i);
+                                    _animator.SetTrigger("Attack");
                                     barrier.Break();
-                                    
+
                                     //trigger "Get Star" tutorial
                                     print("trigger last tutorial! " + gameController.tutorialStageChange);
                                     if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
                                     {
                                         gameController.tutorialStageChange = (int) TutorialStages.GetStar;
                                     }
-                                    
+
                                 } else {
                                     print("There is no barrier to be destroyed.");
                                 }
@@ -248,7 +247,7 @@ namespace Trashman {
             health.SetHealth(currentHealth, maxHealth);
             health.SetPrompt(true);
 
-            //trigger "Barrier" tutorial 
+            //trigger "Barrier" tutorial
             if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.ItemsUse)
             {
                 gameController.tutorialStageChange = (int)TutorialStages.AttackBarrier;
@@ -277,13 +276,13 @@ namespace Trashman {
 
         // Identify the facing direction
         void LateUpdate() {
-            if (String.Equals(_spriteRenderer.sprite.name, "mario_24")) {
+            if (String.Equals(_spriteRenderer.sprite.name, "trashman_13")) {
                 facingDirection = Direction.Up;
-            } else if (String.Equals(_spriteRenderer.sprite.name, "mario_1")) {
+            } else if (String.Equals(_spriteRenderer.sprite.name, "trashman_8")) {
                 facingDirection = Direction.Down;
-            } else if (String.Equals(_spriteRenderer.sprite.name, "mario_10")) {
+            } else if (String.Equals(_spriteRenderer.sprite.name, "trashman_5")) {
                 facingDirection = Direction.Left;
-            } else if (String.Equals(_spriteRenderer.sprite.name, "mario_13")) {
+            } else if (String.Equals(_spriteRenderer.sprite.name, "trashman_0")) {
                 facingDirection = Direction.Right;
             }
         }
