@@ -26,8 +26,8 @@ namespace Trashman {
         float x_direction = 0f;
         float y_direction = 0f;
 
-        float center_offset_x = 0.3f;
-        float center_offset_y = 0.9f;
+        float center_offset_x = 0.5f;
+        float center_offset_y = 0.5f;
 
         // health bar
         public float maxHealth = 40f;
