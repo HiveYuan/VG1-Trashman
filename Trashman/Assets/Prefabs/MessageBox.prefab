@@ -696,7 +696,7 @@ MonoBehaviour:
   title: {fileID: 6079093479632789834}
   content: {fileID: 2397690321511972468}
   confirm: {fileID: 6079093480034711302}
-  gameManager: {fileID: 5829519973283821724, guid: 4245013ccfc7a6e4fadf2e30bdfb74a6, type: 3}
+  gameManager: {fileID: 0}
 --- !u!1 &6079093480034711300
 GameObject:
   m_ObjectHideFlags: 0
