@@ -62,6 +62,7 @@ namespace Trashman {
             float v = Input.GetAxisRaw("Vertical");
             if (Math.Abs(h) > float.Epsilon) {
                 v = 0;
+
             }
             if (Math.Abs(v) > float.Epsilon) {
                 h = 0;
@@ -93,14 +94,26 @@ namespace Trashman {
                             LoseHealth(Time.deltaTime * healthLoseSpeed);
                         }
                     } else {
-                        _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
-                        _animator.SetTrigger("Move");
-                        LoseHealth(Time.deltaTime * healthLoseSpeed);
+
+                        if (Math.Abs(posX - Math.Round(posX)) > 0.05f && h == 0) {
+                            _animator.SetTrigger("Move");
+                            _rigidbody2D.velocity = new Vector2(x_direction, 0) * moveSpeed;
+                            LoseHealth(Time.deltaTime * healthLoseSpeed);
+                        } else if (Math.Abs(posY - Math.Round(posY)) > 0.05f && v == 0) {
+                            _animator.SetTrigger("Move");
+                            _rigidbody2D.velocity = new Vector2(0, y_direction) * moveSpeed;
+                            LoseHealth(Time.deltaTime * healthLoseSpeed);
+                        } else {
+
+                            _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
+                            _animator.SetTrigger("Move");
+                            LoseHealth(Time.deltaTime * healthLoseSpeed);
+                        }
                     }
 
 
                 } else {    //no key pressed
-                    //Debug.Log(Math.Abs(posX - (int)posX) - center_offset_x);
+                    
                     //not stop in the center
                     if (Math.Abs(posX - Math.Round(posX)) > 0.05f) {
                         _animator.SetTrigger("Move");
