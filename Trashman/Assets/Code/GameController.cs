@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour
         //tutorial process
         if (isTutorialOn == 1)
         {
-            tutorialStageChange = 0;
+            //tutorialStageChange = 0;
             TriggerNextTutorial(tutorialStage);
         }
     }
@@ -179,13 +179,14 @@ public class GameController : MonoBehaviour
             
         if (isUp == 1 && isDown == 1 && isLeft == 1 && isRight == 1 && tutorialStage == 0)
         {
-            tutorialStageChange = (int)TutorialStages.HealthLost;
-        }
-    }
+            StartCoroutine(suspendMovement());
 
-    void BurgerPickedUp()
-    {
-        
+            IEnumerator suspendMovement()
+            {
+                yield return new WaitForSeconds(0.2f); //To fix the bug of keep moving when the msg box appear and confirm
+                tutorialStageChange = (int)TutorialStages.HealthLost;
+            }
+        }
     }
     
     void UpMoved()

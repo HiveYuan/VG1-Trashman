@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace myGUI{
+    // FIXME: fix the scroll view
     public class ItemBox : MonoBehaviour
     {
         public Text title;

@@ -779,7 +779,7 @@ MonoBehaviour:
   m_Inertia: 1
   m_DecelerationRate: 0.135
   m_ScrollSensitivity: 1
-  m_Viewport: {fileID: 0}
+  m_Viewport: {fileID: 1479202133591502588}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 3035192954610965144}
   m_HorizontalScrollbarVisibility: 0
@@ -1207,7 +1207,7 @@ MonoBehaviour:
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1.5
   m_Text: Any operations including movement will make you lose health. You will lose
     when the health is 0. So this is a strategy game about fulfilling your goal before
