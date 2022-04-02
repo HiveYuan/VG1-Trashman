@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace myGUI{
+    // FIXME: fix the scroll view
     public class MessageBox : MonoBehaviour
     {
         public Text title;
