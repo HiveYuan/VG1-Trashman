@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         //true game levels
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 1)
         {
             isTutorialOn = 0;
         }
@@ -140,7 +140,7 @@ public class GameController : MonoBehaviour
             DisableWholeScene();
             MessageBox msg = _uiManager.CreateMsgBox("Congratulations!", "Congratulations! You've passed this level!");
             yield return new WaitUntil(() => msg == null);
-            SceneManager.LoadScene(1); //TODO: load next game
+            SceneManager.LoadScene(2); //TODO: load next game
         }
     }
 
