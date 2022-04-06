@@ -140,7 +140,7 @@ public class GameController : MonoBehaviour
             DisableWholeScene();
             MessageBox msg = _uiManager.CreateMsgBox("Congratulations!", "Congratulations! You've passed this level!");
             yield return new WaitUntil(() => msg == null);
-            SceneManager.LoadScene(2); //TODO: load next game
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //TODO: load next game or back to menu
         }
     }
 
@@ -154,7 +154,7 @@ public class GameController : MonoBehaviour
             DisableWholeScene();
             MessageBox msg = _uiManager.CreateMsgBox("Failed!", "You lost the game!");
             yield return new WaitUntil(() => msg == null); 
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload current scene
         }
     }
     

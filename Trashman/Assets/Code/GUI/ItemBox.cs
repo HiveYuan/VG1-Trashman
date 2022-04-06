@@ -31,6 +31,7 @@ namespace myGUI{
 
         }
 
+        // FIXME: need to confirm how to count this first time pickup, what about play from current level?
         public void show(string titleStr, string contentStr, Sprite itemIcon)
         {
             title.text = titleStr;

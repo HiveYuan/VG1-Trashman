@@ -2,63 +2,81 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
     public GameObject mainMenu;
+    public GameObject levelsMenu;
     public GameObject settingsMenu;
 
     // Start is called before the first frame update
     void Start()
     {
-        settingsMenu = GameObject.Find("Settings Menu");
+        ShowMainMenu();
+    }
+
+    // More organized version
+    void SwitchMenu(GameObject menu) {
+        // Turn off all menus
+        mainMenu.SetActive(false);
+        levelsMenu.SetActive(false);
         settingsMenu.SetActive(false);
+
+        // Turn on requested menu
+        menu.SetActive(true);
     }
 
-
-    // Main Menu:
-    // Load tutorial level.
-    public void StartPlay() {
-        SceneManager.LoadScene(1); 
-    }
-
-    // TODO: add level panel
-    void ChooseLevel() {
-        
+    // Load main menu.
+    public void ShowMainMenu()
+    {
+        SwitchMenu(mainMenu);
     }
 
     // Load settings menu.
-    public void LoadSettingsMenu() {
-        mainMenu = GameObject.Find("Main Menu");
-        mainMenu.SetActive(false);
-        settingsMenu.SetActive(true);
+    public void ShowSettingsMenu()
+    {
+        SwitchMenu(settingsMenu);
+    }
+
+    // Load levels menu.
+    public void ShowLevelsMenu()
+    {
+        SwitchMenu(levelsMenu);
+    }
+
+    // Load tutorial/current level.
+    public void StartPlay() {
+        SceneManager.LoadScene("Tutorial");  // Load tutorial/current level (need to store level info: Playerprefs) scene
     }
 
     // TODO: quit?
-    void QuitGame() {
+    public void QuitGame() {
 
     }
 
-    // Settings Menu:
-    // Back to main menu.
-    public void BackToMainMenu() {
-        settingsMenu.SetActive(false);
-        mainMenu.SetActive(true);
+    // TODO: change to panel view; consider use prefab and list to organize 
+    // load requested level scene
+    public void LoadLevel()
+    {
+        string levelName = EventSystem.current.currentSelectedGameObject.name;
+        char level = levelName[levelName.Length - 1];
+        SceneManager.LoadScene("Level-" + level);
     }
 
-    // Set sound preference.
-    void SetSound() {
-
-    }
-
-    // Set display preference.
-    void SetDisplay() {
+    // TODO: Set sound preference.
+    public void SetSound() {
 
     }
 
-    // Set keyboard preference.
-    void SetKeyboard()
+    // TODO: Set display preference.
+    public void SetDisplay() {
+
+    }
+
+    // TODO: Set keyboard preference.
+    public void SetKeyboard()
     {
 
     }
