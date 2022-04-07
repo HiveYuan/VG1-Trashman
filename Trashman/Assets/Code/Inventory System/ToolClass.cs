@@ -11,7 +11,7 @@ public class ToolClass : ItemClass
     public enum ToolType
     {
         knife,
-        bomb
+        dollars
     }
 
     public override ItemClass GetItem() { return this; }
