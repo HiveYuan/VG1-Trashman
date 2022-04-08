@@ -14,12 +14,12 @@ namespace myGUI{
 
         public Button confirm;
 
-        public GameObject gameManager;
-        
+        public GameController gameController;
+
         // Start is called before the first frame update
         void Start()
         {
-            gameManager = GameObject.Find("GameManager");
+            gameController = GameObject.Find("GameManager").GetComponent<GameController>();
             //gameObject.SetActive(true);
         }
 
@@ -37,8 +37,7 @@ namespace myGUI{
 
         public void onClickConfirm()
         {
-            GameController g = gameManager.GetComponent<GameController>();
-            g.EnableWholeScene();
+            gameController.EnableWholeScene();
             Destroy(gameObject);
         }
         
@@ -47,7 +46,7 @@ namespace myGUI{
             Vector3 vec3 = Input.mousePosition;
             Vector3 pos = transform.GetComponent<RectTransform>().position;
             Vector3 off = Input.mousePosition - vec3;
-            vec3 = Input.mousePosition;
+            //vec3 = Input.mousePosition;
             pos = pos + off;
             transform.GetComponent<RectTransform>().position = pos;
         }

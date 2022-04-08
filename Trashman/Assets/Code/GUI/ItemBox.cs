@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace myGUI{
@@ -16,13 +17,12 @@ namespace myGUI{
 
         public Button confirm;
 
-        public GameObject gameManager;
+        public GameController gameController;
         
         // Start is called before the first frame update
         void Start()
         {
-            gameManager = GameObject.Find("GameManager");
-            //gameObject.SetActive(true);
+            gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         }
 
         // Update is called once per frame
@@ -41,8 +41,9 @@ namespace myGUI{
 
         public void onClickConfirm()
         {
-            GameController g = gameManager.GetComponent<GameController>();
-            g.EnableWholeScene();
+            string btn = EventSystem.current.currentSelectedGameObject.name;
+            Debug.Log(btn);
+            gameController.EnableWholeScene();
             Destroy(gameObject);
         }
         
@@ -51,7 +52,7 @@ namespace myGUI{
             Vector3 vec3 = Input.mousePosition;
             Vector3 pos = transform.GetComponent<RectTransform>().position;
             Vector3 off = Input.mousePosition - vec3;
-            vec3 = Input.mousePosition;
+            //vec3 = Input.mousePosition;
             pos = pos + off;
             transform.GetComponent<RectTransform>().position = pos;
         }

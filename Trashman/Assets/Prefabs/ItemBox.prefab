@@ -98,6 +98,7 @@ MonoBehaviour:
   item: {fileID: 4865073419431055304}
   confirm: {fileID: 727578362907928863}
   gameManager: {fileID: 0}
+  gameController: {fileID: 0}
 --- !u!1 &897713183299908465
 GameObject:
   m_ObjectHideFlags: 0

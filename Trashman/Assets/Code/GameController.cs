@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Trashman;
 using Unity.VisualScripting;
 using myGUI;
@@ -74,7 +73,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         //true game levels
-        if (SceneManager.GetActiveScene().buildIndex != 1)
+        if (SceneManager.GetActiveScene().name != "Tutorial")
         {
             isTutorialOn = 0;
         }
@@ -99,7 +98,6 @@ public class GameController : MonoBehaviour
 
     void TriggerNextTutorial(int tutorialStage)
     {
-        DisableWholeScene();
         switch(tutorialStage){
             case (int)TutorialStages.Movement:
                 _uiManager.CreateMsgBox("About Movement","Welcome to Trashman! To get started, please try W,A,S,D to move.");
@@ -137,7 +135,6 @@ public class GameController : MonoBehaviour
 
         IEnumerator successReload()
         {
-            DisableWholeScene();
             MessageBox msg = _uiManager.CreateMsgBox("Congratulations!", "Congratulations! You've passed this level!");
             yield return new WaitUntil(() => msg == null);
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //TODO: load next game or back to menu
@@ -151,7 +148,6 @@ public class GameController : MonoBehaviour
 
         IEnumerator failReload()
         {
-            DisableWholeScene();
             MessageBox msg = _uiManager.CreateMsgBox("Failed!", "You lost the game!");
             yield return new WaitUntil(() => msg == null); 
             SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload current scene
@@ -159,7 +155,7 @@ public class GameController : MonoBehaviour
     }
     
     //when msgBox shows, all objects in the scene should be disabled(not controlled by the player)
-    void DisableWholeScene()
+    public void DisableWholeScene()
     {
         character.GetComponent<PlayerController>().enabled = false;
     }

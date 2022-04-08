@@ -17,5 +17,5 @@ MonoBehaviour:
   itemIntro: You can use these dollars to get those security guards to turn a blind
     eye to you
   itemType: tool
-  isFirstTime: 0
+  isFirstTime: 1
   toolType: 1
