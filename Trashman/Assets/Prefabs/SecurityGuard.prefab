@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3264431090433322616}
   - component: {fileID: 1050832985430013250}
   m_Layer: 0
-  m_Name: Security Guard
+  m_Name: SecurityGuard
   m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

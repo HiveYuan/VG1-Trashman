@@ -7,6 +7,12 @@ namespace Trashman
 {
     public class BarrierClass : MonoBehaviour
     {
+        public enum BarrierType
+        {
+            security,
+            wood
+        }
+
         public void Break() {
             Destroy(gameObject);
         }
