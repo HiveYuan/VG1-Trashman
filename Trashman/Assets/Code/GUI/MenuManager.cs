@@ -86,15 +86,25 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Level-" + level);
     }
 
+    // FIXME: current function set to clear the level prefs to test functionality
     // TODO: quit?
     public void QuitGame() {
-
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadLevel()
     {
-        int level = int.Parse(EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text);
-        SceneManager.LoadScene("Level-" + level);
+        string levelString = EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text;
+        if (levelString == "")
+        {
+            // TODO: play wrong/unclickable sound or msg box to inform player
+            Debug.Log("Locked level!");
+        }
+        else
+        {
+            int level = int.Parse(levelString);
+            SceneManager.LoadScene("Level-" + level);
+        }
     }
 
     // TODO: Set sound preference.
