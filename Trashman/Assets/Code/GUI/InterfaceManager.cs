@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class SubMenuManager : MonoBehaviour
+public class InterfaceManager : MonoBehaviour
 {
     public GameObject storeInterface;
     public GameObject itemsCheetSheetInterface;
