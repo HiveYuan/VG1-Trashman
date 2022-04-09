@@ -8,7 +8,7 @@ namespace Trashman {
     // FIXME: fix the hp value
     public class Health : MonoBehaviour {
         public Image fill;
-        public TextMeshProUGUI hp;
+        public TMP_Text hp;
         public Image prompt;
         public Sprite add_hp;
         public Sprite sub_hp;

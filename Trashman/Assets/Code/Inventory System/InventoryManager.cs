@@ -69,7 +69,7 @@ public class InventoryManager : MonoBehaviour
                 slots[i].transform.GetChild(1).GetComponent<Image>().enabled = true;
                 slots[i].transform.GetChild(1).GetComponent<Image>().sprite = items[i].GetItem().itemIcon;
                 slots[i].transform.GetChild(2).GetComponent<Image>().enabled = true;
-                slots[i].transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = items[i].GetQuantity() + "";
+                slots[i].transform.GetChild(3).GetComponent<TMP_Text>().text = items[i].GetQuantity() + "";
 
             }
             catch
@@ -77,7 +77,7 @@ public class InventoryManager : MonoBehaviour
                 slots[i].transform.GetChild(1).GetComponent<Image>().enabled = false;
                 //slots[i].transform.GetChild(1).GetComponent<Image>().sprite = null;
                 slots[i].transform.GetChild(2).GetComponent<Image>().enabled = false;
-                slots[i].transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = "";
+                slots[i].transform.GetChild(3).GetComponent<TMP_Text>().text = "";
             }
         }
     }
