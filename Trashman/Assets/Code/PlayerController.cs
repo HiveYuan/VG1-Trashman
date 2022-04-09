@@ -175,6 +175,21 @@ namespace Trashman {
                                 //bool knifeFlag = true;
                                 BarrierClass barrier = hit.GetComponent<BarrierClass>();
                                 if (barrier != null) {
+
+                                    // if(item.itemType.ToolType == "knife" && barrier.BarrierClass.BarrierType == "wood" || 
+                                    //     item.itemType.ToolType == "dollars" && barrier.BarrierClass.BarrierType == "security") {
+                                    //     item = inventory.Remove(i);
+                                    //     _animator.SetTrigger("Attack");
+                                    //     barrier.Break();
+
+                                    //     //trigger "Get Star" tutorial
+                                    //     print("trigger last tutorial! " + gameController.tutorialStageChange);
+                                    //     if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                                    //     {
+                                    //         gameController.tutorialStageChange = (int) TutorialStages.GetStar;
+                                    //     }
+                                    // }
+                                    
                                     item = inventory.Remove(i);
                                     _animator.SetTrigger("Attack");
                                     barrier.Break();
