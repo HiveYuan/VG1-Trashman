@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 146d4cec8bb50468bb7f7db7d7182d46
+guid: 6872f3198f7fd45db8291d0fe2c10441
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: GUI_msg_box_0
+      name: GUI_menu_2_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 35
-        width: 192
-        height: 96
+        x: 8
+        y: 283
+        width: 339
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -130,20 +130,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 06b11413ee8dc4449ac4ead7f61493e8
-      internalID: -1471948420
+      spriteID: 51feb36eec165426d83d9557136659a6
+      internalID: -1758939017
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: GUI_msg_box_1
+      name: GUI_menu_2_1
       rect:
         serializedVersion: 2
-        x: 19
-        y: 7
-        width: 154
-        height: 25
+        x: 25
+        y: 24
+        width: 306
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -151,8 +151,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55ea0cc8267ae41409c00694c71ee8cb
-      internalID: 997192871
+      spriteID: 21844a0c957574893b57d09008236e4f
+      internalID: 25100628
       vertices: []
       indices: 
       edges: []
@@ -168,8 +168,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      GUI_msg_box_1: 997192871
-      GUI_msg_box_0: -1471948420
+      GUI_menu_2_0: -1758939017
+      GUI_menu_2_1: 25100628
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

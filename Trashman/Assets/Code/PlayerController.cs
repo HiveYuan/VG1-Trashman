@@ -145,9 +145,17 @@ namespace Trashman {
         void Update() {
 
             // Use item in inventory - By Hou
-            for (int i = 1; i < 10; i++) {
+            for (int i = 0; i < 10; i++) {
+                ItemClass item;
                 if (Input.GetKeyDown("" + i)) {
-                    ItemClass item = inventory.Get(i);
+                    if (i == 0)
+                    {
+                        item = inventory.Get(10);
+                    }
+                    else
+                    {
+                        item = inventory.Get(i);
+                    }
                     if (item != null) {
                         if (item.itemType == "food") {
                             item = inventory.Remove(i);

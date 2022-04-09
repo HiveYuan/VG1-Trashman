@@ -48,7 +48,7 @@ public class MenuManager : MonoBehaviour
 
     // Load tutorial/current level.
     public void StartPlay() {
-        SceneManager.LoadScene("Tutorial");  // Load tutorial/current level (need to store level info: Playerprefs) scene
+        SceneManager.LoadScene("Tutorial");  // TODO: Load current level (need to store level info: Playerprefs) scene
     }
 
     // TODO: quit?

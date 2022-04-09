@@ -3,14 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace myGUI{
     // FIXME: fix the scroll view
     public class MessageBox : MonoBehaviour
     {
-        public Text title;
+        public TMP_Text title;
 
-        public Text content;
+        public TMP_Text content;
 
         public Button confirm;
 

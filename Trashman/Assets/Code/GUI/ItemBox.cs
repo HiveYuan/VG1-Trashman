@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 namespace myGUI{
     // FIXME: fix the scroll view
     public class ItemBox : MonoBehaviour
     {
-        public Text title;
+        public TMP_Text title;
 
-        public Text content;
+        public TMP_Text content;
 
         public Image item;
 
