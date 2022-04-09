@@ -11,10 +11,25 @@ public class InterfaceManager : MonoBehaviour
     public GameObject itemsCheetSheetInterface;
     public GameObject pauseInterface;
     public GameObject settingsInterface;
+    public GameObject gameManager;
+    public GameController gameController;
 
-    // TODO: disable scene
     // Tracking state
-    public GameObject currentInterface;
+    GameObject currentInterface;
+
+    // Methods
+    void Awake()
+    {
+        gameObject.SetActive(false);
+        gameController = gameManager.GetComponent<GameController>();
+    }
+
+    // Move the in-game interface upward to hide any message or item box behind
+    public void MoveUpwardInHierarchy()
+    {
+        int index = transform.GetSiblingIndex();
+        transform.SetSiblingIndex(index + 1);
+    }
 
     // Switch interface
     void SwitchInterface(GameObject requestedInterface)
@@ -29,6 +44,9 @@ public class InterfaceManager : MonoBehaviour
 
         // Turn on requested menu
         requestedInterface.SetActive(true);
+        gameObject.SetActive(true);
+        MoveUpwardInHierarchy();
+        gameController.DisableWholeScene();
     }
 
     // TODO: Load store interface
@@ -57,5 +75,12 @@ public class InterfaceManager : MonoBehaviour
     public void Continue()
     {
         currentInterface.SetActive(false);
+        gameController.EnableWholeScene();
+    }
+
+    // Quit current level and go to the start menu scene
+    public void Quit()
+    {
+        SceneManager.LoadScene("StartMenu");
     }
 }
