@@ -6,15 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class InterfaceManager : MonoBehaviour
 {
+    // Outlets
     public GameObject storeInterface;
     public GameObject itemsCheetSheetInterface;
     public GameObject pauseInterface;
     public GameObject settingsInterface;
 
+    // TODO: disable scene
+    // Tracking state
+    public GameObject currentInterface;
 
     // Switch interface
     void SwitchInterface(GameObject requestedInterface)
     {
+        currentInterface = requestedInterface;
+
         // Turn off all menus
         storeInterface.SetActive(false);
         itemsCheetSheetInterface.SetActive(false);
@@ -37,7 +43,6 @@ public class InterfaceManager : MonoBehaviour
         SwitchInterface(itemsCheetSheetInterface);
     }
 
-    // TODO: Load pause game interface
     public void ShowPauseInterface(){
         SwitchInterface(pauseInterface);
     }
@@ -46,5 +51,11 @@ public class InterfaceManager : MonoBehaviour
     public void ShowSettingsInterface()
     {
         SwitchInterface(settingsInterface);
+    }
+
+    // Close current interface and continue playing
+    public void Continue()
+    {
+        currentInterface.SetActive(false);
     }
 }
