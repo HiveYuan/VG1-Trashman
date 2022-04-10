@@ -1,20 +1,23 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Trashman
+[CreateAssetMenu(fileName = "new Barrier Class", menuName = "Item/Barrier")]
+public class BarrierClass : ItemClass
 {
-    public class BarrierClass : MonoBehaviour
-    {
-        public enum BarrierType
-        {
-            security,
-            wood
-        }
+    [Header("Barrier")] // data specific to barrier class
 
-        public void Break() {
-            Destroy(gameObject);
-        }
+    public BarrierType barrierType;
+    public enum BarrierType
+    {
+        security,
+        wood
     }
+
+    public List<ToolClass> availableTools;
+
+    public override ItemClass GetItem() { return this; }
+    public override BarrierClass GetBarrier() { return this; }
+    public override FoodClass GetFood() { return null; }
+    public override ToolClass GetTool() { return null; }
 }

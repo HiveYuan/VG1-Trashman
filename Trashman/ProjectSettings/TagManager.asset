@@ -9,6 +9,7 @@ TagManager:
   - Tool
   - Wall
   - Target
+  - Barrier
   layers:
   - Default
   - TransparentFX

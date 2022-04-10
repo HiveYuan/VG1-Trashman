@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 6218945471038098172}
   - component: {fileID: 5743861128219019239}
   - component: {fileID: 3264431090433322616}
-  - component: {fileID: 1050832985430013250}
   m_Layer: 0
   m_Name: SecurityGuard
-  m_TagString: Wall
+  m_TagString: Barrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,15 +111,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &1050832985430013250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9083176997515998495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 953a95202a0cac24ea48f73f8b77f657, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

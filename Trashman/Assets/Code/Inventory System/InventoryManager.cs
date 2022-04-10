@@ -12,12 +12,14 @@ public class InventoryManager : MonoBehaviour
 
     public Dictionary<string, FoodClass> foods;
     public Dictionary<string, ToolClass> tools;
+    public Dictionary<string, BarrierClass> barriers;
 
     public void Start()
     {
         // Load all items from assets
         foods = LoadFoodAssets();
         tools = LoadToolAssets();
+        barriers = LoadBarrierAssets();
 
         // set all the slots
         slots = new GameObject[slotHolder.transform.childCount];
@@ -41,7 +43,7 @@ public class InventoryManager : MonoBehaviour
         foreach (ItemClass asset in itemAssets)
         {
             FoodClass food = asset.GetFood();
-            foodDic.Add(food.itemName, food);
+            foodDic.Add(food.name, food);
         }
 
         return foodDic;
@@ -54,10 +56,23 @@ public class InventoryManager : MonoBehaviour
         foreach (ItemClass asset in itemAssets)
         {
             ToolClass tool = asset.GetTool();
-            toolDic.Add(tool.itemName, tool);
+            toolDic.Add(tool.name, tool);
         }
 
         return toolDic;
+    }
+
+    public Dictionary<string, BarrierClass> LoadBarrierAssets()
+    {
+        Dictionary<string, BarrierClass> barrierDic = new Dictionary<string, BarrierClass>();
+        ItemClass[] itemAssets = Resources.LoadAll<ItemClass>("Items/Barrier");
+        foreach (ItemClass asset in itemAssets)
+        {
+            BarrierClass barrier = asset.GetBarrier();
+            barrierDic.Add(barrier.name, barrier);
+        }
+
+        return barrierDic;
     }
 
     public void RefreshUI()

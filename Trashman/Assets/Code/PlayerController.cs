@@ -83,9 +83,9 @@ namespace Trashman {
                         RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + new Vector2(h, v));
                         _collider.enabled = true;
 
-                        //hit wall
-                        if (hit.collider != null && hit.collider.tag == "Wall") {
-                            Debug.Log("collided with wall");
+                        //hit wall or barrier
+                        if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier")) {
+                            Debug.Log("collided with " + hit.collider.tag);
                             _rigidbody2D.velocity = new Vector2(0, 0);
                             _animator.ResetTrigger("Move");
                         } else {
@@ -157,10 +157,12 @@ namespace Trashman {
                         item = inventory.Get(i);
                     }
                     if (item != null) {
-                        if (item.itemType == "food") {
+                        if (item.GetFood() != null) {
                             item = inventory.Remove(i);
                             GainHealth(((FoodClass)item).GetFood().healthAdded);
-                        } else {
+                        }
+                        else
+                        {
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
@@ -169,45 +171,49 @@ namespace Trashman {
 
                             // What objects are within a circle at that attack zone
                             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
+                            if (hits.Length == 0) // facing no obstacles
+                            {
+                                print("There is no barrier to be destroyed.");
+                            }
 
                             // Handle each hit target
                             foreach (Collider2D hit in hits) {
-                                //bool knifeFlag = true;
-                                BarrierClass barrier = hit.GetComponent<BarrierClass>();
-                                if (barrier != null) {
 
-                                    // if(item.itemType.ToolType == "knife" && barrier.BarrierClass.BarrierType == "wood" || 
-                                    //     item.itemType.ToolType == "dollars" && barrier.BarrierClass.BarrierType == "security") {
-                                    //     item = inventory.Remove(i);
-                                    //     _animator.SetTrigger("Attack");
-                                    //     barrier.Break();
-
-                                    //     //trigger "Get Star" tutorial
-                                    //     print("trigger last tutorial! " + gameController.tutorialStageChange);
-                                    //     if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
-                                    //     {
-                                    //         gameController.tutorialStageChange = (int) TutorialStages.GetStar;
-                                    //     }
-                                    // }
-                                    
-                                    item = inventory.Remove(i);
-                                    _animator.SetTrigger("Attack");
-                                    barrier.Break();
-
-                                    //trigger "Get Star" tutorial
-                                    print("trigger last tutorial! " + gameController.tutorialStageChange);
-                                    if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                                string objName = hit.gameObject.name.Split(" ")[0];
+                                if (hit.gameObject.CompareTag("Barrier"))
+                                {
+                                    BarrierClass barrier = inventory.barriers[objName];
+                                    // Verify the relation between the tool and the barrier
+                                    if (barrier.availableTools.Contains(item.GetTool()))
                                     {
-                                        gameController.tutorialStageChange = (int) TutorialStages.GetStar;
-                                    }
+                                        item = inventory.Remove(i);
+                                        _animator.SetTrigger("Attack");
 
-                                } else {
+                                        // Destroy barrier
+                                        Destroy(hit.gameObject);
+
+                                        //trigger "Get Star" tutorial
+                                        print("trigger last tutorial! " + gameController.tutorialStageChange);
+                                        if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                                        {
+                                            gameController.tutorialStageChange = (int)TutorialStages.GetStar;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        print(barrier.name + " can not be destroyed by " + item.name);
+                                    }
+                                }
+                                else // facing some obstacles but not barrier 
+                                {
                                     print("There is no barrier to be destroyed.");
                                 }
                             }
                         }
                         break;
-                    } else {
+                    }
+                    else
+                    {
                         //TODO: User try to use non-existing item
                         //TODO: Add detection for whether this item can be used
                         print("Player try to use non-existing item.");
@@ -225,13 +231,14 @@ namespace Trashman {
         }
 
         void OnCollisionEnter2D( Collision2D other ) {
+            string objName = other.gameObject.name.Split(" ")[0];
             if (other.gameObject.CompareTag("Food")) {
                 Debug.Log("collision with food");
 
                 // Pickup food - By Hou
-                FoodClass food = inventory.foods[other.gameObject.name];
+                FoodClass food = inventory.foods[objName];
                 if (gameController.isTutorialOn == 0 && food.isFirstTime) {
-                    _uiManager.CreateItemBox(other.gameObject.name, food.itemIntro, food.itemIcon);
+                    _uiManager.CreateItemBox(objName, food.itemIntro, food.itemIcon);
                     food.isFirstTime = false;
                 }
                 inventory.Add(food);
@@ -248,10 +255,10 @@ namespace Trashman {
                 Debug.Log("collision with tool");
 
                 // Pickup tool - By Hou
-                ToolClass tool = inventory.tools[other.gameObject.name];
+                ToolClass tool = inventory.tools[objName];
                 if (gameController.isTutorialOn == 0 && tool.isFirstTime)
                 {
-                    _uiManager.CreateItemBox(other.gameObject.name, tool.itemIntro, tool.itemIcon);
+                    _uiManager.CreateItemBox(objName, tool.itemIntro, tool.itemIcon);
                     tool.isFirstTime = false;
                 }
                 inventory.Add(tool);

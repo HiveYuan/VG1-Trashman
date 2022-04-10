@@ -19,4 +19,5 @@ public class FoodClass : ItemClass
     public override ItemClass GetItem() { return this; }
     public override FoodClass GetFood() { return this; }
     public override ToolClass GetTool() { return null; }
+    public override BarrierClass GetBarrier() { return null; }
 }
