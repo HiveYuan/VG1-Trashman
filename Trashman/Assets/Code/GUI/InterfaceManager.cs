@@ -8,7 +8,7 @@ public class InterfaceManager : MonoBehaviour
 {
     // Outlets
     public GameObject storeInterface;
-    public GameObject itemsCheetSheetInterface;
+    public GameObject mapInterface;
     public GameObject pauseInterface;
     public GameObject settingsInterface;
     public GameObject gameManager;
@@ -38,7 +38,7 @@ public class InterfaceManager : MonoBehaviour
 
         // Turn off all menus
         storeInterface.SetActive(false);
-        itemsCheetSheetInterface.SetActive(false);
+        mapInterface.SetActive(false);
         pauseInterface.SetActive(false);
         settingsInterface.SetActive(false);
 
@@ -56,9 +56,9 @@ public class InterfaceManager : MonoBehaviour
     }
 
     // TODO: Load items cheet sheet interface
-    public void ShowItemsInterface()
+    public void ShowMapInterface()
     {
-        SwitchInterface(itemsCheetSheetInterface);
+        SwitchInterface(mapInterface);
     }
 
     public void ShowPauseInterface(){
@@ -76,6 +76,13 @@ public class InterfaceManager : MonoBehaviour
     {
         currentInterface.SetActive(false);
         gameController.EnableWholeScene();
+    }
+
+    // Reload current level
+    public void Reload()
+    {
+        currentInterface.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     // Quit current level and go to the start menu scene
