@@ -16,4 +16,4 @@ MonoBehaviour:
   itemIntro: Eat this meat will gain you 8 HP.
   isFirstTime: 0
   foodType: 0
-  healthAdded: 8
+  healthAdded: 16

@@ -30,8 +30,8 @@ namespace Trashman {
         float center_offset_y = 0.5f;
 
         // health bar
-        public float maxHealth = 40f;
-        public float currentHealth = 40f;
+        public float maxHealth = 80f;
+        public float currentHealth = 80f;
 
         public Health health;
         public Image prompt;
