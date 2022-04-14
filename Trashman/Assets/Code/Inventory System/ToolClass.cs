@@ -10,8 +10,9 @@ public class ToolClass : ItemClass
     public ToolType toolType;
     public enum ToolType
     {
-        knife,
-        dollars
+        Attack, // Only attack the object the character are facing
+        RangeAttack, // Can attack objects in adjcent 4 directions
+        Trade // Use to trade with any interactive obstacle
     }
 
     public override ItemClass GetItem() { return this; }

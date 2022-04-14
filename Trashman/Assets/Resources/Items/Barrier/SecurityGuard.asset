@@ -12,11 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20711a873ad8d45f4b928b37301152f5, type: 3}
   m_Name: SecurityGuard
   m_EditorClassIdentifier: 
-  itemName: SecurityGuard
   itemIcon: {fileID: 21300000, guid: b9725c98a5bf44743b48a4313a203b78, type: 3}
   itemIntro: You got to pay what you have to pay!
-  itemType: barrier
   isFirstTime: 1
-  barrierType: 0
+  barrierType: 1
   availableTools:
   - {fileID: 11400000, guid: baefb21697ec9604dab5815245f1dea6, type: 2}

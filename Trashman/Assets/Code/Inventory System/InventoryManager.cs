@@ -30,7 +30,7 @@ public class InventoryManager : MonoBehaviour
 
         RefreshUI();
     }
-
+    
     public void Update()
     {
 
@@ -39,39 +39,33 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<string, FoodClass> LoadFoodAssets()
     {
         Dictionary<string, FoodClass> foodDic = new Dictionary<string, FoodClass>();
-        ItemClass[] itemAssets = Resources.LoadAll<ItemClass>("Items/Food");
-        foreach (ItemClass asset in itemAssets)
+        FoodClass[] foodAssets = Resources.LoadAll<FoodClass>("Items/Food");
+        foreach (FoodClass food in foodAssets)
         {
-            FoodClass food = asset.GetFood();
             foodDic.Add(food.name, food);
         }
-
         return foodDic;
     }
 
     public Dictionary<string, ToolClass> LoadToolAssets()
     {
         Dictionary<string, ToolClass> toolDic = new Dictionary<string, ToolClass>();
-        ItemClass[] itemAssets = Resources.LoadAll<ItemClass>("Items/Tool");
-        foreach (ItemClass asset in itemAssets)
+        ToolClass[] toolAssets = Resources.LoadAll<ToolClass>("Items/Tool");
+        foreach (ToolClass tool in toolAssets)
         {
-            ToolClass tool = asset.GetTool();
             toolDic.Add(tool.name, tool);
         }
-
         return toolDic;
     }
 
     public Dictionary<string, BarrierClass> LoadBarrierAssets()
     {
         Dictionary<string, BarrierClass> barrierDic = new Dictionary<string, BarrierClass>();
-        ItemClass[] itemAssets = Resources.LoadAll<ItemClass>("Items/Barrier");
-        foreach (ItemClass asset in itemAssets)
+        BarrierClass[] barrierAssets = Resources.LoadAll<BarrierClass>("Items/Barrier");
+        foreach (BarrierClass barrier in barrierAssets)
         {
-            BarrierClass barrier = asset.GetBarrier();
             barrierDic.Add(barrier.name, barrier);
         }
-
         return barrierDic;
     }
 
@@ -90,7 +84,6 @@ public class InventoryManager : MonoBehaviour
             catch
             {
                 slots[i].transform.GetChild(1).GetComponent<Image>().enabled = false;
-                //slots[i].transform.GetChild(1).GetComponent<Image>().sprite = null;
                 slots[i].transform.GetChild(2).GetComponent<Image>().enabled = false;
                 slots[i].transform.GetChild(3).GetComponent<TMP_Text>().text = "";
             }

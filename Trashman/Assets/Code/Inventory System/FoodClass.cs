@@ -10,8 +10,7 @@ public class FoodClass : ItemClass
     public FoodType foodType;
     public enum FoodType
     {
-        apple,
-        burger
+        GainHealth // Use to gain health
     }
 
     public float healthAdded;

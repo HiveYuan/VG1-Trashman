@@ -10,8 +10,8 @@ public class BarrierClass : ItemClass
     public BarrierType barrierType;
     public enum BarrierType
     {
-        security,
-        wood
+        Barrier, // Use tools to attack to destroy
+        Trade // Interactive obstacles that need to use Trade type items to trade with
     }
 
     public List<ToolClass> availableTools;
