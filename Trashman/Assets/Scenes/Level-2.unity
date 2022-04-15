@@ -7713,6 +7713,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 141868875}
     m_Modifications:
+    - target: {fileID: 5743861128219019239, guid: 805c331d2dbb0b64cafd85bfc2550ec3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6218945471038098172, guid: 805c331d2dbb0b64cafd85bfc2550ec3, type: 3}
       propertyPath: m_RootOrder
       value: 0
