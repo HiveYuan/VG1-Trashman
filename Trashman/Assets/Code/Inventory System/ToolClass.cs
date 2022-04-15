@@ -19,4 +19,5 @@ public class ToolClass : ItemClass
     public override ToolClass GetTool() { return this; }
     public override FoodClass GetFood() { return null; }
     public override BarrierClass GetBarrier() { return null; }
+    public override PotionClass GetPotion() { return null; }
 }

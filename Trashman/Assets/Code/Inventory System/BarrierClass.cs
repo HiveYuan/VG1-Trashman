@@ -11,7 +11,8 @@ public class BarrierClass : ItemClass
     public enum BarrierType
     {
         Barrier, // Use tools to attack to destroy
-        Trade // Interactive obstacles that need to use Trade type items to trade with
+        Trader, // Interactive obstacles that need to use Trade type items to trade with
+        Monster // Monster will randomly move in the map, usually require more than one attack
     }
 
     public List<ToolClass> availableTools;
@@ -20,4 +21,5 @@ public class BarrierClass : ItemClass
     public override BarrierClass GetBarrier() { return this; }
     public override FoodClass GetFood() { return null; }
     public override ToolClass GetTool() { return null; }
+    public override PotionClass GetPotion() { return null; }
 }
