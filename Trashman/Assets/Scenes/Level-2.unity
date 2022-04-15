@@ -5985,6 +5985,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dollars
       objectReference: {fileID: 0}
+    - target: {fileID: 5454063032668106688, guid: cb37aba1ce29045489c87730028fac81, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb37aba1ce29045489c87730028fac81, type: 3}
 --- !u!1 &1524964599
@@ -7705,6 +7709,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 141868875}
     m_Modifications:
+    - target: {fileID: 5743861128219019239, guid: 805c331d2dbb0b64cafd85bfc2550ec3, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6218945471038098172, guid: 805c331d2dbb0b64cafd85bfc2550ec3, type: 3}
       propertyPath: m_RootOrder
       value: 0
