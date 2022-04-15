@@ -5985,6 +5985,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dollars
       objectReference: {fileID: 0}
+    - target: {fileID: 3515710121285711109, guid: cb37aba1ce29045489c87730028fac81, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5454063032668106688, guid: cb37aba1ce29045489c87730028fac81, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cb37aba1ce29045489c87730028fac81, type: 3}
 --- !u!1 &1524964599
