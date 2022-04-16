@@ -14,4 +14,5 @@ public abstract class ItemClass : ScriptableObject
     public abstract ToolClass GetTool();
     public abstract BarrierClass GetBarrier();
     public abstract PotionClass GetPotion();
+    public abstract ClothesClass GetClothes();
 }

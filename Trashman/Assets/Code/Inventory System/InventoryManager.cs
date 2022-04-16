@@ -13,6 +13,8 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<string, FoodClass> foods;
     public Dictionary<string, ToolClass> tools;
     public Dictionary<string, BarrierClass> barriers;
+    public Dictionary<string, PotionClass> potions;
+    public Dictionary<string, ClothesClass> clothes;
 
     public void Start()
     {
@@ -20,6 +22,8 @@ public class InventoryManager : MonoBehaviour
         foods = LoadFoodAssets();
         tools = LoadToolAssets();
         barriers = LoadBarrierAssets();
+        potions = LoadPotionAssets();
+        clothes = LoadClothesAssets();
 
         // set all the slots
         slots = new GameObject[slotHolder.transform.childCount];
@@ -31,10 +35,6 @@ public class InventoryManager : MonoBehaviour
         RefreshUI();
     }
     
-    public void Update()
-    {
-
-    }
 
     public Dictionary<string, FoodClass> LoadFoodAssets()
     {
@@ -67,6 +67,28 @@ public class InventoryManager : MonoBehaviour
             barrierDic.Add(barrier.name, barrier);
         }
         return barrierDic;
+    }
+
+    public Dictionary<string, PotionClass> LoadPotionAssets()
+    {
+        Dictionary<string, PotionClass> potionDic = new Dictionary<string, PotionClass>();
+        PotionClass[] potionAssets = Resources.LoadAll<PotionClass>("Items/Potion");
+        foreach (PotionClass potion in potionAssets)
+        {
+            potionDic.Add(potion.name, potion);
+        }
+        return potionDic;
+    }
+
+    public Dictionary<string, ClothesClass> LoadClothesAssets()
+    {
+        Dictionary<string, ClothesClass> clothesDic = new Dictionary<string, ClothesClass>();
+        ClothesClass[] clothesAssets = Resources.LoadAll<ClothesClass>("Items/Clothes");
+        foreach (ClothesClass clothes in clothesAssets)
+        {
+            clothesDic.Add(clothes.name, clothes);
+        }
+        return clothesDic;
     }
 
     public void RefreshUI()

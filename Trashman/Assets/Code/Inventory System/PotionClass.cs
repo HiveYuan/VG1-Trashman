@@ -17,10 +17,12 @@ public class PotionClass : ItemClass
     }
 
     public float lucky;
+    public int price;
 
     public override ItemClass GetItem() { return this; }
     public override PotionClass GetPotion() { return this; }
     public override FoodClass GetFood() { return null; }
     public override ToolClass GetTool() { return null; }
     public override BarrierClass GetBarrier() { return null; }
+    public override ClothesClass GetClothes() { return null; }
 }

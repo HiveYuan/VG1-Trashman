@@ -3064,8 +3064,8 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 21300000, guid: fca7544dd310641329f7580a32fa3db0, type: 3}
+    m_SelectedSprite: {fileID: 21300000, guid: fca7544dd310641329f7580a32fa3db0, type: 3}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -4042,7 +4042,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Item Intro:'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 79a703633fa1b44fbb6ee2a660c98f22, type: 2}
   m_sharedMaterial: {fileID: 5229745360207895361, guid: 79a703633fa1b44fbb6ee2a660c98f22, type: 2}
@@ -4072,9 +4072,9 @@ MonoBehaviour:
   m_fontSize: 18
   m_fontSizeBase: 18
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 12
+  m_fontSizeMax: 120
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512

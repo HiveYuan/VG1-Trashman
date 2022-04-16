@@ -32,7 +32,9 @@ public class InterfaceManager : MonoBehaviour
     {
         gameObject.SetActive(false);
         gameController = gameManager.GetComponent<GameController>();
+        itemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
+        buyButton.SetActive(false);
     }
 
     // Move the in-game interface upward to hide any message or item box behind
@@ -95,7 +97,7 @@ public class InterfaceManager : MonoBehaviour
         switch (category)
         {
             case "Clothes":
-                //inventory.clothes;
+                currentItems = inventory.clothes.Values.ToList<ItemClass>();
                 break;
             case "Tool":
                 currentItems = inventory.tools.Values.ToList<ItemClass>();
@@ -104,7 +106,7 @@ public class InterfaceManager : MonoBehaviour
                 currentItems = inventory.foods.Values.ToList<ItemClass>();
                 break;
             case "Potion":
-                //inventory.potions;
+                currentItems = inventory.potions.Values.ToList<ItemClass>();
                 break;
             case "Barrier":
                 currentItems = inventory.barriers.Values.ToList<ItemClass>();
@@ -123,8 +125,6 @@ public class InterfaceManager : MonoBehaviour
     }
 
     // Show selected item detail information
-    // TODO: add price?
-    // TODO: which condition need buy button?
     public void ChooseItem()
     {
         string[] objName = EventSystem.current.currentSelectedGameObject.name.Split("-");
@@ -138,43 +138,61 @@ public class InterfaceManager : MonoBehaviour
         switch (category)
         {
             case "Clothes":
-                // TODO: add clothes
+                item = inventory.clothes[name];
+                introText += "Type: <gradient=GoldWhite>" + item.GetClothes().clothesType + "</gradient>\n";
+                introText += "Price: <gradient=GoldWhite>" + item.GetClothes().price + "</gradient>\n";
+                if (item.GetClothes().price == 0)
+                {
+                    buyButton.GetComponentInChildren<TMP_Text>().text = "Free";
+                }
+                buyButton.SetActive(true);
                 break;
             case "Tool":
                 item = inventory.tools[name];
-                introText += "Function Type: " + item.GetTool().toolType + "\n";
+                introText += "Type: <gradient=GoldWhite>" + item.GetTool().toolType + "</gradient>\n";
+                buyButton.SetActive(false);
                 break;
             case "Food":
                 item = inventory.foods[name];
-                introText += "Function Type: " + item.GetFood().foodType + "\n";
-                introText += "Function Type: " + item.GetFood().healthAdded + "\n";
+                introText += "Type: <gradient=GoldWhite>" + item.GetFood().foodType + "</gradient>\n";
+                introText += "Gain HP: <gradient=GoldWhite>" + item.GetFood().healthAdded + "</gradient>\n";
+                buyButton.SetActive(false);
                 break;
             case "Potion":
-                // TODO: add potion
+                item = inventory.potions[name];
+                introText += "Type: <gradient=GoldWhite>" + item.GetPotion().potionType + "</gradient>\n";
+                if (item.GetPotion().potionType == PotionClass.PotionType.LuckyPower)
+                {
+                    introText += "Gain Lucky: <gradient=GoldWhite>" + item.GetPotion().lucky *100 + "%</gradient>\n";
+                }
+                introText += "Price: <gradient=GoldWhite>" + item.GetPotion().price + "</gradient>\n";
+                buyButton.SetActive(true);
                 break;
             case "Barrier":
                 item = inventory.barriers[name];
-                introText += "Function Type: " + item.GetBarrier().barrierType + "\n";
-                introText += "How To Destroy: " + item.GetBarrier().availableTools.ToString() + "\n";
+                introText += "Type: <gradient=GoldWhite>" + item.GetBarrier().barrierType + "</gradient>\n";
+                introText += "How To Destroy: <gradient=GoldWhite>" + item.GetBarrier().availableTools.ToString() + "</gradient>\n";
                 buyButton.SetActive(false);
                 break;
             default:
                 break;
         }
 
+        itemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = true;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = true;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
         if (item.isFirstTime)
         {
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = "?";
-            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().fontSize = 108;
+            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
             buyButton.SetActive(false);
         }
         else
         {
-            string basicText = "Item Name: " + item.name + "\n" + "Item Intro: " + item.itemIntro + "\n";
+            string basicText = "Item Name: <gradient=GoldWhite>" + item.name + "</gradient>\n" +
+                "Item Intro: <gradient=GoldWhite>" + item.itemIntro + "</gradient>\n";
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text =  basicText + introText;
-            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().fontSize = 18;
+            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Left;
         }
     }
 

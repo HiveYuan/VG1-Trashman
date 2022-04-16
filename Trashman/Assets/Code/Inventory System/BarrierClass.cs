@@ -22,4 +22,5 @@ public class BarrierClass : ItemClass
     public override FoodClass GetFood() { return null; }
     public override ToolClass GetTool() { return null; }
     public override PotionClass GetPotion() { return null; }
+    public override ClothesClass GetClothes() { return null; }
 }

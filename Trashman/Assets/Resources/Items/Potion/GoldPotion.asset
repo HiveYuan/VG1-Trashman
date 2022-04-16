@@ -15,6 +15,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 2fae18695aa694c148e46a1f3841feaa, type: 3}
   itemIntro: This potion will increase the possibilty of dropping items from destroy
     barriers in current level.
-  isFirstTime: 1
+  isFirstTime: 0
   potionType: 3
   lucky: 0.4
+  price: 8
