@@ -9,7 +9,6 @@ namespace Trashman {
 
         //outlets
         AudioSource audioSource;
-        public AudioClip walkSound;
         public AudioClip winSound;
         public AudioClip buttonClickSound;
         public AudioClip loseSound;
