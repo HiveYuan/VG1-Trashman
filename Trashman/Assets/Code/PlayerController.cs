@@ -242,7 +242,7 @@ namespace Trashman {
                     food.isFirstTime = false;
                 }
                 inventory.Add(food);
-
+                SoundManager.instance.PlaySoundFoodPickup();
                 //trigger "item use" tutorial
                 if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.HealthLost)
                 {
@@ -262,7 +262,7 @@ namespace Trashman {
                     tool.isFirstTime = false;
                 }
                 inventory.Add(tool);
-
+                SoundManager.instance.PlaySoundToolPickup();
 
                 Destroy(other.gameObject);
             }
