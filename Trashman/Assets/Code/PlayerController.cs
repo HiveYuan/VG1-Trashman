@@ -298,6 +298,11 @@ namespace Trashman {
 
                 Destroy(other.gameObject);
             }
+            if (other.gameObject.CompareTag("Monster")) {
+                Debug.Log("collision with monster");
+
+                currentHealth -= 10f;
+            }
         }
 
         // Health - By Hou
