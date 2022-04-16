@@ -6,37 +6,35 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 
-namespace myGUI{
+namespace myGUI
+{
     // FIXME: fix the scroll view
-    public class ItemBox : MonoBehaviour
+    public class HintBox : MonoBehaviour
     {
         public TMP_Text title;
 
         public TMP_Text content;
 
-        public Image item;
+        public TMP_Text hint;
 
-        public Button confirm;
+        public Image traderBarrier;
 
         public GameController gameController;
-        
+
+        List<string> hintList = new();
+
         // Start is called before the first frame update
         void Start()
         {
             gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public void show(string titleStr, string contentStr, Sprite itemIcon)
+        public void show(string titleStr, string contentStr, Sprite itemIcon, List<string> nameList)
         {
             title.text = titleStr;
             content.text = contentStr;
-            item.sprite = itemIcon;
+            traderBarrier.sprite = itemIcon;
+            hintList = nameList;
         }
 
         public void onClickConfirm()
@@ -46,7 +44,14 @@ namespace myGUI{
             gameController.EnableWholeScene();
             Destroy(gameObject);
         }
-        
+
+        public void onClickHint()
+        {
+            Debug.Log(EventSystem.current.currentSelectedGameObject);
+            EventSystem.current.currentSelectedGameObject.SetActive(false);
+            hint.text = string.Join(' ', hintList);
+        }
+
         public void Drag()
         {
             Vector3 vec3 = Input.mousePosition;

@@ -85,7 +85,17 @@ namespace Trashman {
 
                         //hit wall or barrier
                         if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier")) {
-                            Debug.Log("collided with " + hit.collider.tag);
+                            if (hit.collider.tag == "Barrier")
+                            {
+                                string objName = hit.collider.name.Split(" ")[0];
+                                BarrierClass barrier = inventory.barriers[objName];
+                                if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(objName+"_new") == 1)
+                                {
+                                    _uiManager.CreateHintBox(objName, barrier.itemIntro, barrier.itemIcon, barrier.getToolNameList());
+                                    PlayerPrefs.SetInt(objName + "_new", 0);
+                                }
+                            }
+                            //Debug.Log("collided with " + hit.collider.tag);
                             _rigidbody2D.velocity = new Vector2(0, 0);
                             _animator.ResetTrigger("Move");
                         } else {
@@ -237,9 +247,9 @@ namespace Trashman {
 
                 // Pickup food - By Hou
                 FoodClass food = inventory.foods[objName];
-                if (gameController.isTutorialOn == 0 && food.isFirstTime) {
+                if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(objName + "_new") == 1) {
                     _uiManager.CreateItemBox(objName, food.itemIntro, food.itemIcon);
-                    food.isFirstTime = false;
+                    PlayerPrefs.SetInt(objName + "_new", 0);
                 }
                 inventory.Add(food);
 
@@ -256,10 +266,10 @@ namespace Trashman {
 
                 // Pickup tool - By Hou
                 ToolClass tool = inventory.tools[objName];
-                if (gameController.isTutorialOn == 0 && tool.isFirstTime)
+                if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(objName + "_new") == 1)
                 {
                     _uiManager.CreateItemBox(objName, tool.itemIntro, tool.itemIcon);
-                    tool.isFirstTime = false;
+                    PlayerPrefs.SetInt(objName + "_new", 0);
                 }
                 inventory.Add(tool);
 

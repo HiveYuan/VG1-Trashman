@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject msgBox;
     public GameObject itemBox;
+    public GameObject hintBox;
     public GameObject gameManager;
     public GameController gameController;
     
@@ -40,5 +41,14 @@ public class UIManager : MonoBehaviour
         ibox.show(title, content, icon);
         gameController.DisableWholeScene();
         return ibox;
+    }
+
+    public HintBox CreateHintBox(string title, string content, Sprite icon, List<string> nameList)
+    {
+        GameObject box = Instantiate(hintBox, GameObject.Find("Canvas").transform);
+        HintBox hbox = box.GetComponent<HintBox>();
+        hbox.show(title, content, icon, nameList);
+        gameController.DisableWholeScene();
+        return hbox;
     }
 }

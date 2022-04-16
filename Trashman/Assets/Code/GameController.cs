@@ -22,8 +22,6 @@ public class GameController : MonoBehaviour
 
     public UIManager _uiManager;
 
-    public GameObject inventory;
-
     public int isTutorialOn = 1;
 
     public int tutorialStage = 0;

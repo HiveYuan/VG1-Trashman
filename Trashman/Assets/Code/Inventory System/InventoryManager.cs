@@ -43,6 +43,10 @@ public class InventoryManager : MonoBehaviour
         foreach (FoodClass food in foodAssets)
         {
             foodDic.Add(food.name, food);
+            if (!PlayerPrefs.HasKey("AlreadyLoad"))
+            {
+                PlayerPrefs.SetInt(food.name + "_new", 1);
+            }
         }
         return foodDic;
     }
@@ -54,6 +58,10 @@ public class InventoryManager : MonoBehaviour
         foreach (ToolClass tool in toolAssets)
         {
             toolDic.Add(tool.name, tool);
+            if (!PlayerPrefs.HasKey("AlreadyLoad"))
+            {
+                PlayerPrefs.SetInt(tool.name + "_new", 1);
+            }
         }
         return toolDic;
     }
@@ -65,6 +73,10 @@ public class InventoryManager : MonoBehaviour
         foreach (BarrierClass barrier in barrierAssets)
         {
             barrierDic.Add(barrier.name, barrier);
+            if (!PlayerPrefs.HasKey("AlreadyLoad"))
+            {
+                PlayerPrefs.SetInt(barrier.name + "_new", 1);
+            }
         }
         return barrierDic;
     }
@@ -76,6 +88,10 @@ public class InventoryManager : MonoBehaviour
         foreach (PotionClass potion in potionAssets)
         {
             potionDic.Add(potion.name, potion);
+            if (!PlayerPrefs.HasKey("AlreadyLoad"))
+            {
+                PlayerPrefs.SetInt(potion.name + "_new", 1);
+            }
         }
         return potionDic;
     }
@@ -87,7 +103,12 @@ public class InventoryManager : MonoBehaviour
         foreach (ClothesClass clothes in clothesAssets)
         {
             clothesDic.Add(clothes.name, clothes);
+            if (!PlayerPrefs.HasKey("AlreadyLoad"))
+            {
+                PlayerPrefs.SetInt(clothes.name + "_new", 1);
+            }
         }
+        PlayerPrefs.SetInt("AlreadyLoad", 1);
         return clothesDic;
     }
 

@@ -134,6 +134,7 @@ public class InterfaceManager : MonoBehaviour
         ItemClass item = null;
         string introText = "";
         buyButton.SetActive(true);
+        buyButton.GetComponentInChildren<TMP_Text>().text = "Buy";
 
         switch (category)
         {
@@ -171,7 +172,15 @@ public class InterfaceManager : MonoBehaviour
             case "Barrier":
                 item = inventory.barriers[name];
                 introText += "Type: <gradient=GoldWhite>" + item.GetBarrier().barrierType + "</gradient>\n";
-                introText += "How To Destroy: <gradient=GoldWhite>" + item.GetBarrier().availableTools.ToString() + "</gradient>\n";
+                if (item.GetBarrier().barrierType == BarrierClass.BarrierType.Trader)
+                {
+                    introText += "What does it want:";
+                }
+                else
+                {
+                    introText += "How To Destroy:";
+                }
+                introText += " <gradient=GoldWhite>" + string.Join(' ', item.GetBarrier().getToolNameList()) + "</gradient>\n";
                 buyButton.SetActive(false);
                 break;
             default:
@@ -181,7 +190,7 @@ public class InterfaceManager : MonoBehaviour
         itemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = true;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = true;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
-        if (item.isFirstTime)
+        if (PlayerPrefs.GetInt(name+"_new") == 1)
         {
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = "?";
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;

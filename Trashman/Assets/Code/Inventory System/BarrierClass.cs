@@ -17,6 +17,16 @@ public class BarrierClass : ItemClass
 
     public List<ToolClass> availableTools;
 
+    public List<string> getToolNameList()
+    {
+        List<string> toolNames = new();
+        foreach (ToolClass tool in this.availableTools)
+        {
+            toolNames.Add(tool.name);
+        }
+        return toolNames;
+    }
+
     public override ItemClass GetItem() { return this; }
     public override BarrierClass GetBarrier() { return this; }
     public override FoodClass GetFood() { return null; }

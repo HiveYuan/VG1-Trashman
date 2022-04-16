@@ -86,7 +86,7 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("Level-" + level);
     }
 
-    // FIXME: current function set to clear the level prefs to test functionality
+    // FIXME: current function set to clear the level and first-time prefs to test functionality
     // TODO: quit?
     public void QuitGame() {
         PlayerPrefs.DeleteAll();

@@ -5420,6 +5420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   msgBox: {fileID: 6079093479762672734, guid: b094e61d5f5728342b4e41cd4170688e, type: 3}
   itemBox: {fileID: 800365310005685466, guid: ef5f2e21db2cd4ad4acad7d22b1cbfa9, type: 3}
+  hintBox: {fileID: 841451902967002230, guid: 041059f0bfebc40608c92db03b06194b, type: 3}
   gameManager: {fileID: 971300580}
   gameController: {fileID: 0}
 --- !u!4 &775407132
@@ -6181,7 +6182,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 829003073}
   _uiManager: {fileID: 775407131}
-  inventory: {fileID: 0}
   isTutorialOn: 1
   tutorialStage: 0
   didSucceed: 0
