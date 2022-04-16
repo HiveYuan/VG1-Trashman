@@ -90,7 +90,7 @@ public class InventoryManager : MonoBehaviour
             potionDic.Add(potion.name, potion);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
-                PlayerPrefs.SetInt(potion.name + "_new", 1);
+                PlayerPrefs.SetInt(potion.name + "_new", 0);
             }
         }
         return potionDic;
@@ -105,7 +105,7 @@ public class InventoryManager : MonoBehaviour
             clothesDic.Add(clothes.name, clothes);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
-                PlayerPrefs.SetInt(clothes.name + "_new", 1);
+                PlayerPrefs.SetInt(clothes.name + "_new", 0);
             }
         }
         PlayerPrefs.SetInt("AlreadyLoad", 1);
