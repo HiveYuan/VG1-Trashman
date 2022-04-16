@@ -10,6 +10,7 @@ TagManager:
   - Wall
   - Target
   - Barrier
+  - Monster
   layers:
   - Default
   - TransparentFX
