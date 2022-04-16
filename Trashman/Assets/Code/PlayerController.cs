@@ -21,6 +21,8 @@ namespace Trashman {
         public Transform[] attackZones;
         public GameController gameController;
 
+        AudioSource walkSound;
+
         float moveSpeed = 4f;
         float healthLoseSpeed = 8f;
         float x_direction = 0f;
@@ -28,6 +30,8 @@ namespace Trashman {
 
         float center_offset_x = 0.5f;
         float center_offset_y = 0.5f;
+
+        bool move = false;
 
         // health bar
         public float maxHealth = 80f;
@@ -53,7 +57,7 @@ namespace Trashman {
             _animator = GetComponent<Animator>();
             _collider = GetComponent<CapsuleCollider2D>();
             gameController = GameObject.Find("GameManager").GetComponent<GameController>();
-
+            walkSound = GetComponent<AudioSource>();
         }
 
         void FixedUpdate() {
@@ -76,6 +80,8 @@ namespace Trashman {
                 if (Math.Abs(h) > float.Epsilon || Math.Abs(v) > float.Epsilon) {
                     x_direction = h;
                     y_direction = v;
+
+
                     //in the center
                     if (Math.Abs(posX - Math.Round(posX)) < 0.05f && Math.Abs(posY - Math.Round(posY)) < 0.05f) {
                         //Debug.Log("detected");
@@ -97,26 +103,26 @@ namespace Trashman {
                             }
                             //Debug.Log("collided with " + hit.collider.tag);
                             _rigidbody2D.velocity = new Vector2(0, 0);
-                            _animator.ResetTrigger("Move");
+                            move = true;
                         } else {
                             _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
-                            _animator.SetTrigger("Move");
+                            move = true;
                             LoseHealth(Time.deltaTime * healthLoseSpeed);
                         }
                     } else {
 
                         if (Math.Abs(posX - Math.Round(posX)) > 0.05f && h == 0) {
-                            _animator.SetTrigger("Move");
+                            move = true;
                             _rigidbody2D.velocity = new Vector2(x_direction, 0) * moveSpeed;
                             LoseHealth(Time.deltaTime * healthLoseSpeed);
                         } else if (Math.Abs(posY - Math.Round(posY)) > 0.05f && v == 0) {
-                            _animator.SetTrigger("Move");
+                            move = true;
                             _rigidbody2D.velocity = new Vector2(0, y_direction) * moveSpeed;
                             LoseHealth(Time.deltaTime * healthLoseSpeed);
                         } else {
 
                             _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
-                            _animator.SetTrigger("Move");
+                            move = true;
                             LoseHealth(Time.deltaTime * healthLoseSpeed);
                         }
                     }
@@ -126,26 +132,26 @@ namespace Trashman {
                     
                     //not stop in the center
                     if (Math.Abs(posX - Math.Round(posX)) > 0.05f) {
-                        _animator.SetTrigger("Move");
+                        move = true;
                         _rigidbody2D.velocity = new Vector2(x_direction, 0) * moveSpeed;
                         LoseHealth(Time.deltaTime * healthLoseSpeed);
                     } else if (Math.Abs(posY - Math.Round(posY)) > 0.05f) {
-                        _animator.SetTrigger("Move");
+                        move = true;
                         _rigidbody2D.velocity = new Vector2(0, y_direction) * moveSpeed;
                         LoseHealth(Time.deltaTime * healthLoseSpeed);
                     } else {
                         _rigidbody2D.velocity = new Vector2(0, 0);
-                        _animator.ResetTrigger("Move");
+                        move = false;
                     }
                 }
             } else {    //no health
                 _rigidbody2D.velocity = new Vector2(0, 0);
-                _animator.ResetTrigger("Move");
+                move = false;
             }
 
             _animator.SetFloat("Way2GoX", x_direction);
             _animator.SetFloat("Way2GoY", y_direction);
-
+            _animator.SetBool("Move", move);
 
 
         }
@@ -153,6 +159,14 @@ namespace Trashman {
 
         // Update is called once per frame
         void Update() {
+            //play walking sound - Jiang
+            if (move) {
+                if (!walkSound.isPlaying) {
+                    walkSound.Play();
+                }
+            } else {
+                walkSound.Stop();
+            }
 
             // Use item in inventory - By Hou
             for (int i = 0; i < 10; i++) {
@@ -252,7 +266,7 @@ namespace Trashman {
                     PlayerPrefs.SetInt(objName + "_new", 0);
                 }
                 inventory.Add(food);
-
+                SoundManager.instance.PlaySoundFoodPickup();
                 //trigger "item use" tutorial
                 if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.HealthLost)
                 {
@@ -272,7 +286,7 @@ namespace Trashman {
                     PlayerPrefs.SetInt(objName + "_new", 0);
                 }
                 inventory.Add(tool);
-
+                SoundManager.instance.PlaySoundToolPickup();
 
                 Destroy(other.gameObject);
             }
