@@ -161,7 +161,7 @@ namespace Trashman {
                             item = inventory.Remove(i);
                             GainHealth(((FoodClass)item).GetFood().healthAdded);
                         }
-                        else
+                        else if(item.GetTool() != null)
                         {
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
