@@ -192,11 +192,16 @@ namespace Trashman {
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
+                            if (item.GetTool().toolType == ToolClass.ToolType.Trade)
+                            {
+                                Transform[] attackZonesGroup = attackZones[0].GetComponentsInChildren<Transform>(); // length=5
+                                Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
+                                Attack(attackZone, item, i);
+                            }
                             for (int j = 0; j < item.GetTool().range * rangeBuff; j++)
                             {
                                 Transform[] attackZonesGroup = attackZones[j].GetComponentsInChildren<Transform>(); // length=5
-                                // TODO: divide type Trader and Attack
-                                if (item.GetTool().toolType != ToolClass.ToolType.CircleAttack)
+                                if (item.GetTool().toolType == ToolClass.ToolType.Attack)
                                 {
                                     Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
                                     Attack(attackZone, item, i);
@@ -310,13 +315,19 @@ namespace Trashman {
             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
             if (hits.Length == 0) // facing no obstacles
             {
-                print("There is no barrier to be destroyed.");
+                if (item.GetTool().toolType == ToolClass.ToolType.Trade)
+                {
+                    print("There is no trader to trade with.");
+                }
+                else
+                {
+                    print("There is no barrier to be destroyed.");
+                }
             }
 
             // Handle each hit target
             foreach (Collider2D hit in hits)
             {
-
                 string objName = hit.gameObject.name.Split(" ")[0];
                 if (hit.gameObject.CompareTag("Barrier"))
                 {
