@@ -2501,35 +2501,16 @@ GameObject:
   m_Component:
   - component: {fileID: 623466075}
   - component: {fileID: 623466074}
-  - component: {fileID: 623466073}
+  - component: {fileID: 623466078}
   - component: {fileID: 623466076}
   - component: {fileID: 623466077}
   m_Layer: 0
-  m_Name: Monster
-  m_TagString: Monster
+  m_Name: Cactus
+  m_TagString: Barrier
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &623466073
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623466072}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33acdc68b1ee290429e44cd3c251f083, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rigidbody2D: {fileID: 0}
-  pos_left: {fileID: 1751599347}
-  pos_right: {fileID: 2012924667}
-  speed: 1
-  faceLeft: 1
-  leftx: 0
-  rightx: 0
 --- !u!212 &623466074
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2644,6 +2625,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.96, y: 0.96}
   m_EdgeRadius: 0
+--- !u!114 &623466078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623466072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07add178295bd436da97f97683f157b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventory: {fileID: 0}
+  barrier: {fileID: 0}
+  hp: 0
+  _rigidbody2D: {fileID: 0}
+  pos_left: {fileID: 1751599347}
+  pos_right: {fileID: 2012924667}
+  speed: 1
+  faceLeft: 1
+  leftx: 0
+  rightx: 0
 --- !u!1 &637621634
 GameObject:
   m_ObjectHideFlags: 0

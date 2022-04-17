@@ -339,7 +339,7 @@ namespace Trashman {
                         _animator.SetTrigger("Attack");
 
                         // Destroy barrier
-                        if (hit.gameObject.GetComponent<BarrierHpController>().loseHealth(item.GetTool().damage * damageBuff) <= 0)
+                        if (hit.gameObject.GetComponent<BarrierController>().LoseHP(item.GetTool().damage * damageBuff) <= 0)
                         {
                             Destroy(hit.gameObject);
                         }

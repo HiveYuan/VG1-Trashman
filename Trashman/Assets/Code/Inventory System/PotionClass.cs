@@ -10,8 +10,8 @@ public class PotionClass : ItemClass
     public PotionType potionType;
     public enum PotionType
     {
-        DamagePower, // Use to gain damage buff(won't double attack range)
-        RangePower, // Use to gain attack range buff(won't double attack damage)
+        DamagePower, // Use to gain damage buff (won't upgrade attack range, won't effect trade tools)
+        RangePower, // Use to gain attack range buff (won't upgrade attack damage, won't effect trade tools)
         PickPower, // Pick more items
         LuckyPower // Upgrade possibility to drop items after destroy barriers
     }
