@@ -3,9 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Trashman;
 
 public class InventoryManager : MonoBehaviour
 {
+
+    public GameObject character;
+    public PlayerController playerController;
+
     [SerializeField] private GameObject slotHolder;
     public List<SlotClass> items = new();
     private GameObject[] slots;
@@ -16,7 +21,7 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<string, PotionClass> potions;
     public Dictionary<string, ClothesClass> clothes;
 
-    public void Start()
+    public void Awake()
     {
         // Load all items from assets
         foods = LoadFoodAssets();
@@ -24,6 +29,11 @@ public class InventoryManager : MonoBehaviour
         barriers = LoadBarrierAssets();
         potions = LoadPotionAssets();
         clothes = LoadClothesAssets();
+    }
+
+    public void Start()
+    {
+        playerController = character.GetComponent<PlayerController>();
 
         // set all the slots
         slots = new GameObject[slotHolder.transform.childCount];
@@ -43,6 +53,7 @@ public class InventoryManager : MonoBehaviour
         foreach (FoodClass food in foodAssets)
         {
             foodDic.Add(food.name, food);
+            //PlayerPrefs.SetInt(food.name + "_new", 1);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(food.name + "_new", 1);
@@ -58,6 +69,7 @@ public class InventoryManager : MonoBehaviour
         foreach (ToolClass tool in toolAssets)
         {
             toolDic.Add(tool.name, tool);
+            //PlayerPrefs.SetInt(tool.name + "_new", 1);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(tool.name + "_new", 1);
@@ -73,6 +85,7 @@ public class InventoryManager : MonoBehaviour
         foreach (BarrierClass barrier in barrierAssets)
         {
             barrierDic.Add(barrier.name, barrier);
+            //PlayerPrefs.SetInt(barrier.name + "_new", 1);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(barrier.name + "_new", 1);
@@ -88,6 +101,7 @@ public class InventoryManager : MonoBehaviour
         foreach (PotionClass potion in potionAssets)
         {
             potionDic.Add(potion.name, potion);
+            //PlayerPrefs.SetInt(potion.name + "_new", 0);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(potion.name + "_new", 0);
@@ -103,6 +117,7 @@ public class InventoryManager : MonoBehaviour
         foreach (ClothesClass clothes in clothesAssets)
         {
             clothesDic.Add(clothes.name, clothes);
+            //PlayerPrefs.SetInt(clothes.name + "_new", 0);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(clothes.name + "_new", 0);
@@ -139,11 +154,11 @@ public class InventoryManager : MonoBehaviour
         SlotClass slot = Contains(item);
         if (slot != null)
         {
-            slot.AddQuantity(1);
+            slot.AddQuantity(1 * playerController.pickBuff);
         }
         else
         {
-            items.Add(new SlotClass(item, 1));
+            items.Add(new SlotClass(item, 1 * playerController.pickBuff));
         }
 
         RefreshUI();

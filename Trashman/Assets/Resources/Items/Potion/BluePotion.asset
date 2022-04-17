@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: 74c86f6445f0b4ecfa7ae453491d05a7, type: 3}
   itemIntro: This item will double your attack range in current level.
-  isFirstTime: 0
   potionType: 1
   lucky: 0
+  buff: 2
   price: 2

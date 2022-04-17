@@ -18,7 +18,7 @@ namespace Trashman {
         Rigidbody2D _rigidbody2D;
         SpriteRenderer _spriteRenderer;
         CapsuleCollider2D _collider;
-        public Transform[] attackZones;
+        public GameObject[] attackZones;
         public GameController gameController;
 
         AudioSource walkSound;
@@ -46,7 +46,9 @@ namespace Trashman {
 
         // State Tracking
         public Direction facingDirection;
-
+        public int pickBuff = 1;
+        public int damageBuff = 1;
+        public int rangeBuff = 1;
 
 
         // Start is called before the first frame update
@@ -182,56 +184,52 @@ namespace Trashman {
                     }
                     if (item != null) {
                         if (item.GetFood() != null) {
-                            item = inventory.Remove(i);
-                            GainHealth(((FoodClass)item).GetFood().healthAdded);
+                            inventory.Remove(i);
+                            GainHealth(item.GetFood().healthAdded);
                         }
-                        else if(item.GetTool() != null)
+                        else if (item.GetTool() != null)
                         {
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
-                            // Get attack zone from index
-                            Transform attackZone = attackZones[facingDirectionIndex];
-
-                            // What objects are within a circle at that attack zone
-                            Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
-                            if (hits.Length == 0) // facing no obstacles
+                            for (int j = 0; j < item.GetTool().range * rangeBuff; j++)
                             {
-                                print("There is no barrier to be destroyed.");
+                                Transform[] attackZonesGroup = attackZones[j].GetComponentsInChildren<Transform>(); // length=5
+                                // TODO: divide type Trader and Attack
+                                if (item.GetTool().toolType != ToolClass.ToolType.CircleAttack)
+                                {
+                                    Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
+                                    Attack(attackZone, item, i);
+                                }
+                                else if (item.GetTool().toolType == ToolClass.ToolType.CircleAttack)
+                                {
+                                    for (int k = 0; k < 4; k++)
+                                    {
+                                        Transform attackZone = attackZonesGroup[k + 1]; // +1: skip the transform of itself
+                                        Attack(attackZone, item, i);
+                                    }
+                                }
                             }
-
-                            // Handle each hit target
-                            foreach (Collider2D hit in hits) {
-
-                                string objName = hit.gameObject.name.Split(" ")[0];
-                                if (hit.gameObject.CompareTag("Barrier"))
-                                {
-                                    BarrierClass barrier = inventory.barriers[objName];
-                                    // Verify the relation between the tool and the barrier
-                                    if (barrier.availableTools.Contains(item.GetTool()))
-                                    {
-                                        item = inventory.Remove(i);
-                                        _animator.SetTrigger("Attack");
-
-                                        // Destroy barrier
-                                        Destroy(hit.gameObject);
-
-                                        //trigger "Get Star" tutorial
-                                        print("trigger last tutorial! " + gameController.tutorialStageChange);
-                                        if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
-                                        {
-                                            gameController.tutorialStageChange = (int)TutorialStages.GetStar;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        print(barrier.name + " can not be destroyed by " + item.name);
-                                    }
-                                }
-                                else // facing some obstacles but not barrier 
-                                {
-                                    print("There is no barrier to be destroyed.");
-                                }
+                        }
+                        else if (item.GetPotion() != null)
+                        {
+                            inventory.Remove(i);
+                            PotionClass potion = item.GetPotion();
+                            switch (potion.potionType)
+                            {
+                                case PotionClass.PotionType.DamagePower:
+                                    damageBuff *= potion.buff;
+                                    break;
+                                case PotionClass.PotionType.RangePower:
+                                    rangeBuff *= potion.buff;
+                                    break;
+                                case PotionClass.PotionType.PickPower:
+                                    pickBuff *= potion.buff;
+                                    break;
+                                case PotionClass.PotionType.LuckyPower: // TODO
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                         break;
@@ -261,7 +259,8 @@ namespace Trashman {
 
                 // Pickup food - By Hou
                 FoodClass food = inventory.foods[objName];
-                if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(objName + "_new") == 1) {
+                if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(objName + "_new") == 1)
+                {
                     _uiManager.CreateItemBox(objName, food.itemIntro, food.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
                 }
@@ -302,6 +301,54 @@ namespace Trashman {
                 Debug.Log("collision with monster");
 
                 currentHealth -= 10f;
+            }
+        }
+
+        void Attack(Transform attackZone, ItemClass item, int inventoryIndex)
+        {
+            // What objects are within a circle at that attack zone
+            Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
+            if (hits.Length == 0) // facing no obstacles
+            {
+                print("There is no barrier to be destroyed.");
+            }
+
+            // Handle each hit target
+            foreach (Collider2D hit in hits)
+            {
+
+                string objName = hit.gameObject.name.Split(" ")[0];
+                if (hit.gameObject.CompareTag("Barrier"))
+                {
+                    BarrierClass barrier = inventory.barriers[objName];
+                    // Verify the relation between the tool and the barrier
+                    if (barrier.availableTools.Contains(item.GetTool()))
+                    {
+                        inventory.Remove(inventoryIndex);
+                        _animator.SetTrigger("Attack");
+
+                        // Destroy barrier
+                        if (hit.gameObject.GetComponent<BarrierHpController>().loseHealth(item.GetTool().damage * damageBuff) <= 0)
+                        {
+                            Destroy(hit.gameObject);
+                        }
+
+                        //trigger "Get Star" tutorial
+                        print("trigger last tutorial! " + gameController.tutorialStageChange);
+                        if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                        {
+                            gameController.tutorialStageChange = (int)TutorialStages.GetStar;
+                        }
+                    }
+                    else
+                    {
+                        print(barrier.name + " can not be destroyed by " + item.name);
+                    }
+                }
+                else // facing some obstacles but not barrier 
+                {
+                    print("There is no barrier to be destroyed.");
+                }
             }
         }
 

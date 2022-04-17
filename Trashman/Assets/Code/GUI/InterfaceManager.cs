@@ -26,6 +26,7 @@ public class InterfaceManager : MonoBehaviour
     // Tracking state
     GameObject currentInterface;
     GameObject currentCategory;
+    string currentItemName = "";
 
     // Methods
     void Awake()
@@ -129,7 +130,7 @@ public class InterfaceManager : MonoBehaviour
     {
         string[] objName = EventSystem.current.currentSelectedGameObject.name.Split("-");
         string category = objName[0];
-        string name = objName[1];
+        currentItemName = objName[1];
 
         ItemClass item = null;
         string introText = "";
@@ -139,38 +140,45 @@ public class InterfaceManager : MonoBehaviour
         switch (category)
         {
             case "Clothes":
-                item = inventory.clothes[name];
+                item = inventory.clothes[currentItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetClothes().clothesType + "</gradient>\n";
                 introText += "Price: <gradient=GoldWhite>" + item.GetClothes().price + "</gradient>\n";
                 if (item.GetClothes().price == 0)
                 {
                     buyButton.GetComponentInChildren<TMP_Text>().text = "Free";
                 }
-                buyButton.SetActive(true);
                 break;
             case "Tool":
-                item = inventory.tools[name];
+                item = inventory.tools[currentItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetTool().toolType + "</gradient>\n";
+                if (item.GetTool().toolType != ToolClass.ToolType.Trade)
+                {
+                    introText += "Damage: <gradient=GoldWhite>" + item.GetTool().damage + "</gradient>\n";
+                    introText += "Range: <gradient=GoldWhite>" + item.GetTool().range + "</gradient>\n";
+                }
                 buyButton.SetActive(false);
                 break;
             case "Food":
-                item = inventory.foods[name];
+                item = inventory.foods[currentItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetFood().foodType + "</gradient>\n";
                 introText += "Gain HP: <gradient=GoldWhite>" + item.GetFood().healthAdded + "</gradient>\n";
                 buyButton.SetActive(false);
                 break;
             case "Potion":
-                item = inventory.potions[name];
+                item = inventory.potions[currentItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetPotion().potionType + "</gradient>\n";
                 if (item.GetPotion().potionType == PotionClass.PotionType.LuckyPower)
                 {
-                    introText += "Gain Lucky: <gradient=GoldWhite>" + item.GetPotion().lucky *100 + "%</gradient>\n";
+                    introText += "Gain Lucky: <gradient=GoldWhite>" + item.GetPotion().lucky * 100 + "%</gradient>\n";
+                }
+                else
+                {
+                    introText += "Gain Buff: <gradient=GoldWhite>X" + item.GetPotion().buff + "</gradient>\n";
                 }
                 introText += "Price: <gradient=GoldWhite>" + item.GetPotion().price + "</gradient>\n";
-                buyButton.SetActive(true);
                 break;
             case "Barrier":
-                item = inventory.barriers[name];
+                item = inventory.barriers[currentItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetBarrier().barrierType + "</gradient>\n";
                 if (item.GetBarrier().barrierType == BarrierClass.BarrierType.Trader)
                 {
@@ -178,6 +186,7 @@ public class InterfaceManager : MonoBehaviour
                 }
                 else
                 {
+                    introText += "HP: <gradient=GoldWhite>" + item.GetBarrier().hp + "</gradient>\n";
                     introText += "How To Destroy:";
                 }
                 introText += " <gradient=GoldWhite>" + string.Join(' ', item.GetBarrier().getToolNameList()) + "</gradient>\n";
@@ -186,11 +195,15 @@ public class InterfaceManager : MonoBehaviour
             default:
                 break;
         }
+        // If is in tutorial level, no items canbe bought.
+        if (gameController.isTutorialOn == 1) {
+            buyButton.SetActive(false);
+        }
 
         itemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = true;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = true;
         itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
-        if (PlayerPrefs.GetInt(name+"_new") == 1)
+        if (PlayerPrefs.GetInt(currentItemName+ "_new") == 1)
         {
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = "?";
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
@@ -198,17 +211,28 @@ public class InterfaceManager : MonoBehaviour
         }
         else
         {
-            string basicText = "Item Name: <gradient=GoldWhite>" + item.name + "</gradient>\n" +
+            string basicText = "Item Name: <gradient=GoldWhite>" + currentItemName + "</gradient>\n" +
                 "Item Intro: <gradient=GoldWhite>" + item.itemIntro + "</gradient>\n";
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text =  basicText + introText;
             itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Left;
         }
     }
 
-    // TODO: Buy item: where to store the item?
+    // Put item in the inventory bar. Unuse item will disappear after current level.
+    // TODO: add price and money checking
     public void BuyItem()
     {
-
+        switch (currentCategory.name.Split(" ")[0])
+        {
+            case "Clothes":
+                inventory.Add(inventory.clothes[currentItemName]);
+                break;
+            case "Potion":
+                inventory.Add(inventory.potions[currentItemName]);
+                break;
+            default:
+                break;
+        }
     }
 
 

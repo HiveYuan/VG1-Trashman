@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: 3bf1275dc8ce244318f0c44368c3e5d0, type: 3}
   itemIntro: This item will double the number of items you picked in current level.
-  isFirstTime: 0
   potionType: 2
   lucky: 0
+  buff: 2
   price: 2

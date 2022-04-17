@@ -11,9 +11,12 @@ public class ToolClass : ItemClass
     public enum ToolType
     {
         Attack, // Only attack the object the character are facing
-        RangeAttack, // Can attack objects in adjcent 4 directions
+        CircleAttack, // Can attack objects in adjcent 4 directions
         Trade // Use to trade with any interactive obstacle
     }
+
+    public int damage;
+    public int range;
 
     public override ItemClass GetItem() { return this; }
     public override ToolClass GetTool() { return this; }

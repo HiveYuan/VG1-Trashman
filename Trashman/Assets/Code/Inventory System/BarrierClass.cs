@@ -27,6 +27,8 @@ public class BarrierClass : ItemClass
         return toolNames;
     }
 
+    public int hp;
+
     public override ItemClass GetItem() { return this; }
     public override BarrierClass GetBarrier() { return this; }
     public override FoodClass GetFood() { return null; }

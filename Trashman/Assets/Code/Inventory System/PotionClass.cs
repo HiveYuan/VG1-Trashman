@@ -10,13 +10,14 @@ public class PotionClass : ItemClass
     public PotionType potionType;
     public enum PotionType
     {
-        DoubleDamagePower, // Use to gain double double damage (won't double attack range)
-        DoubleRangePower, // Use to gain double double attack range (won't double attack damage)
-        DoublePickPower, // Pick double items
-        LuckyPower // Upgrade possibility to drop items after destroy any type of barriers
+        DamagePower, // Use to gain damage buff(won't double attack range)
+        RangePower, // Use to gain attack range buff(won't double attack damage)
+        PickPower, // Pick more items
+        LuckyPower // Upgrade possibility to drop items after destroy barriers
     }
 
     public float lucky;
+    public int buff;
     public int price;
 
     public override ItemClass GetItem() { return this; }
