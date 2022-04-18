@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +8,22 @@ public class BarrierController : MonoBehaviour
 {
     public InventoryManager inventory;
     public BarrierClass barrier;
+    BoxCollider2D _collider;
+    Rigidbody2D _rigidbody2D;
     public int hp;
 
     [Header("RandomMove")]
-    public Rigidbody2D _rigidbody2D;
-    public Transform pos_left, pos_right;   // Left and right boundaries
+    /*public Transform pos_left, pos_right;   // Left and right boundaries
     public float speed;
     public bool faceLeft;   // Face to the left
-    public float leftx, rightx;
+    public float leftx, rightx;*/
+
+    public Vector2 targetPos;
+    Vector2 lastPos;
+
+    float timeElapsed = 0;
+    public float lerpDuration = 2;
+
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +35,14 @@ public class BarrierController : MonoBehaviour
 
         // Move
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        leftx = pos_left.position.x;
+        _collider = GetComponent<BoxCollider2D>();
+        /*leftx = pos_left.position.x;
         rightx = pos_right.position.x;
 
         Destroy(pos_left.gameObject);
-        Destroy(pos_right.gameObject);
+        Destroy(pos_right.gameObject);*/
+        targetPos = transform.position;
+        lastPos = transform.position;
     }
 
     // Update is called once per frame
@@ -38,8 +50,20 @@ public class BarrierController : MonoBehaviour
     {
         if (barrier.barrierType == BarrierClass.BarrierType.Monster)
         {
-            RandomMove();
+            if (timeElapsed < lerpDuration) {
+                transform.position = Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration);
+                timeElapsed += Time.deltaTime;
+            } else {
+                lastPos = targetPos;
+                transform.position = targetPos;
+                timeElapsed = 0;
+
+                RandomMove();
+            }
         }
+
+        
+
     }
 
     // Update hp when being attacked
@@ -54,23 +78,50 @@ public class BarrierController : MonoBehaviour
     // TODO: stop in the middle of the grid
     public void RandomMove()
     {
-        if (faceLeft)
-        {
-            _rigidbody2D.velocity = new Vector2(-speed, _rigidbody2D.velocity.y);
+        System.Random rd = new System.Random();
+        bool[] blocked = { false, false, false, false };
 
-            if (transform.position.x < leftx)
-            {
-                faceLeft = false;
+        while (true) {
+            int direction = rd.Next(0, 4);
+            if (blocked[direction]) {
+                continue;
             }
-        }
-        else
-        {
-            _rigidbody2D.velocity = new Vector2(speed, _rigidbody2D.velocity.y);
 
-            if (transform.position.x > rightx)
-            {
-                faceLeft = true;
+            Vector2 direction_vector;
+
+            switch (direction) {
+                case 0:
+                    direction_vector = new Vector2(0, 1);
+                    break;
+                case 1:
+                    direction_vector = new Vector2(0, -1);
+                    break;
+                case 2:
+                    direction_vector = new Vector2(-1, 0);
+                    break;
+                case 3:
+                    direction_vector = new Vector2(1, 0);
+                    break;
+                default:
+                    direction_vector = new Vector2(0, 0);
+                    break;
             }
-        }
+
+            //Debug.Log("detect");
+            _collider.enabled = false;
+            RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + direction_vector);
+            _collider.enabled = true;
+
+            //hit wall or barrier
+            if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier" || hit.collider.tag == "Tool" || hit.collider.tag == "Food")) {
+                //Debug.Log("collided with " + hit.collider.tag);
+                blocked[direction] = true;
+                
+            } else {
+                targetPos += direction_vector;
+                break;
+            }
+        }//end of while
+        
     }
 }

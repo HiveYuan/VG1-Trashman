@@ -5,14 +5,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum Direction {
-    Up = 0,
-    Down = 1,
-    Left = 2,
-    Right = 3
-}
-
 namespace Trashman {
+    public enum Direction {
+        Up = 0,
+        Down = 1,
+        Left = 2,
+        Right = 3
+    }
     public class PlayerController : MonoBehaviour {
         //outlet
         Rigidbody2D _rigidbody2D;
