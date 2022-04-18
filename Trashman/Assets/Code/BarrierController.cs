@@ -2,38 +2,51 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 // TODO: add prompt for barrier losing health (little hp bar)
 public class BarrierController : MonoBehaviour
 {
-    public InventoryManager inventory;
-    public BarrierClass barrier;
-    BoxCollider2D _collider;
-    Rigidbody2D _rigidbody2D;
+    InventoryManager inventory;
+    BarrierClass barrier;
     public int hp;
+    public Image fill;
+    public Canvas worldSpaceCanvas;
+
 
     [Header("RandomMove")]
+    BoxCollider2D _collider;
+    Rigidbody2D _rigidbody2D;
     public Vector2 targetPos;
     Vector2 lastPos;
-
     float timeElapsed = 0;
     public float lerpDuration = 2;
     
 
+    // TODO: fix bug for monster hp bar => unity will crash?
     // Start is called before the first frame update
     void Start()
     {
         inventory = GameObject.Find("Inventory").GetComponent<InventoryManager>();
         Debug.Log(gameObject.name.Split(" ")[0]);
         barrier = inventory.barriers[gameObject.name.Split(" ")[0]];
+
+        // HP
         hp = barrier.hp;
+        Canvas hpCanvas = (Canvas)Instantiate(worldSpaceCanvas, gameObject.transform);
+        hpCanvas.worldCamera = Camera.main;
+        fill = hpCanvas.GetComponentsInChildren<Image>()[1];
+        Debug.Log(fill.name);
 
         // Move
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<BoxCollider2D>();
+        if (barrier.barrierType == BarrierClass.BarrierType.Monster)
+        {
+            _rigidbody2D = GetComponent<Rigidbody2D>();
+            _collider = GetComponent<BoxCollider2D>();
 
-        targetPos = transform.position;
-        lastPos = transform.position;
+            targetPos = transform.position;
+            lastPos = transform.position;
+        }
     }
 
     // Update is called once per frame
@@ -57,6 +70,7 @@ public class BarrierController : MonoBehaviour
     // Update hp when being attacked
     public int LoseHP(int damage)
     {
+        fill.fillAmount = ((hp-damage) / (float)hp);
         hp -= damage;
         return hp;
     }
