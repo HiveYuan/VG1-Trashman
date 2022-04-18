@@ -10,6 +10,7 @@ public class BarrierController : MonoBehaviour
     public BarrierClass barrier;
     BoxCollider2D _collider;
     Rigidbody2D _rigidbody2D;
+    Animator _animator;
     public int hp;
 
     [Header("RandomMove")]
@@ -31,6 +32,7 @@ public class BarrierController : MonoBehaviour
         // Move
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
+        _animator = GetComponent<Animator>();
 
         targetPos = transform.position;
         lastPos = transform.position;
@@ -50,6 +52,9 @@ public class BarrierController : MonoBehaviour
                 timeElapsed = 0;
 
                 RandomMove();
+
+                // Set x-axis movement vector
+                _animator.SetFloat("movementX", _rigidbody2D.velocity.x);
             }
         }
     }
