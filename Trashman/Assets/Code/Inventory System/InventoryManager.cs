@@ -33,6 +33,13 @@ public class InventoryManager : MonoBehaviour
 
     public void Start()
     {
+        //// Load all items from assets
+        //foods = LoadFoodAssets();
+        //tools = LoadToolAssets();
+        //barriers = LoadBarrierAssets();
+        //potions = LoadPotionAssets();
+        //clothes = LoadClothesAssets();
+
         playerController = character.GetComponent<PlayerController>();
 
         // set all the slots

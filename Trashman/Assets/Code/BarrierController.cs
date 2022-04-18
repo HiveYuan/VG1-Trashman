@@ -28,25 +28,26 @@ public class BarrierController : MonoBehaviour
     void Start()
     {
         inventory = GameObject.Find("Inventory").GetComponent<InventoryManager>();
-        Debug.Log(gameObject.name.Split(" ")[0]);
         barrier = inventory.barriers[gameObject.name.Split(" ")[0]];
-
-        // HP
         hp = barrier.hp;
-        Canvas hpCanvas = (Canvas)Instantiate(worldSpaceCanvas, gameObject.transform);
-        hpCanvas.worldCamera = Camera.main;
-        fill = hpCanvas.GetComponentsInChildren<Image>()[1];
-        Debug.Log(fill.name);
 
-        // Move
-        if (barrier.barrierType == BarrierClass.BarrierType.Monster)
+        // HP bar
+        if (barrier.barrierType != BarrierClass.BarrierType.Trader)
         {
-            _rigidbody2D = GetComponent<Rigidbody2D>();
-            _collider = GetComponent<BoxCollider2D>();
-            _animator = GetComponent<Animator>();
+            Canvas hpCanvas = (Canvas)Instantiate(worldSpaceCanvas, gameObject.transform);
+            hpCanvas.worldCamera = Camera.main;
+            fill = hpCanvas.GetComponentsInChildren<Image>()[1];
 
-            targetPos = transform.position;
-            lastPos = transform.position;
+            // Move
+            if (barrier.barrierType == BarrierClass.BarrierType.Monster)
+            {
+                _rigidbody2D = GetComponent<Rigidbody2D>();
+                _collider = GetComponent<BoxCollider2D>();
+                _animator = GetComponent<Animator>();
+
+                targetPos = transform.position;
+                lastPos = transform.position;
+            }
         }
     }
 
@@ -55,10 +56,13 @@ public class BarrierController : MonoBehaviour
     {
         if (barrier.barrierType == BarrierClass.BarrierType.Monster)
         {
-            if (timeElapsed < lerpDuration) {
+            if (timeElapsed < lerpDuration)
+            {
                 transform.position = Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
-            } else {
+            }
+            else
+            {
                 lastPos = targetPos;
                 transform.position = targetPos;
                 timeElapsed = 0;
@@ -66,7 +70,7 @@ public class BarrierController : MonoBehaviour
                 RandomMove();
 
                 // Set x-axis movement vector
-                _animator.SetFloat("movementX", _rigidbody2D.velocity.x);
+                //_animator.SetFloat("movementX", _rigidbody2D.velocity.x);
             }
         }
     }

@@ -199,11 +199,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56658199}
   m_CullTransparentMesh: 1
---- !u!4 &73414156 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2598597503805906039, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
-  m_PrefabInstance: {fileID: 1578935210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &73911432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7102,11 +7097,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!4 &1065011141 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2598597503666670752, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
-  m_PrefabInstance: {fileID: 1578935210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1091166135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7318,11 +7308,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!4 &1097088646 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2598597504187579740, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
-  m_PrefabInstance: {fileID: 1578935210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1102135397
 GameObject:
   m_ObjectHideFlags: 0
@@ -7911,12 +7896,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackZones:
-  - {fileID: 1065011141}
-  - {fileID: 1569985591}
-  - {fileID: 1097088646}
-  - {fileID: 73414156}
+  - {fileID: 1578935211}
   gameController: {fileID: 1656511278}
-  buffPrompt: {fileID: 0}
+  buffPrompt: {fileID: 1585465590}
   maxHealth: 40
   currentHealth: 40
   health: {fileID: 1244665759}
@@ -8775,11 +8757,6 @@ PrefabInstance:
       objectReference: {fileID: 1292860919, guid: 72e137dddd0884ea1990719e5bcc90b2, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 500eaf88351bf44f9b22b40d274612fe, type: 3}
---- !u!4 &1569985591 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2598597503370830678, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
-  m_PrefabInstance: {fileID: 1578935210}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1578935210
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8837,6 +8814,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
+--- !u!1 &1578935211 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2598597502944040258, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
+  m_PrefabInstance: {fileID: 1578935210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1585465588
 GameObject:
   m_ObjectHideFlags: 0
@@ -10584,7 +10566,7 @@ GameObject:
   - component: {fileID: 2085846939}
   - component: {fileID: 2085846938}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: BuffCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

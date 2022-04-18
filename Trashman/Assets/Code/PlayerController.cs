@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -18,7 +19,7 @@ namespace Trashman {
         Rigidbody2D _rigidbody2D;
         SpriteRenderer _spriteRenderer;
         CapsuleCollider2D _collider;
-        public GameObject[] attackZones;
+        public List<GameObject> attackZones;
         public GameController gameController;
 
         AudioSource walkSound;
