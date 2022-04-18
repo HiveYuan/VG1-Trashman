@@ -13,17 +13,12 @@ public class BarrierController : MonoBehaviour
     public int hp;
 
     [Header("RandomMove")]
-    /*public Transform pos_left, pos_right;   // Left and right boundaries
-    public float speed;
-    public bool faceLeft;   // Face to the left
-    public float leftx, rightx;*/
-
     public Vector2 targetPos;
     Vector2 lastPos;
 
     float timeElapsed = 0;
     public float lerpDuration = 2;
-
+    
 
     // Start is called before the first frame update
     void Start()
@@ -36,11 +31,7 @@ public class BarrierController : MonoBehaviour
         // Move
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _collider = GetComponent<BoxCollider2D>();
-        /*leftx = pos_left.position.x;
-        rightx = pos_right.position.x;
 
-        Destroy(pos_left.gameObject);
-        Destroy(pos_right.gameObject);*/
         targetPos = transform.position;
         lastPos = transform.position;
     }
@@ -61,9 +52,6 @@ public class BarrierController : MonoBehaviour
                 RandomMove();
             }
         }
-
-        
-
     }
 
     // Update hp when being attacked
@@ -73,9 +61,7 @@ public class BarrierController : MonoBehaviour
         return hp;
     }
 
-    // monster random move
-    // TODO: random move to 4 directions
-    // TODO: stop in the middle of the grid
+    // monster random move to 4 directions
     public void RandomMove()
     {
         System.Random rd = new System.Random();

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Trashman {
     public enum Direction {
@@ -21,6 +22,7 @@ namespace Trashman {
         public GameController gameController;
 
         AudioSource walkSound;
+        public TMP_Text buffPrompt;
 
         float moveSpeed = 4f;
         float healthLoseSpeed = 8f;
@@ -40,7 +42,6 @@ namespace Trashman {
         public Image prompt;
         public InventoryManager inventory;
         public UIManager _uiManager;
-
         Animator _animator;
 
         // State Tracking
@@ -53,6 +54,7 @@ namespace Trashman {
         // Start is called before the first frame update
         void Start() {
             prompt.enabled = false;
+            buffPrompt.text = "";
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
@@ -219,22 +221,28 @@ namespace Trashman {
                         {
                             inventory.Remove(i);
                             PotionClass potion = item.GetPotion();
+                            //buffPrompt.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f);
                             switch (potion.potionType)
                             {
                                 case PotionClass.PotionType.DamagePower:
                                     damageBuff *= potion.buff;
+                                    buffPrompt.text = "Damage X" + potion.buff;
                                     break;
                                 case PotionClass.PotionType.RangePower:
                                     rangeBuff *= potion.buff;
+                                    buffPrompt.text = "Range X" + potion.buff;
                                     break;
                                 case PotionClass.PotionType.PickPower:
                                     pickBuff *= potion.buff;
+                                    buffPrompt.text = "Pick X" + potion.buff;
                                     break;
                                 case PotionClass.PotionType.LuckyPower: // TODO
                                     break;
                                 default:
                                     break;
                             }
+                            buffPrompt.canvasRenderer.SetAlpha(1f);
+                            buffPrompt.CrossFadeAlpha(0f, 1.5f, false);
                         }
                         break;
                     }
