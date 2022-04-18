@@ -13,10 +13,10 @@ public class BarrierController : MonoBehaviour
     public Image fill;
     public Canvas worldSpaceCanvas;
 
-
     [Header("RandomMove")]
     BoxCollider2D _collider;
     Rigidbody2D _rigidbody2D;
+    Animator _animator;
     public Vector2 targetPos;
     Vector2 lastPos;
     float timeElapsed = 0;
@@ -43,6 +43,7 @@ public class BarrierController : MonoBehaviour
         {
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _collider = GetComponent<BoxCollider2D>();
+            _animator = GetComponent<Animator>();
 
             targetPos = transform.position;
             lastPos = transform.position;
@@ -63,6 +64,9 @@ public class BarrierController : MonoBehaviour
                 timeElapsed = 0;
 
                 RandomMove();
+
+                // Set x-axis movement vector
+                _animator.SetFloat("movementX", _rigidbody2D.velocity.x);
             }
         }
     }
