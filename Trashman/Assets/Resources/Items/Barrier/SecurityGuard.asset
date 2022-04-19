@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: b9725c98a5bf44743b48a4313a203b78, type: 3}
   itemIntro: You got to pay what you have to pay!
-  isNew: 1
   barrierType: 1
-  availableTools:
-  - {fileID: 11400000, guid: baefb21697ec9604dab5815245f1dea6, type: 2}
   hp: 0
+  availableTools: []
+  dropTreasureProbs: []
+  dropTreasures: []
+  availableTreasures:
+  - {fileID: 11400000, guid: 317c8ef8883a94c1ba1faaf322c4066e, type: 2}

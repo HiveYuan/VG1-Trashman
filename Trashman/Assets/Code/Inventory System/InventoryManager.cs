@@ -19,6 +19,7 @@ public class InventoryManager : MonoBehaviour
     public Dictionary<string, ToolClass> tools;
     public Dictionary<string, BarrierClass> barriers;
     public Dictionary<string, PotionClass> potions;
+    public Dictionary<string, TreasureClass> treasures;
     public Dictionary<string, ClothesClass> clothes;
 
     public void Awake()
@@ -28,6 +29,7 @@ public class InventoryManager : MonoBehaviour
         tools = LoadToolAssets();
         barriers = LoadBarrierAssets();
         potions = LoadPotionAssets();
+        treasures = LoadTreasureAssets();
         clothes = LoadClothesAssets();
     }
 
@@ -38,6 +40,7 @@ public class InventoryManager : MonoBehaviour
         //tools = LoadToolAssets();
         //barriers = LoadBarrierAssets();
         //potions = LoadPotionAssets();
+        //treasures = LoadTreasureAssets();
         //clothes = LoadClothesAssets();
 
         playerController = character.GetComponent<PlayerController>();
@@ -60,7 +63,6 @@ public class InventoryManager : MonoBehaviour
         foreach (FoodClass food in foodAssets)
         {
             foodDic.Add(food.name, food);
-            //PlayerPrefs.SetInt(food.name + "_new", 1);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(food.name + "_new", 1);
@@ -76,7 +78,6 @@ public class InventoryManager : MonoBehaviour
         foreach (ToolClass tool in toolAssets)
         {
             toolDic.Add(tool.name, tool);
-            //PlayerPrefs.SetInt(tool.name + "_new", 1);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(tool.name + "_new", 1);
@@ -92,7 +93,6 @@ public class InventoryManager : MonoBehaviour
         foreach (BarrierClass barrier in barrierAssets)
         {
             barrierDic.Add(barrier.name, barrier);
-            //PlayerPrefs.SetInt(barrier.name + "_new", 1);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(barrier.name + "_new", 1);
@@ -108,13 +108,27 @@ public class InventoryManager : MonoBehaviour
         foreach (PotionClass potion in potionAssets)
         {
             potionDic.Add(potion.name, potion);
-            //PlayerPrefs.SetInt(potion.name + "_new", 0);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(potion.name + "_new", 0);
             }
         }
         return potionDic;
+    }
+
+    public Dictionary<string, TreasureClass> LoadTreasureAssets()
+    {
+        Dictionary<string, TreasureClass> treasureDic = new Dictionary<string, TreasureClass>();
+        TreasureClass[] treasureAssets = Resources.LoadAll<TreasureClass>("Items/Treasure");
+        foreach (TreasureClass treasure in treasureAssets)
+        {
+            treasureDic.Add(treasure.name, treasure);
+            if (!PlayerPrefs.HasKey("AlreadyLoad"))
+            {
+                PlayerPrefs.SetInt(treasure.name + "_new", 1);
+            }
+        }
+        return treasureDic;
     }
 
     public Dictionary<string, ClothesClass> LoadClothesAssets()
@@ -124,7 +138,6 @@ public class InventoryManager : MonoBehaviour
         foreach (ClothesClass clothes in clothesAssets)
         {
             clothesDic.Add(clothes.name, clothes);
-            //PlayerPrefs.SetInt(clothes.name + "_new", 0);
             if (!PlayerPrefs.HasKey("AlreadyLoad"))
             {
                 PlayerPrefs.SetInt(clothes.name + "_new", 0);
@@ -155,17 +168,32 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void Add(ItemClass item)
+    public void Add(ItemClass item, bool applyBuff)
     {
         // check if inventory contains this item
         SlotClass slot = Contains(item);
         if (slot != null)
         {
-            slot.AddQuantity(1 * playerController.pickBuff);
+            if (applyBuff)
+            {
+                slot.AddQuantity(1 * playerController.pickBuff);
+            }
+            else
+            {
+                slot.AddQuantity(1);
+            }
         }
         else
         {
-            items.Add(new SlotClass(item, 1 * playerController.pickBuff));
+            if (applyBuff)
+            {
+                items.Add(new SlotClass(item, 1 * playerController.pickBuff));
+            }
+            else
+            {
+                items.Add(new SlotClass(item, 1));
+            }
+            
         }
 
         RefreshUI();

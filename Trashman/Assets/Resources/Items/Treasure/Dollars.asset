@@ -9,12 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97aef3c3d3861471b9579221d9eb0e19, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d7349ea0350840bc8e3ea3ed31fcb37, type: 3}
   m_Name: Dollars
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: ffb6fc4cf10b4044984b74c2b30b7548, type: 3}
-  itemIntro: You can use these dollars to get those security guards to turn a blind
-    eye to you
-  toolType: 2
-  damage: 0
-  range: 0
+  itemIntro: Seems like it could be used to bribe that guard?
+  treasureType: 0

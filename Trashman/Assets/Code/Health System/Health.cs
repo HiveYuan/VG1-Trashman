@@ -29,7 +29,7 @@ namespace Trashman {
             }
             prompt.canvasRenderer.SetAlpha(1f);
             prompt.enabled = true;
-            prompt.CrossFadeAlpha(0f, 1.5f, false);
+            prompt.CrossFadeAlpha(0f, 2f, false);
         }
     }
 }

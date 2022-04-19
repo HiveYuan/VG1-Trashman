@@ -20,10 +20,13 @@ namespace Trashman {
         SpriteRenderer _spriteRenderer;
         CapsuleCollider2D _collider;
         public List<GameObject> attackZones;
+        public InterfaceManager interfaceManager;
         public GameController gameController;
 
         AudioSource walkSound;
         public TMP_Text buffPrompt;
+        public TMP_Text addSymbol;
+        public Image treasurePrompt;
 
         float moveSpeed = 4f;
         float healthLoseSpeed = 8f;
@@ -56,6 +59,8 @@ namespace Trashman {
         void Start() {
             prompt.enabled = false;
             buffPrompt.text = "";
+            addSymbol.text = "";
+            treasurePrompt.enabled = false;
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
@@ -101,7 +106,14 @@ namespace Trashman {
                                 BarrierClass barrier = inventory.barriers[objName];
                                 if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(objName+"_new") == 1)
                                 {
-                                    _uiManager.CreateHintBox(objName, barrier.itemIntro, barrier.itemIcon, barrier.getToolNameList());
+                                    if (barrier.barrierType == BarrierClass.BarrierType.Trader)
+                                    {
+                                        _uiManager.CreateHintBox(objName, barrier.itemIntro, barrier.itemIcon, barrier.getTreasureNameList(), barrier.getDropNameList());
+                                    }
+                                    else
+                                    {
+                                        _uiManager.CreateHintBox(objName, barrier.itemIntro, barrier.itemIcon, barrier.getToolNameList(), barrier.getDropNameList());
+                                    }
                                     PlayerPrefs.SetInt(objName + "_new", 0);
                                 }
                             }
@@ -194,12 +206,6 @@ namespace Trashman {
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
-                            if (item.GetTool().toolType == ToolClass.ToolType.Trade)
-                            {
-                                Transform[] attackZonesGroup = attackZones[0].GetComponentsInChildren<Transform>(); // length=5
-                                Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
-                                Attack(attackZone, item, i);
-                            }
                             for (int j = 0; j < item.GetTool().range * rangeBuff; j++)
                             {
                                 Transform[] attackZonesGroup = attackZones[j].GetComponentsInChildren<Transform>(); // length=5
@@ -217,6 +223,15 @@ namespace Trashman {
                                     }
                                 }
                             }
+                        }
+                        else if (item.GetTreasure() != null)
+                        {
+                            // Convert enrumeration to an index
+                            int facingDirectionIndex = (int)facingDirection;
+
+                            Transform[] attackZonesGroup = attackZones[0].GetComponentsInChildren<Transform>(); // length=5
+                            Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
+                            Trade(attackZone, item, i);
                         }
                         else if (item.GetPotion() != null)
                         {
@@ -243,7 +258,7 @@ namespace Trashman {
                                     break;
                             }
                             buffPrompt.canvasRenderer.SetAlpha(1f);
-                            buffPrompt.CrossFadeAlpha(0f, 1.5f, false);
+                            buffPrompt.CrossFadeAlpha(0f, 2f, false);
                         }
                         break;
                     }
@@ -277,7 +292,7 @@ namespace Trashman {
                     _uiManager.CreateItemBox(objName, food.itemIntro, food.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
                 }
-                inventory.Add(food);
+                inventory.Add(food, true);
                 SoundManager.instance.PlaySoundFoodPickup();
                 //trigger "item use" tutorial
                 if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.HealthLost)
@@ -297,7 +312,7 @@ namespace Trashman {
                     _uiManager.CreateItemBox(objName, tool.itemIntro, tool.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
                 }
-                inventory.Add(tool);
+                inventory.Add(tool, true);
                 SoundManager.instance.PlaySoundToolPickup();
 
                 Destroy(other.gameObject);
@@ -323,14 +338,7 @@ namespace Trashman {
             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
             if (hits.Length == 0) // facing no obstacles
             {
-                if (item.GetTool().toolType == ToolClass.ToolType.Trade)
-                {
-                    print("There is no trader to trade with.");
-                }
-                else
-                {
-                    print("There is no barrier to be destroyed.");
-                }
+                print("There is no barrier to be destroyed.");
             }
 
             // Handle each hit target
@@ -340,34 +348,122 @@ namespace Trashman {
                 if (hit.gameObject.CompareTag("Barrier"))
                 {
                     BarrierClass barrier = inventory.barriers[objName];
-                    // Verify the relation between the tool and the barrier
-                    if (barrier.availableTools.Contains(item.GetTool()))
+                    if (barrier.barrierType != BarrierClass.BarrierType.Trader)
                     {
-                        inventory.Remove(inventoryIndex);
-                        _animator.SetTrigger("Attack");
-
-                        // Destroy barrier
-                        if (hit.gameObject.GetComponent<BarrierController>().LoseHP(item.GetTool().damage * damageBuff) <= 0)
+                        // Verify the relation between the tool and the barrier
+                        if (barrier.availableTools.Contains(item.GetTool()))
                         {
-                            Destroy(hit.gameObject);
+                            inventory.Remove(inventoryIndex);
+                            _animator.SetTrigger("Attack");
+
+                            // Destroy barrier
+                            BarrierController barrierController = hit.gameObject.GetComponent<BarrierController>();
+                            if (barrierController.LoseHP(item.GetTool().damage * damageBuff) <= 0)
+                            {
+                                DropTreasure(barrier);
+                                Destroy(hit.gameObject);
+                            }
+
+                            //trigger "Get Star" tutorial
+                            print("trigger last tutorial! " + gameController.tutorialStageChange);
+                            if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                            {
+                                gameController.tutorialStageChange = (int)TutorialStages.GetStar;
+                            }
                         }
-
-                        //trigger "Get Star" tutorial
-                        print("trigger last tutorial! " + gameController.tutorialStageChange);
-                        if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
+                        else // tool does not match the barrier/monster
                         {
-                            gameController.tutorialStageChange = (int)TutorialStages.GetStar;
+                            print(barrier.name + " can not be destroyed by " + item.name);
                         }
                     }
-                    else
+                    else // trader type barrier
                     {
-                        print(barrier.name + " can not be destroyed by " + item.name);
+                        print(barrier.name + " is a trader " + item.name);
                     }
                 }
                 else // facing some obstacles but not barrier 
                 {
                     print("There is no barrier to be destroyed.");
                 }
+            }
+        }
+
+        void Trade(Transform attackZone, ItemClass item, int inventoryIndex)
+        {
+            // What objects are within a circle at that attack zone
+            Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
+            if (hits.Length == 0) // facing no obstacles
+            {
+                print("There is no trader to trade with.");
+            }
+
+            // Handle each hit target
+            foreach (Collider2D hit in hits)
+            {
+                string objName = hit.gameObject.name.Split(" ")[0];
+                if (hit.gameObject.CompareTag("Barrier"))
+                {
+                    BarrierClass barrier = inventory.barriers[objName];
+                    if (barrier.barrierType == BarrierClass.BarrierType.Trader)
+                    {
+                        // Verify the relation between the treasure and the trader
+                        if (barrier.availableTreasures.Contains(item.GetTreasure()))
+                        {
+                            inventory.Remove(inventoryIndex);
+                            _animator.SetTrigger("Attack");
+
+                            // Destroy trader
+                            Destroy(hit.gameObject);
+                        }
+                        else // treasure does not match the trader
+                        {
+                            print(barrier.name + " does not like " + item.name);
+                        }
+                    }
+                    else // barrier or monster type barrier
+                    {
+                        print(barrier.name + " is not a trader " + item.name);
+                    }
+                }
+                else // facing some obstacles but not barrier 
+                {
+                    print("There is no trader to trade with.");
+                }
+            }
+        }
+
+        // TODO: drop treasure
+        void DropTreasure(BarrierClass barrier)
+        {
+            System.Random rd = new System.Random();
+            int prob = rd.Next(0, 100);
+            int lowerBoundary = 0;
+            for (int i = 0; i < barrier.dropTreasureProbs.Count; i++)
+            {
+                if (lowerBoundary <= prob && prob < lowerBoundary + barrier.dropTreasureProbs[i] * 100)
+                {
+                    TreasureClass treasure = barrier.dropTreasures[i];
+
+                    // prompt
+                    addSymbol.text = "+";
+                    treasurePrompt.enabled = true;
+                    treasurePrompt.sprite = treasure.itemIcon;
+                    addSymbol.canvasRenderer.SetAlpha(1f);
+                    treasurePrompt.canvasRenderer.SetAlpha(1f);
+                    addSymbol.CrossFadeAlpha(0f, 2f, false);
+                    treasurePrompt.CrossFadeAlpha(0f, 2f, false);
+
+                    // Add to collection
+                    PlayerPrefs.SetInt(treasure.name + "_new", 0);
+                    int currentQuantity = PlayerPrefs.GetInt(treasure.name + "_quantity", 0);
+                    PlayerPrefs.SetInt(treasure.name + "_quantity", currentQuantity + 1);
+                    interfaceManager.RefreshUI(treasure.name);
+
+                    // TODO: Change sound
+                    SoundManager.instance.PlaySoundToolPickup();
+                    break;
+                }
+                lowerBoundary += (int)(barrier.dropTreasureProbs[i] * 100);
             }
         }
 

@@ -15,7 +15,14 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: edd3fe087c2274e6cba235a001c72b86, type: 3}
   itemIntro: Chop it or burn it!
   barrierType: 2
+  hp: 2
   availableTools:
   - {fileID: 11400000, guid: 25678c26a39814f41b5ee89724553464, type: 2}
   - {fileID: 11400000, guid: d7c40a0e879c44b18aeee90186f60383, type: 2}
-  hp: 2
+  dropTreasureProbs:
+  - 0.5
+  - 0.05
+  dropTreasures:
+  - {fileID: 11400000, guid: 317c8ef8883a94c1ba1faaf322c4066e, type: 2}
+  - {fileID: 11400000, guid: 165cba634c2494e3e8652426ef87c200, type: 2}
+  availableTreasures: []

@@ -17,11 +17,12 @@ namespace myGUI
 
         public TMP_Text hint;
 
-        public Image traderBarrier;
+        public Image barrier;
 
         public GameController gameController;
 
-        List<string> hintList = new();
+        List<string> hintRequiredList = new();
+        List<string> hintDropList = new();
 
         // Start is called before the first frame update
         void Start()
@@ -29,18 +30,18 @@ namespace myGUI
             gameController = GameObject.Find("GameManager").GetComponent<GameController>();
         }
 
-        public void show(string titleStr, string contentStr, Sprite itemIcon, List<string> nameList)
+        public void show(string titleStr, string contentStr, Sprite itemIcon, List<string> requiredList, List<string> dropList)
         {
             title.text = titleStr;
             content.text = contentStr;
-            traderBarrier.sprite = itemIcon;
-            hintList = nameList;
+            barrier.sprite = itemIcon;
+            hintRequiredList = requiredList;
+            hintDropList = dropList;
         }
 
         public void onClickConfirm()
         {
             string btn = EventSystem.current.currentSelectedGameObject.name;
-            Debug.Log(btn);
             gameController.EnableWholeScene();
             Destroy(gameObject);
         }
@@ -49,7 +50,17 @@ namespace myGUI
         {
             Debug.Log(EventSystem.current.currentSelectedGameObject);
             EventSystem.current.currentSelectedGameObject.SetActive(false);
-            hint.text = string.Join(' ', hintList);
+            if (hintDropList.Count == 0)
+            {
+                hint.text = "Trade with: ";
+            }
+            else
+            {
+                hint.text = "Attack with: ";
+            }
+            hint.text += string.Join(' ', hintRequiredList);
+            hint.text += "May drop: ";
+            hint.text += string.Join(' ', hintDropList);
         }
 
         public void Drag()

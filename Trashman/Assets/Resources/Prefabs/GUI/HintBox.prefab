@@ -96,7 +96,7 @@ MonoBehaviour:
   title: {fileID: 5628351684308652222}
   content: {fileID: 4280709917465002039}
   hint: {fileID: 7377410687335831939}
-  traderBarrier: {fileID: 4842001207815935844}
+  barrier: {fileID: 4842001207815935844}
   gameController: {fileID: 0}
 --- !u!1 &2357370535807691340
 GameObject:

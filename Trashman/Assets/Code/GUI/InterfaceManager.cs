@@ -11,31 +11,50 @@ public class InterfaceManager : MonoBehaviour
 {
     // Outlets
     public GameObject storeInterface;
-    public GameObject mapInterface;
+    public GameObject collectionInterface;
     public GameObject pauseInterface;
     public GameObject settingsInterface;
     public GameObject gameManager;
     public GameController gameController;
     public InventoryManager inventory;
+
+    [Header("Store")]
+    // store interface outlets
     public GameObject storeSlots;
     public GameObject storeItemSlot;
-    public GameObject itemDetailPanel;
+    public GameObject storeItemDetailPanel;
     public GameObject buyButton;
+
+    [Header("Collection")]
+    // collection interface outlets
+    public GameObject collectionSlots;
+    public GameObject collectionItemSlot;
+    public GameObject collectionItemDetailPanel;
+    public GameObject useButton;
 
 
     // Tracking state
     GameObject currentInterface;
-    GameObject currentCategory;
-    string currentItemName = "";
+    // Tracking store state
+    GameObject currentStoreCategory;
+    string currentStoreItemName = "";
+    // Tracking collection state
+    GameObject currentCollectionCategory;
+    string currentCollectionItemName = "";
 
     // Methods
     void Awake()
     {
         gameObject.SetActive(false);
         gameController = gameManager.GetComponent<GameController>();
-        itemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
-        itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
+        // Store
+        storeItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        storeItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
         buyButton.SetActive(false);
+        // Collection
+        collectionItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
+        collectionItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
+        useButton.SetActive(false);
     }
 
     // Move the in-game interface upward to hide any message or item box behind
@@ -52,7 +71,7 @@ public class InterfaceManager : MonoBehaviour
 
         // Turn off all menus
         storeInterface.SetActive(false);
-        mapInterface.SetActive(false);
+        collectionInterface.SetActive(false);
         pauseInterface.SetActive(false);
         settingsInterface.SetActive(false);
 
@@ -72,7 +91,7 @@ public class InterfaceManager : MonoBehaviour
     }
 
     // Switch store items category
-    public void ChooseCategory()
+    public void ChooseStoreCategory()
     {
         // Clean previous category items.
         foreach (Transform item in storeSlots.transform)
@@ -81,18 +100,18 @@ public class InterfaceManager : MonoBehaviour
         }
 
         // Enable previous category button.
-        if (currentCategory != null)
+        if (currentStoreCategory != null)
         {
-            currentCategory.GetComponent<Button>().interactable = true;
+            currentStoreCategory.GetComponent<Button>().interactable = true;
         }
 
         // Get current category
-        currentCategory = EventSystem.current.currentSelectedGameObject;
-        string category = currentCategory.name.Split(" ")[0];
+        currentStoreCategory = EventSystem.current.currentSelectedGameObject;
+        string category = currentStoreCategory.name.Split(" ")[0];
 
         // Set current category to disabled
         // Remain selected sprite state when choosing item under current category
-        currentCategory.GetComponent<Button>().interactable = false;
+        currentStoreCategory.GetComponent<Button>().interactable = false;
 
         List<ItemClass> currentItems = new();
         switch (category)
@@ -100,17 +119,8 @@ public class InterfaceManager : MonoBehaviour
             case "Clothes":
                 currentItems = inventory.clothes.Values.ToList<ItemClass>();
                 break;
-            case "Tool":
-                currentItems = inventory.tools.Values.ToList<ItemClass>();
-                break;
-            case "Food":
-                currentItems = inventory.foods.Values.ToList<ItemClass>();
-                break;
             case "Potion":
                 currentItems = inventory.potions.Values.ToList<ItemClass>();
-                break;
-            case "Barrier":
-                currentItems = inventory.barriers.Values.ToList<ItemClass>();
                 break;
             default:
                 break;
@@ -120,17 +130,17 @@ public class InterfaceManager : MonoBehaviour
         {
             GameObject itemSlot = Instantiate(storeItemSlot, storeSlots.transform);
             itemSlot.transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
-            itemSlot.GetComponent<Button>().onClick.AddListener(ChooseItem);
+            itemSlot.GetComponent<Button>().onClick.AddListener(ChooseStoreItem);
             itemSlot.name = category + "-" + item.name;
         }
     }
 
     // Show selected item detail information
-    public void ChooseItem()
+    public void ChooseStoreItem()
     {
         string[] objName = EventSystem.current.currentSelectedGameObject.name.Split("-");
         string category = objName[0];
-        currentItemName = objName[1];
+        currentStoreItemName = objName[1];
 
         ItemClass item = null;
         string introText = "";
@@ -140,7 +150,7 @@ public class InterfaceManager : MonoBehaviour
         switch (category)
         {
             case "Clothes":
-                item = inventory.clothes[currentItemName];
+                item = inventory.clothes[currentStoreItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetClothes().clothesType + "</gradient>\n";
                 introText += "Price: <gradient=GoldWhite>" + item.GetClothes().price + "</gradient>\n";
                 if (item.GetClothes().price == 0)
@@ -148,24 +158,8 @@ public class InterfaceManager : MonoBehaviour
                     buyButton.GetComponentInChildren<TMP_Text>().text = "Free";
                 }
                 break;
-            case "Tool":
-                item = inventory.tools[currentItemName];
-                introText += "Type: <gradient=GoldWhite>" + item.GetTool().toolType + "</gradient>\n";
-                if (item.GetTool().toolType != ToolClass.ToolType.Trade)
-                {
-                    introText += "Damage: <gradient=GoldWhite>" + item.GetTool().damage + "</gradient>\n";
-                    introText += "Range: <gradient=GoldWhite>" + item.GetTool().range + "</gradient>\n";
-                }
-                buyButton.SetActive(false);
-                break;
-            case "Food":
-                item = inventory.foods[currentItemName];
-                introText += "Type: <gradient=GoldWhite>" + item.GetFood().foodType + "</gradient>\n";
-                introText += "Gain HP: <gradient=GoldWhite>" + item.GetFood().healthAdded + "</gradient>\n";
-                buyButton.SetActive(false);
-                break;
             case "Potion":
-                item = inventory.potions[currentItemName];
+                item = inventory.potions[currentStoreItemName];
                 introText += "Type: <gradient=GoldWhite>" + item.GetPotion().potionType + "</gradient>\n";
                 if (item.GetPotion().potionType == PotionClass.PotionType.LuckyPower)
                 {
@@ -177,21 +171,6 @@ public class InterfaceManager : MonoBehaviour
                 }
                 introText += "Price: <gradient=GoldWhite>" + item.GetPotion().price + "</gradient>\n";
                 break;
-            case "Barrier":
-                item = inventory.barriers[currentItemName];
-                introText += "Type: <gradient=GoldWhite>" + item.GetBarrier().barrierType + "</gradient>\n";
-                if (item.GetBarrier().barrierType == BarrierClass.BarrierType.Trader)
-                {
-                    introText += "What does it want:";
-                }
-                else
-                {
-                    introText += "HP: <gradient=GoldWhite>" + item.GetBarrier().hp + "</gradient>\n";
-                    introText += "How To Destroy:";
-                }
-                introText += " <gradient=GoldWhite>" + string.Join(' ', item.GetBarrier().getToolNameList()) + "</gradient>\n";
-                buyButton.SetActive(false);
-                break;
             default:
                 break;
         }
@@ -200,38 +179,237 @@ public class InterfaceManager : MonoBehaviour
             buyButton.SetActive(false);
         }
 
-        itemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = true;
-        itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = true;
-        itemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
-        if (PlayerPrefs.GetInt(currentItemName+ "_new") == 1)
+        storeItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = true;
+        storeItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = true;
+        storeItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
+        if (PlayerPrefs.GetInt(currentStoreItemName+ "_new") == 1)
         {
-            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = "?";
-            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+            storeItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = "?";
+            storeItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
             buyButton.SetActive(false);
         }
         else
         {
-            string basicText = "Item Name: <gradient=GoldWhite>" + currentItemName + "</gradient>\n" +
+            string basicText = "Item Name: <gradient=GoldWhite>" + currentStoreItemName + "</gradient>\n" +
                 "Item Intro: <gradient=GoldWhite>" + item.itemIntro + "</gradient>\n";
-            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text =  basicText + introText;
-            itemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Left;
+            storeItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text =  basicText + introText;
+            storeItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Left;
         }
     }
 
-    // Put item in the inventory bar. Unuse item will disappear after current level.
+    // Put item in the inventory bar.
+    // TODO: Unuse item will disappear after current level? or return money?
     // TODO: add price and money checking
     public void BuyItem()
     {
-        switch (currentCategory.name.Split(" ")[0])
+        switch (currentStoreCategory.name.Split(" ")[0])
         {
             case "Clothes":
-                inventory.Add(inventory.clothes[currentItemName]);
+                inventory.Add(inventory.clothes[currentStoreItemName], false);
                 break;
             case "Potion":
-                inventory.Add(inventory.potions[currentItemName]);
+                inventory.Add(inventory.potions[currentStoreItemName], false);
                 break;
             default:
                 break;
+        }
+    }
+
+
+
+    // ------ Collection interface ------
+    public void ShowCollectionInterface()
+    {
+        SwitchInterface(collectionInterface);
+    }
+
+    // Switch collection items category
+    public void ChooseCollectionCategory()
+    {
+        // Clean previous category items.
+        foreach (Transform item in collectionSlots.transform)
+        {
+            Destroy(item.gameObject);
+        }
+
+        // Enable previous category button.
+        if (currentCollectionCategory != null)
+        {
+            currentCollectionCategory.GetComponent<Button>().interactable = true;
+        }
+
+        // Get current category
+        currentCollectionCategory = EventSystem.current.currentSelectedGameObject;
+        string category = currentCollectionCategory.name.Split(" ")[0];
+
+        // Set current category to disabled
+        // Remain selected sprite state when choosing item under current category
+        currentCollectionCategory.GetComponent<Button>().interactable = false;
+
+        List<ItemClass> currentItems = new();
+        switch (category)
+        {
+            case "Tool":
+                currentItems = inventory.tools.Values.ToList<ItemClass>();
+                break;
+            case "Food":
+                currentItems = inventory.foods.Values.ToList<ItemClass>();
+                break;
+            case "Barrier":
+                currentItems = inventory.barriers.Values.ToList<ItemClass>();
+                break;
+            case "Treasure":
+                currentItems = inventory.treasures.Values.ToList<ItemClass>();
+                break;
+            default:
+                break;
+        }
+
+        foreach (ItemClass item in currentItems)
+        {
+            GameObject itemSlot = Instantiate(collectionItemSlot, collectionSlots.transform);
+            itemSlot.transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
+            itemSlot.GetComponent<Button>().onClick.AddListener(ChooseCollectionItem);
+            itemSlot.name = category + "-" + item.name;
+        }
+    }
+
+    // Show selected item detail information
+    public void ChooseCollectionItem()
+    {
+        string[] objName = EventSystem.current.currentSelectedGameObject.name.Split("-");
+        string category = objName[0];
+        currentCollectionItemName = objName[1];
+
+        ItemClass item = null;
+        string introText = "";
+        useButton.SetActive(true);
+        useButton.GetComponentInChildren<TMP_Text>().text = "Use";
+
+        switch (category)
+        {
+            case "Tool":
+                item = inventory.tools[currentCollectionItemName];
+                introText += "Type: <gradient=GoldWhite>" + item.GetTool().toolType + "</gradient>\n";
+                introText += "Damage: <gradient=GoldWhite>" + item.GetTool().damage + "</gradient>\n";
+                introText += "Range: <gradient=GoldWhite>" + item.GetTool().range + "</gradient>\n";
+                useButton.SetActive(false);
+                break;
+            case "Treasure":
+                item = inventory.treasures[currentCollectionItemName];
+                introText += "Type: <gradient=GoldWhite>" + item.GetTreasure().treasureType + "</gradient>\n";
+                if (PlayerPrefs.GetInt(currentCollectionItemName + "_quantity") == 0)
+                {
+                    introText += "Quantity: <gradient=Red>";
+                }
+                else
+                {
+                    introText += "Quantity: <gradient=Green>";
+                }
+                introText += PlayerPrefs.GetInt(currentCollectionItemName + "_quantity") + "</gradient>\n";
+                useButton.SetActive(true);
+                break;
+            case "Food":
+                item = inventory.foods[currentCollectionItemName];
+                introText += "Type: <gradient=GoldWhite>" + item.GetFood().foodType + "</gradient>\n";
+                introText += "Gain HP: <gradient=GoldWhite>" + item.GetFood().healthAdded + "</gradient>\n";
+                useButton.SetActive(false);
+                break;
+            case "Barrier":
+                item = inventory.barriers[currentCollectionItemName];
+                introText += "Type: <gradient=GoldWhite>" + item.GetBarrier().barrierType + "</gradient>\n";
+                if (item.GetBarrier().barrierType == BarrierClass.BarrierType.Trader)
+                {
+                    introText += "What does it want:";
+                    introText += " <gradient=GoldWhite>" + string.Join(' ', item.GetBarrier().getTreasureNameList()) + "</gradient>\n";
+                }
+                else
+                {
+                    introText += "HP: <gradient=GoldWhite>" + item.GetBarrier().hp + "</gradient>\n";
+                    introText += "How To Destroy:";
+                    introText += " <gradient=GoldWhite>" + string.Join(' ', item.GetBarrier().getToolNameList()) + "</gradient>\n";
+                    introText += "Drop Treasures: <gradient=GoldWhite>";
+                    for (int i = 0; i < item.GetBarrier().dropTreasureProbs.Count; i++)
+                    {
+                        introText += item.GetBarrier().getDropNameList()[i] + "(" + item.GetBarrier().dropTreasureProbs[i] * 100 + "%) ";
+                    }
+                    introText += "</gradient>\n";
+                }
+                useButton.SetActive(false);
+                break;
+            default:
+                break;
+        }
+        // If is in tutorial level, no items canbe bought.
+        if (gameController.isTutorialOn == 1)
+        {
+            useButton.SetActive(false);
+        }
+
+        collectionItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = true;
+        collectionItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = true;
+        collectionItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = item.itemIcon;
+        if (PlayerPrefs.GetInt(currentCollectionItemName + "_new") == 1)
+        {
+            collectionItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = "?";
+            collectionItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Center;
+            useButton.SetActive(false);
+        }
+        else
+        {
+            string basicText = "Item Name: <gradient=GoldWhite>" + currentCollectionItemName + "</gradient>\n" +
+                "Item Intro: <gradient=GoldWhite>" + item.itemIntro + "</gradient>\n";
+            collectionItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = basicText + introText;
+            collectionItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().alignment = TextAlignmentOptions.Left;
+        }
+    }
+
+    // Put item in the inventory bar.
+    // TODO: Unuse item will put back to collection.
+    public void UseItem()
+    {
+        switch (currentCollectionCategory.name.Split(" ")[0])
+        {
+            case "Treasure":
+                int currentQuantity = PlayerPrefs.GetInt(currentCollectionItemName + "_quantity");
+                if (currentQuantity > 0)
+                {
+                    PlayerPrefs.SetInt(currentCollectionItemName + "_quantity", currentQuantity - 1);
+                    inventory.Add(inventory.treasures[currentCollectionItemName], false);
+                    RefreshUI(currentCollectionItemName);
+                    
+                }
+                else
+                {
+                    print("There is no " + currentCollectionItemName + " to use!");
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    // Now only Refesh Quantity
+    // TODO: reresh ? => content
+    public void RefreshUI(string changedItem)
+    {
+        if (changedItem == currentCollectionItemName)
+        {
+            ItemClass item = inventory.treasures[currentCollectionItemName];
+            string basicText = "Item Name: <gradient=GoldWhite>" + currentCollectionItemName + "</gradient>\n" +
+                "Item Intro: <gradient=GoldWhite>" + item.itemIntro + "</gradient>\n";
+            string introText = "";
+            introText += "Type: <gradient=GoldWhite>" + item.GetTreasure().treasureType + "</gradient>\n";
+            if (PlayerPrefs.GetInt(currentCollectionItemName + "_quantity") == 0)
+            {
+                introText += "Quantity: <gradient=Red>";
+            }
+            else
+            {
+                introText += "Quantity: <gradient=Green>";
+            }
+            introText += PlayerPrefs.GetInt(currentCollectionItemName + "_quantity") + "</gradient>\n";
+            collectionItemDetailPanel.transform.GetChild(1).transform.GetChild(0).GetComponent<TMP_Text>().text = basicText + introText;
         }
     }
 
@@ -264,12 +442,6 @@ public class InterfaceManager : MonoBehaviour
     }
 
 
-
-    // TODO: Load map interface / Backpack interface?
-    public void ShowMapInterface()
-    {
-        SwitchInterface(mapInterface);
-    }
 
     // TODO: Load settings interface
     public void ShowSettingsInterface()

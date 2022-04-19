@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5354450671717169046}
   m_Layer: 9
   m_Name: Dollars
-  m_TagString: Tool
+  m_TagString: Treasure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

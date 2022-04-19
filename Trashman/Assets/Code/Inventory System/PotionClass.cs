@@ -26,4 +26,5 @@ public class PotionClass : ItemClass
     public override ToolClass GetTool() { return null; }
     public override BarrierClass GetBarrier() { return null; }
     public override ClothesClass GetClothes() { return null; }
+    public override TreasureClass GetTreasure() { return null; }
 }

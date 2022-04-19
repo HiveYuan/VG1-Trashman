@@ -43,11 +43,11 @@ public class UIManager : MonoBehaviour
         return ibox;
     }
 
-    public HintBox CreateHintBox(string title, string content, Sprite icon, List<string> nameList)
+    public HintBox CreateHintBox(string title, string content, Sprite icon, List<string> requiredList, List<string> dropList)
     {
         GameObject box = Instantiate(hintBox, GameObject.Find("Canvas").transform);
         HintBox hbox = box.GetComponent<HintBox>();
-        hbox.show(title, content, icon, nameList);
+        hbox.show(title, content, icon, requiredList, dropList);
         gameController.DisableWholeScene();
         return hbox;
     }

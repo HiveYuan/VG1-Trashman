@@ -9,9 +9,11 @@ public class BarrierController : MonoBehaviour
 {
     InventoryManager inventory;
     BarrierClass barrier;
+    public Canvas worldSpaceCanvas;
+
+    [Header("HP Bar")]
     public int hp;
     public Image fill;
-    public Canvas worldSpaceCanvas;
 
     [Header("RandomMove")]
     BoxCollider2D _collider;
@@ -34,7 +36,7 @@ public class BarrierController : MonoBehaviour
         // HP bar
         if (barrier.barrierType != BarrierClass.BarrierType.Trader)
         {
-            Canvas hpCanvas = (Canvas)Instantiate(worldSpaceCanvas, gameObject.transform);
+            Canvas hpCanvas = Instantiate(worldSpaceCanvas, gameObject.transform);
             hpCanvas.worldCamera = Camera.main;
             fill = hpCanvas.GetComponentsInChildren<Image>()[1];
 
