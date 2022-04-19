@@ -72,7 +72,7 @@ public class BarrierController : MonoBehaviour
                 RandomMove();
 
                 // Set x-axis movement vector
-                //_animator.SetFloat("movementX", _rigidbody2D.velocity.x);
+                _animator.SetFloat("movementX", targetPos.x-transform.position.x);
             }
         }
     }
