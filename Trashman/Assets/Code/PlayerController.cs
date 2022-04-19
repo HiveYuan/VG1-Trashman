@@ -22,11 +22,17 @@ namespace Trashman {
         public List<GameObject> attackZones;
         public InterfaceManager interfaceManager;
         public GameController gameController;
+
         public GameObject buffPanel;
         TMP_Text damage;
         TMP_Text range;
         TMP_Text pick;
         TMP_Text lucky;
+        int maxDamageBuff = 16;
+        int maxRangeBuff = 4;
+        int maxPickBuff = 4;
+        float maxLuckyBuff = 1;
+        
 
         AudioSource walkSound;
         public TMP_Text buffPrompt;
@@ -248,29 +254,67 @@ namespace Trashman {
                         }
                         else if (item.GetPotion() != null)
                         {
-                            inventory.Remove(i);
                             PotionClass potion = item.GetPotion();
                             //buffPrompt.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f);
                             switch (potion.potionType)
                             {
                                 case PotionClass.PotionType.DamagePower:
-                                    damageBuff *= potion.buff;
-                                    buffPrompt.text = "Damage X" + potion.buff;
+                                    if (damageBuff * potion.buff > maxDamageBuff)
+                                    {
+                                        damageBuff = maxDamageBuff;
+                                        buffPrompt.text = "<gradient=GoldWhite>Reach Max Buff</gradient>";
+                                    }
+                                    else
+                                    {
+                                        inventory.Remove(i);
+                                        damageBuff *= potion.buff;
+                                        buffPrompt.text = "<gradient=Red>Damage X" + potion.buff + "</gradient>";
+                                    }
                                     damage.text = "Damage X" + damageBuff;
                                     break;
                                 case PotionClass.PotionType.RangePower:
-                                    rangeBuff *= potion.buff;
-                                    buffPrompt.text = "Range X" + potion.buff;
+                                    if (rangeBuff * potion.buff > maxRangeBuff)
+                                    {
+                                        rangeBuff = maxRangeBuff;
+                                        buffPrompt.text = "<gradient=GoldWhite>Reach Max Buff</gradient>";
+                                    }
+                                    else
+                                    {
+                                        inventory.Remove(i);
+                                        rangeBuff *= potion.buff;
+                                        buffPrompt.text = "<gradient=Blue>Range X" + potion.buff + "</gradient>";
+                                    }
                                     range.text = "Range X" + rangeBuff;
                                     break;
                                 case PotionClass.PotionType.PickPower:
-                                    pickBuff *= potion.buff;
-                                    buffPrompt.text = "Pick X" + potion.buff;
+                                    if (pickBuff * potion.buff > maxPickBuff)
+                                    {
+                                        pickBuff = maxPickBuff;
+                                        buffPrompt.text = "<gradient=GoldWhite>Reach Max Buff</gradient>";
+                                    }
+                                    else
+                                    {
+                                        inventory.Remove(i);
+                                        pickBuff *= potion.buff;
+                                        buffPrompt.text = "<gradient=Green>Pick X" + potion.buff + "</gradient>";
+                                    }
                                     pick.text = "Pick X" + pickBuff;
                                     break;
                                 case PotionClass.PotionType.LuckyPower:
-                                    luckyBuff += potion.lucky;
-                                    buffPrompt.text = "Lucky +" + potion.lucky *100 + "%";
+                                    if (luckyBuff == maxLuckyBuff)
+                                    {
+                                        buffPrompt.text = "<gradient=GoldWhite>Reach Max Buff</gradient>";
+                                    }
+                                    else if (luckyBuff + potion.lucky > maxLuckyBuff)
+                                    {
+                                        buffPrompt.text = "<gradient=GoldWhite>Can't use.\nBuff will exceed.</gradient>";
+                                    }
+                                    else
+                                    {
+                                        inventory.Remove(i);
+                                        luckyBuff += potion.lucky;
+                                        buffPrompt.text = "<gradient=Orange>Lucky +" + potion.lucky * 100 + "%</gradient>";
+                                    }
                                     lucky.text = "Lucky +" + luckyBuff * 100 + "%";
                                     break;
                                 default:

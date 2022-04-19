@@ -163,7 +163,7 @@ public class InterfaceManager : MonoBehaviour
                 introText += "Type: <gradient=GoldWhite>" + item.GetPotion().potionType + "</gradient>\n";
                 if (item.GetPotion().potionType == PotionClass.PotionType.LuckyPower)
                 {
-                    introText += "Gain Lucky: <gradient=GoldWhite>" + item.GetPotion().lucky * 100 + "%</gradient>\n";
+                    introText += "Gain Lucky: <gradient=GoldWhite>+" + item.GetPotion().lucky * 100 + "%</gradient>\n";
                 }
                 else
                 {
