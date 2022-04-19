@@ -16,7 +16,7 @@ public class BarrierController : MonoBehaviour
     public Image fill;
 
     [Header("RandomMove")]
-    BoxCollider2D _collider;
+    CircleCollider2D _collider;
     Rigidbody2D _rigidbody2D;
     Animator _animator;
     public Vector2 targetPos;
@@ -44,7 +44,7 @@ public class BarrierController : MonoBehaviour
             if (barrier.barrierType == BarrierClass.BarrierType.Monster)
             {
                 _rigidbody2D = GetComponent<Rigidbody2D>();
-                _collider = GetComponent<BoxCollider2D>();
+                _collider = GetComponent<CircleCollider2D>();
                 _animator = GetComponent<Animator>();
 
                 targetPos = transform.position;

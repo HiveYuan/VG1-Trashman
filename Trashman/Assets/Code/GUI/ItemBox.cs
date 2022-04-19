@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Trashman;
 
 namespace myGUI{
     // FIXME: fix the scroll view
@@ -43,6 +44,7 @@ namespace myGUI{
         {
             string btn = EventSystem.current.currentSelectedGameObject.name;
             Debug.Log(btn);
+            SoundManager.instance.PlaySoundButtonClick();
             gameController.EnableWholeScene();
             Destroy(gameObject);
         }

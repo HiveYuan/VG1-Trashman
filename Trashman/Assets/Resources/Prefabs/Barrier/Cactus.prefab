@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2945510227944101616}
   - component: {fileID: 2945510227944101619}
   - component: {fileID: 2945510227944101618}
-  - component: {fileID: 2945510227944101621}
+  - component: {fileID: 264318416502772519}
+  - component: {fileID: 8719945715553559509}
   m_Layer: 0
   m_Name: Cactus
   m_TagString: Barrier
@@ -99,9 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07add178295bd436da97f97683f157b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldSpaceCanvas: {fileID: 3030778463610862284, guid: 2cdd42b8d30204531a687646206f99ba, type: 3}
   hp: 0
   fill: {fileID: 0}
-  worldSpaceCanvas: {fileID: 3030778463610862284, guid: 2cdd42b8d30204531a687646206f99ba, type: 3}
   targetPos: {x: 0, y: 0}
   lerpDuration: 2
 --- !u!50 &2945510227944101618
@@ -125,8 +126,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &2945510227944101621
-BoxCollider2D:
+--- !u!58 &264318416502772519
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -139,15 +140,25 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 0.96}
-    newSize: {x: 0.96, y: 0.96}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.96, y: 0.96}
-  m_EdgeRadius: 0
+  m_Radius: 0.48
+--- !u!95 &8719945715553559509
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2945510227944101623}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5a4717ea9e1f66d40911e6a0d4f4a5fb, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Trashman;
 
 namespace myGUI{
     // FIXME: fix the scroll view
@@ -38,6 +39,7 @@ namespace myGUI{
 
         public void onClickConfirm()
         {
+            SoundManager.instance.PlaySoundButtonClick();
             gameController.EnableWholeScene();
             Destroy(gameObject);
         }

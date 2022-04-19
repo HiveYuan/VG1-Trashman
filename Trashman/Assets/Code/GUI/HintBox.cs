@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Trashman;
 
 namespace myGUI
 {
@@ -42,6 +43,7 @@ namespace myGUI
         public void onClickConfirm()
         {
             string btn = EventSystem.current.currentSelectedGameObject.name;
+            SoundManager.instance.PlaySoundButtonClick();
             gameController.EnableWholeScene();
             Destroy(gameObject);
         }
