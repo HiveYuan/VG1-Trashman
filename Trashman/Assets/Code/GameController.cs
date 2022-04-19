@@ -130,6 +130,8 @@ public class GameController : MonoBehaviour
 
     void Succeed()
     {
+
+        SoundManager.instance.PlaySoundWin();
         // only go to the next level when the player confirm the message box
         StartCoroutine(successReload());
 
@@ -149,6 +151,7 @@ public class GameController : MonoBehaviour
 
     void Fail()
     {
+        SoundManager.instance.PlaySoundLose(); 
         // only reload the entire game when the player confirm the message box
         StartCoroutine(failReload());
 
