@@ -27,7 +27,7 @@ public class BarrierClass : ItemClass
         }
         return toolNames;
     }
-    public List<float> dropTreasureProbs; // Sum of all the probs must <= 1
+    public List<float> dropTreasureProbs; // Sum of all the probs must <= 0.5 (lucky max = +100%, so that sum <= 1)
     public List<TreasureClass> dropTreasures;
     public List<string> getDropNameList()
     {

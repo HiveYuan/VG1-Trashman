@@ -22,6 +22,11 @@ namespace Trashman {
         public List<GameObject> attackZones;
         public InterfaceManager interfaceManager;
         public GameController gameController;
+        public GameObject buffPanel;
+        TMP_Text damage;
+        TMP_Text range;
+        TMP_Text pick;
+        TMP_Text lucky;
 
         AudioSource walkSound;
         public TMP_Text buffPrompt;
@@ -53,14 +58,21 @@ namespace Trashman {
         public int pickBuff = 1;
         public int damageBuff = 1;
         public int rangeBuff = 1;
+        public float luckyBuff = 0;
 
 
         // Start is called before the first frame update
         void Start() {
+            damage = buffPanel.transform.GetChild(0).transform.GetComponent<TMP_Text>();
+            range = buffPanel.transform.GetChild(1).transform.GetComponent<TMP_Text>();
+            pick = buffPanel.transform.GetChild(2).transform.GetComponent<TMP_Text>();
+            lucky = buffPanel.transform.GetChild(3).transform.GetComponent<TMP_Text>();
+
             prompt.enabled = false;
             buffPrompt.text = "";
             addSymbol.text = "";
             treasurePrompt.enabled = false;
+
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _animator = GetComponent<Animator>();
@@ -115,6 +127,7 @@ namespace Trashman {
                                         _uiManager.CreateHintBox(objName, barrier.itemIntro, barrier.itemIcon, barrier.getToolNameList(), barrier.getDropNameList());
                                     }
                                     PlayerPrefs.SetInt(objName + "_new", 0);
+                                    interfaceManager.RefreshUI(objName, "Barrier");
                                 }
                             }
                             //Debug.Log("collided with " + hit.collider.tag);
@@ -243,16 +256,22 @@ namespace Trashman {
                                 case PotionClass.PotionType.DamagePower:
                                     damageBuff *= potion.buff;
                                     buffPrompt.text = "Damage X" + potion.buff;
+                                    damage.text = "Damage X" + damageBuff;
                                     break;
                                 case PotionClass.PotionType.RangePower:
                                     rangeBuff *= potion.buff;
                                     buffPrompt.text = "Range X" + potion.buff;
+                                    range.text = "Range X" + rangeBuff;
                                     break;
                                 case PotionClass.PotionType.PickPower:
                                     pickBuff *= potion.buff;
                                     buffPrompt.text = "Pick X" + potion.buff;
+                                    pick.text = "Pick X" + pickBuff;
                                     break;
-                                case PotionClass.PotionType.LuckyPower: // TODO
+                                case PotionClass.PotionType.LuckyPower:
+                                    luckyBuff += potion.lucky;
+                                    buffPrompt.text = "Lucky +" + potion.lucky *100 + "%";
+                                    lucky.text = "Lucky +" + luckyBuff * 100 + "%";
                                     break;
                                 default:
                                     break;
@@ -291,6 +310,7 @@ namespace Trashman {
                 {
                     _uiManager.CreateItemBox(objName, food.itemIntro, food.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
+                    interfaceManager.RefreshUI(objName, "Food");
                 }
                 inventory.Add(food, true);
                 SoundManager.instance.PlaySoundFoodPickup();
@@ -311,6 +331,7 @@ namespace Trashman {
                 {
                     _uiManager.CreateItemBox(objName, tool.itemIntro, tool.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
+                    interfaceManager.RefreshUI(objName, "Tool");
                 }
                 inventory.Add(tool, true);
                 SoundManager.instance.PlaySoundToolPickup();
@@ -432,15 +453,15 @@ namespace Trashman {
             }
         }
 
-        // TODO: drop treasure
+        // Drop treasure with lucky buff
         void DropTreasure(BarrierClass barrier)
         {
             System.Random rd = new System.Random();
-            int prob = rd.Next(0, 100);
+            int prob = rd.Next(0, 10000);
             int lowerBoundary = 0;
             for (int i = 0; i < barrier.dropTreasureProbs.Count; i++)
             {
-                if (lowerBoundary <= prob && prob < lowerBoundary + barrier.dropTreasureProbs[i] * 100)
+                if (lowerBoundary <= prob && prob < lowerBoundary + (barrier.dropTreasureProbs[i] * 10000  * ( 1 + luckyBuff)))
                 {
                     TreasureClass treasure = barrier.dropTreasures[i];
 
@@ -453,17 +474,22 @@ namespace Trashman {
                     addSymbol.CrossFadeAlpha(0f, 2f, false);
                     treasurePrompt.CrossFadeAlpha(0f, 2f, false);
 
+                    // First time meet will show item box
+                    if (gameController.isTutorialOn == 0 && PlayerPrefs.GetInt(treasure.name + "_new") == 1)
+                    {
+                        _uiManager.CreateItemBox(treasure.name, treasure.itemIntro, treasure.itemIcon);
+                        PlayerPrefs.SetInt(treasure.name + "_new", 0);
+                    }
                     // Add to collection
-                    PlayerPrefs.SetInt(treasure.name + "_new", 0);
                     int currentQuantity = PlayerPrefs.GetInt(treasure.name + "_quantity", 0);
                     PlayerPrefs.SetInt(treasure.name + "_quantity", currentQuantity + 1);
-                    interfaceManager.RefreshUI(treasure.name);
+                    interfaceManager.RefreshUI(treasure.name, "Treasure");
 
                     // TODO: Change sound
                     SoundManager.instance.PlaySoundToolPickup();
                     break;
                 }
-                lowerBoundary += (int)(barrier.dropTreasureProbs[i] * 100);
+                lowerBoundary += (int)(barrier.dropTreasureProbs[i] * 10000 * (1 + luckyBuff));
             }
         }
 

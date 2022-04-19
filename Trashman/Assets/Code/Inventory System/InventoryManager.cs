@@ -10,6 +10,7 @@ public class InventoryManager : MonoBehaviour
 
     public GameObject character;
     public PlayerController playerController;
+    public InterfaceManager interfaceManager;
 
     [SerializeField] private GameObject slotHolder;
     public List<SlotClass> items = new();
@@ -248,5 +249,21 @@ public class InventoryManager : MonoBehaviour
 
         RefreshUI();
         return item;
+    }
+
+    public void PutUnusedTreasureBack()
+    {
+        foreach (SlotClass slot in items)
+        {
+            ItemClass item = slot.GetItem();
+            int quantity = slot.GetQuantity();
+            if (item.GetTreasure() != null)
+            {
+                string treasureName = item.GetTreasure().name;
+                int currentQuantity = PlayerPrefs.GetInt(treasureName + "_quantity");
+                PlayerPrefs.SetInt(treasureName + "_quantity", currentQuantity + quantity);
+                interfaceManager.RefreshUI(treasureName, "Treasure");
+            }
+        }
     }
 }

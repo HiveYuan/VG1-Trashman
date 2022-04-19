@@ -58,7 +58,7 @@ namespace myGUI
             {
                 hint.text = "Attack with: ";
             }
-            hint.text += string.Join(' ', hintRequiredList);
+            hint.text += string.Join(' ', hintRequiredList) + "\n";
             hint.text += "May drop: ";
             hint.text += string.Join(' ', hintDropList);
         }
