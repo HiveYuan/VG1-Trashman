@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BarrierController : MonoBehaviour
-{
+public class BarrierController : MonoBehaviour {
     InventoryManager inventory;
     BarrierClass barrier;
     public Canvas worldSpaceCanvas;
@@ -22,25 +21,22 @@ public class BarrierController : MonoBehaviour
     Vector2 lastPos;
     float timeElapsed = 0;
     public float lerpDuration = 2;
-    
+
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         inventory = GameObject.Find("Inventory").GetComponent<InventoryManager>();
         barrier = inventory.barriers[gameObject.name.Split(" ")[0]];
         hp = barrier.hp;
 
         // HP bar
-        if (barrier.barrierType != BarrierClass.BarrierType.Trader)
-        {
+        if (barrier.barrierType != BarrierClass.BarrierType.Trader) {
             Canvas hpCanvas = Instantiate(worldSpaceCanvas, gameObject.transform);
             hpCanvas.worldCamera = Camera.main;
             fill = hpCanvas.GetComponentsInChildren<Image>()[1];
 
             // Move
-            if (barrier.barrierType == BarrierClass.BarrierType.Monster)
-            {
+            if (barrier.barrierType == BarrierClass.BarrierType.Monster) {
                 _rigidbody2D = GetComponent<Rigidbody2D>();
                 _collider = GetComponent<CircleCollider2D>();
                 _animator = GetComponent<Animator>();
@@ -52,17 +48,12 @@ public class BarrierController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (barrier.barrierType == BarrierClass.BarrierType.Monster)
-        {
-            if (timeElapsed < lerpDuration)
-            {
+    void Update() {
+        if (barrier.barrierType == BarrierClass.BarrierType.Monster) {
+            if (timeElapsed < lerpDuration) {
                 transform.position = Vector2.Lerp(lastPos, targetPos, timeElapsed / lerpDuration);
                 timeElapsed += Time.deltaTime;
-            }
-            else
-            {
+            } else {
                 lastPos = targetPos;
                 transform.position = targetPos;
                 timeElapsed = 0;
@@ -70,22 +61,20 @@ public class BarrierController : MonoBehaviour
                 RandomMove();
 
                 // Set x-axis movement vector
-                _animator.SetFloat("movementX", targetPos.x-transform.position.x);
+                _animator.SetFloat("movementX", targetPos.x - transform.position.x);
             }
         }
     }
 
     // Update hp when being attacked
-    public int LoseHP(int damage)
-    {
-        fill.fillAmount = ((hp-damage) / (float)hp);
+    public int LoseHP( int damage ) {
+        fill.fillAmount = ((hp - damage) / (float)hp);
         hp -= damage;
         return hp;
     }
 
     // monster random move to 4 directions
-    public void RandomMove()
-    {
+    public void RandomMove() {
         System.Random rd = new System.Random();
         bool[] blocked = { false, false, false, false };
 
@@ -98,7 +87,7 @@ public class BarrierController : MonoBehaviour
             Vector2 rightV = new Vector2(1, 0);
             Vector2 downV = new Vector2(0, -1);
             Vector2 leftV = new Vector2(-1, 0);
-            Vector2[] direction_vector = { upV, rightV, downV, leftV};
+            Vector2[] direction_vector = { upV, rightV, downV, leftV };
 
             //Debug.Log("detect");
             _collider.enabled = false;
@@ -129,6 +118,13 @@ public class BarrierController : MonoBehaviour
 
             }
         }//end of loop
-        
+
+    }
+
+    void OnCollisionEnter2D( Collision2D other ) {
+    
+        targetPos = lastPos;
+        lastPos = transform.position;
+        timeElapsed = 0;
     }
 }
