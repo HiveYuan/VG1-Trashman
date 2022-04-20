@@ -121,10 +121,10 @@ public class BarrierController : MonoBehaviour {
 
     }
 
-    void OnCollisionEnter2D( Collision2D other ) {
+    /*void OnCollisionEnter2D( Collision2D other ) {
     
         targetPos = lastPos;
         lastPos = transform.position;
         timeElapsed = 0;
-    }
+    }*/
 }
