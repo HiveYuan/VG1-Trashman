@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
+using Trashman;
 
 public class MenuManager : MonoBehaviour
 {
@@ -82,8 +83,13 @@ public class MenuManager : MonoBehaviour
 
     // Load current level.
     public void StartPlay() {
-        int level = PlayerPrefs.GetInt("Level", 0);
-        SceneManager.LoadScene("Level-" + level);
+        StartCoroutine(CStartPlay());
+        IEnumerator CStartPlay() {
+            SoundManager.instance.PlaySoundButtonClick();
+            int level = PlayerPrefs.GetInt("Level", 0);
+            yield return new WaitForSeconds(0.1f);
+            SceneManager.LoadScene("Level-" + level);
+        }
     }
 
     // FIXME: current function set to clear the level and first-time prefs to test functionality
@@ -102,8 +108,13 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
-            int level = int.Parse(levelString);
-            SceneManager.LoadScene("Level-" + level);
+            StartCoroutine(CLoad());
+            IEnumerator CLoad() {
+                SoundManager.instance.PlaySoundButtonClick();
+                int level = int.Parse(levelString);
+                yield return new WaitForSeconds(0.1f);
+                SceneManager.LoadScene("Level-" + level);
+            }
         }
     }
 

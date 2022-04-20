@@ -224,11 +224,13 @@ namespace Trashman {
                     }
                     if (item != null) {
                         if (item.GetFood() != null) {
+                            SoundManager.instance.PlaySoundEat4();
                             inventory.Remove(i);
                             GainHealth(item.GetFood().healthAdded);
                         }
                         else if (item.GetTool() != null)
                         {
+                            SoundManager.instance.PlaySoundSword();
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
@@ -261,6 +263,7 @@ namespace Trashman {
                         }
                         else if (item.GetPotion() != null)
                         {
+                            SoundManager.instance.PlaySoundDrink();
                             PotionClass potion = item.GetPotion();
                             //buffPrompt.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.7f);
                             switch (potion.potionType)

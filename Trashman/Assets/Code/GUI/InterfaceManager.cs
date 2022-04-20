@@ -207,6 +207,7 @@ public class InterfaceManager : MonoBehaviour
             case "Clothes":
                 if (inventory.clothes[currentStoreItemName].price <= PlayerPrefs.GetInt("coin", 0))
                 {
+                    SoundManager.instance.PlaySoundCoin();
                     inventory.Add(inventory.clothes[currentStoreItemName], false);
                     playerController.SubCoins(inventory.clothes[currentStoreItemName].price);
                 }
@@ -216,8 +217,9 @@ public class InterfaceManager : MonoBehaviour
                 }
                 break;
             case "Potion":
-                if (inventory.potions[currentStoreItemName].price <= PlayerPrefs.GetInt("coin", 0))
+                if (inventory.potions[currentStoreItemName].price <= PlayerPrefs.GetInt("coin", 0)) 
                 {
+                    SoundManager.instance.PlaySoundCoin();
                     inventory.Add(inventory.potions[currentStoreItemName], false);
                     playerController.SubCoins(inventory.potions[currentStoreItemName].price);
                 }
@@ -428,6 +430,7 @@ public class InterfaceManager : MonoBehaviour
     // Close current interface and continue playing
     public void Continue()
     {
+        SoundManager.instance.PlaySoundButtonClick();
         currentInterface.SetActive(false);
         gameController.EnableWholeScene();
     }
@@ -435,14 +438,24 @@ public class InterfaceManager : MonoBehaviour
     // Reload current level
     public void Reload()
     {
-        currentInterface.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(CReload());
+        IEnumerator CReload() {
+            SoundManager.instance.PlaySoundButtonClick();
+            yield return new WaitForSeconds(0.1f);
+            currentInterface.SetActive(false);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
     // Quit current level and go to the start menu scene
-    public void Quit()
+    public void Quit() 
     {
-        SceneManager.LoadScene("StartMenu");
+        StartCoroutine(CQuit());
+        IEnumerator CQuit() {
+            SoundManager.instance.PlaySoundButtonClick();
+            yield return new WaitForSeconds(0.1f);
+            SceneManager.LoadScene("StartMenu");
+        }
     }
 
 
