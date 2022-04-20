@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: f69b5e81f060f4d88bfd52beba3748f6, type: 3}
   itemIntro: You can use the knife to destroy barrier that is adjcent to you.
-  toolType: 1
+  toolType: 0
   bounty: 1
   damage: 1
   range: 1
