@@ -11517,7 +11517,6 @@ MonoBehaviour:
   character: {fileID: 810379525}
   _uiManager: {fileID: 146347752}
   inventory: {fileID: 1890289413}
-  playerController: {fileID: 810379527}
   isTutorialOn: 1
   tutorialStage: 0
   didSucceed: 0
@@ -15113,6 +15112,10 @@ PrefabInstance:
     - target: {fileID: 2598597503666670752, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
       propertyPath: m_LocalPosition.y
       value: 3.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2598597503805906024, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2598597503805906039, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
       propertyPath: m_LocalPosition.x
