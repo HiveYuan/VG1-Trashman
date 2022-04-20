@@ -11346,6 +11346,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2945510227944101616, guid: f0a909596ba8b47ab9279a921f70fc9e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3ecd8e669ef314a4288230212aba3466, type: 3}
     - target: {fileID: 2945510227944101623, guid: f0a909596ba8b47ab9279a921f70fc9e, type: 3}
       propertyPath: m_Name
       value: Cactus
