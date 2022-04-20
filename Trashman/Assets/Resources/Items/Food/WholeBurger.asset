@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WholeBurger
   m_EditorClassIdentifier: 
   itemIcon: {fileID: 21300000, guid: e714b4c39123b9f4d8a3726fe9595aa5, type: 3}
-  itemIntro: Eat this burger will gain you 4 HP.
+  itemIntro: Eat this burger will gain you 24 HP.
   foodType: 0
   bounty: 2
   healthAdded: 24
