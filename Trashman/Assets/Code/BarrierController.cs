@@ -91,47 +91,46 @@ public class BarrierController : MonoBehaviour
         System.Random rd = new System.Random();
         bool[] blocked = { false, false, false, false };
 
-        while (true) {
+        for (int i = 0; i < 10; i++) {
             int direction = rd.Next(0, 4);
             if (blocked[direction]) {
                 continue;
             }
-
-            Vector2 direction_vector;
-
-            switch (direction) {
-                case 0:
-                    direction_vector = new Vector2(0, 1);
-                    break;
-                case 1:
-                    direction_vector = new Vector2(0, -1);
-                    break;
-                case 2:
-                    direction_vector = new Vector2(-1, 0);
-                    break;
-                case 3:
-                    direction_vector = new Vector2(1, 0);
-                    break;
-                default:
-                    direction_vector = new Vector2(0, 0);
-                    break;
-            }
+            Vector2 upV = new Vector2(0, 1);
+            Vector2 rightV = new Vector2(1, 0);
+            Vector2 downV = new Vector2(0, -1);
+            Vector2 leftV = new Vector2(-1, 0);
+            Vector2[] direction_vector = { upV, rightV, downV, leftV};
 
             //Debug.Log("detect");
             _collider.enabled = false;
-            RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + direction_vector);
+            RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + direction_vector[direction]);
             _collider.enabled = true;
 
             //hit wall or barrier
-            if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier" || hit.collider.tag == "Tool" || hit.collider.tag == "Food")) {
+            if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier" || hit.collider.tag == "Tool" || hit.collider.tag == "Food" || hit.collider.tag == "Monster")) {
                 //Debug.Log("collided with " + hit.collider.tag);
                 blocked[direction] = true;
-                
+
             } else {
-                targetPos += direction_vector;
-                break;
+                _collider.enabled = false;
+                RaycastHit2D hit1 = Physics2D.Linecast(_rigidbody2D.position + direction_vector[direction], _rigidbody2D.position + direction_vector[direction] + direction_vector[direction]);
+                RaycastHit2D hit2 = Physics2D.Linecast(_rigidbody2D.position + direction_vector[direction], _rigidbody2D.position + direction_vector[direction] + direction_vector[(direction + 1) % 4]);
+                RaycastHit2D hit3 = Physics2D.Linecast(_rigidbody2D.position + direction_vector[direction], _rigidbody2D.position + direction_vector[direction] + direction_vector[(direction + 3) % 4]);
+                _collider.enabled = true;
+
+                if (hit1.collider != null && hit1.collider.tag == "Monster" && hit2.collider != null && hit2.collider.tag == "Monster" && hit3.collider != null && hit3.collider.tag == "Monster") {
+                    //Debug.Log("collided with " + hit.collider.tag);
+                    blocked[direction] = true;
+                } else {
+                    targetPos += direction_vector[direction];
+                    break;
+                }
+
+
+
             }
-        }//end of while
+        }//end of loop
         
     }
 }
