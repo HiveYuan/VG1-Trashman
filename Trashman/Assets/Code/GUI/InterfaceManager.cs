@@ -308,7 +308,6 @@ public class InterfaceManager : MonoBehaviour
     }
 
     // Put item in the inventory bar.
-    // TODO: Unuse item will put back to collection.
     public void UseItem()
     {
         switch (currentCollectionCategory.name.Split(" ")[0])

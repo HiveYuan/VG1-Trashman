@@ -218,7 +218,6 @@ public class InventoryManager : MonoBehaviour
         }
         else
         {
-            //TODO: Error handling, player try to use non-existing item
             return item;
         }
 

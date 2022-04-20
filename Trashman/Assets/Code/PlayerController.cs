@@ -363,19 +363,10 @@ namespace Trashman {
                     else
                     {
                         //TODO: User try to use non-existing item
-                        //TODO: Add detection for whether this item can be used
                         print("Player try to use non-existing item.");
                     }
                 }
             }
-
-
-            /*if (_rigidbody2D.velocity.magnitude > 0) {
-                animator.speed = _rigidbody2D.velocity.magnitude / 3f;
-            } else {
-                animator.speed = 1f;
-            }*/
-
         }
 
         void OnCollisionEnter2D( Collision2D other ) {
@@ -568,7 +559,6 @@ namespace Trashman {
                     PlayerPrefs.SetInt(treasure.name + "_quantity", currentQuantity + 1);
                     interfaceManager.RefreshUI(treasure.name, "Treasure");
 
-                    // TODO: Change sound
                     SoundManager.instance.PlaySoundToolPickup();
                     break;
                 }

@@ -147,7 +147,7 @@ public class GameController : MonoBehaviour
             yield return new WaitUntil(() => msg == null);
             int currentLevel = PlayerPrefs.GetInt("Level", 0);
             PlayerPrefs.SetInt("Level", currentLevel + 1);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //TODO: load next game or back to menu
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1); //load next game
         }
     }
 
