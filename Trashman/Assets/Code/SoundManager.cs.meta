@@ -3,7 +3,20 @@ guid: 6c9e824f4a3158a4fb16440063a566f3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - winSound: {fileID: 8300000, guid: 361a88f82b723d846acc40b19fa3c055, type: 3}
+  - buttonClickSound: {fileID: 8300000, guid: 266cc4aa571f18a44b1dbc51c643bd8b, type: 3}
+  - loseSound: {instanceID: 0}
+  - swordSound: {instanceID: 0}
+  - coinSound: {instanceID: 0}
+  - drinkSound: {instanceID: 0}
+  - eat4Sound: {instanceID: 0}
+  - eat1Sound: {instanceID: 0}
+  - hit1Sound: {instanceID: 0}
+  - hit3Sound: {instanceID: 0}
+  - pickUpFoodSound: {instanceID: 0}
+  - pickUpToolSound: {instanceID: 0}
+  - explosionSound: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
