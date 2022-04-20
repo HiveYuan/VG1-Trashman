@@ -224,13 +224,21 @@ namespace Trashman {
                     }
                     if (item != null) {
                         if (item.GetFood() != null) {
-                            SoundManager.instance.PlaySoundEat4();
+                            if (item.name == "WholeApple") {
+                                SoundManager.instance.PlaySoundEat1();
+                            } else {
+                                SoundManager.instance.PlaySoundEat4();
+                            }
                             inventory.Remove(i);
                             GainHealth(item.GetFood().healthAdded);
                         }
                         else if (item.GetTool() != null)
                         {
-                            SoundManager.instance.PlaySoundSword();
+                            if (item.name == "Bomb") {
+                                SoundManager.instance.PlaySoundExplosion();
+                            } else {
+                                SoundManager.instance.PlaySoundSword();
+                            }
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
