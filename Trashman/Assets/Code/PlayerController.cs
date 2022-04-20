@@ -259,22 +259,27 @@ namespace Trashman {
                                     attackZones.Add(addAttackZone);
                                 }
                             }
+                            int result = 0;
                             for (int j = 0; j < item.GetTool().range * rangeBuff; j++)
                             {
                                 Transform[] attackZonesGroup = attackZones[j].GetComponentsInChildren<Transform>(); // length=5
                                 if (item.GetTool().toolType == ToolClass.ToolType.Attack)
                                 {
                                     Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
-                                    Attack(attackZone, item, i);
+                                    result += Attack(attackZone, item, i);
                                 }
                                 else if (item.GetTool().toolType == ToolClass.ToolType.CircleAttack)
                                 {
                                     for (int k = 0; k < 4; k++)
                                     {
                                         Transform attackZone = attackZonesGroup[k + 1]; // +1: skip the transform of itself
-                                        Attack(attackZone, item, i);
+                                        result += Attack(attackZone, item, i);
                                     }
                                 }
+                            }
+                            if (result != 0)
+                            {
+                                inventory.Remove(i);
                             }
                         }
                         else if (item.GetTreasure() != null)
@@ -423,8 +428,9 @@ namespace Trashman {
             }
         }
 
-        void Attack(Transform attackZone, ItemClass item, int inventoryIndex)
+        int Attack(Transform attackZone, ItemClass item, int inventoryIndex)
         {
+            int rtn = 0;
             // What objects are within a circle at that attack zone
             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
             if (hits.Length == 0) // facing no obstacles
@@ -444,7 +450,8 @@ namespace Trashman {
                         // Verify the relation between the tool and the barrier
                         if (barrier.availableTools.Contains(item.GetTool()))
                         {
-                            inventory.Remove(inventoryIndex);
+                            //inventory.Remove(inventoryIndex);
+                            rtn = 1;
                             _animator.SetTrigger("Attack");
 
                             // Destroy barrier
@@ -462,22 +469,28 @@ namespace Trashman {
                             {
                                 gameController.tutorialStageChange = (int)TutorialStages.GetStar;
                             }
+                            return rtn;
                         }
                         else // tool does not match the barrier/monster
                         {
+                            
                             print(barrier.name + " can not be destroyed by " + item.name);
+                            return rtn;
                         }
                     }
                     else // trader type barrier
                     {
                         print(barrier.name + " is a trader " + item.name);
+                        return rtn;
                     }
                 }
                 else // facing some obstacles but not barrier 
                 {
                     print("There is no barrier to be destroyed.");
+                    return rtn;
                 }
             }
+            return rtn;
         }
 
         void Trade(Transform attackZone, ItemClass item, int inventoryIndex)
