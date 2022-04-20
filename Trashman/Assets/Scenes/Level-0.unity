@@ -9724,6 +9724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackZones:
   - {fileID: 1578935211}
+  attackZonePrefab: {fileID: 2598597502944040258, guid: a400db59626ecbf4c80fb5d94ccca88e, type: 3}
   interfaceManager: {fileID: 680043318}
   gameController: {fileID: 1656511278}
   buffPanel: {fileID: 1939820983}
@@ -11492,7 +11493,6 @@ MonoBehaviour:
   character: {fileID: 1337604364}
   _uiManager: {fileID: 885867095}
   inventory: {fileID: 1102135398}
-  playerController: {fileID: 1337604374}
   isTutorialOn: 1
   tutorialStage: 0
   didSucceed: 0

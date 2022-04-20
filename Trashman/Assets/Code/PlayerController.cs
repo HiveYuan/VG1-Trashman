@@ -20,6 +20,7 @@ namespace Trashman {
         SpriteRenderer _spriteRenderer;
         CapsuleCollider2D _collider;
         public List<GameObject> attackZones;
+        public GameObject attackZonePrefab;
         public InterfaceManager interfaceManager;
         public GameController gameController;
 
@@ -242,6 +243,22 @@ namespace Trashman {
                             // Convert enrumeration to an index
                             int facingDirectionIndex = (int)facingDirection;
 
+                            // Current attack zones number is not enough
+                            if (attackZones.Count < item.GetTool().range * rangeBuff)
+                            {
+                                int addNumber = item.GetTool().range * rangeBuff - attackZones.Count;
+                                for (int j = 0; j < addNumber; j++)
+                                {
+                                    GameObject addAttackZone = Instantiate(attackZonePrefab, gameObject.transform);
+                                    Transform[] transforms = addAttackZone.GetComponentsInChildren<Transform>(); // length=5
+                                    Transform[] previousTransforms = attackZones.Last().GetComponentsInChildren<Transform>(); // length=5
+                                    transforms[1].position = new Vector3(previousTransforms[1].position.x, previousTransforms[1].position.y + 1);
+                                    transforms[2].position = new Vector3(previousTransforms[2].position.x, previousTransforms[2].position.y - 1);
+                                    transforms[3].position = new Vector3(previousTransforms[3].position.x - 1, previousTransforms[3].position.y);
+                                    transforms[4].position = new Vector3(previousTransforms[4].position.x + 1, previousTransforms[4].position.y);
+                                    attackZones.Add(addAttackZone);
+                                }
+                            }
                             for (int j = 0; j < item.GetTool().range * rangeBuff; j++)
                             {
                                 Transform[] attackZonesGroup = attackZones[j].GetComponentsInChildren<Transform>(); // length=5
@@ -428,7 +445,7 @@ namespace Trashman {
             foreach (Collider2D hit in hits)
             {
                 string objName = hit.gameObject.name.Split(" ")[0];
-                if (hit.gameObject.CompareTag("Barrier"))
+                if (hit.gameObject.CompareTag("Barrier") || hit.gameObject.CompareTag("Monster"))
                 {
                     BarrierClass barrier = inventory.barriers[objName];
                     if (barrier.barrierType != BarrierClass.BarrierType.Trader)

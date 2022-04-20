@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// TODO: add prompt for barrier losing health (little hp bar)
 public class BarrierController : MonoBehaviour
 {
     InventoryManager inventory;
@@ -25,7 +24,6 @@ public class BarrierController : MonoBehaviour
     public float lerpDuration = 2;
     
 
-    // TODO: fix bug for monster hp bar => unity will crash?
     // Start is called before the first frame update
     void Start()
     {

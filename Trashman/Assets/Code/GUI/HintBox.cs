@@ -55,14 +55,15 @@ namespace myGUI
             if (hintDropList.Count == 0)
             {
                 hint.text = "Trade with: ";
+                hint.text += string.Join(' ', hintRequiredList) + "\n";
             }
             else
             {
                 hint.text = "Attack with: ";
+                hint.text += string.Join(' ', hintRequiredList) + "\n";
+                hint.text += "May drop: ";
+                hint.text += string.Join(' ', hintDropList);
             }
-            hint.text += string.Join(' ', hintRequiredList) + "\n";
-            hint.text += "May drop: ";
-            hint.text += string.Join(' ', hintDropList);
         }
 
         public void Drag()
