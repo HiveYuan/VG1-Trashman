@@ -24,8 +24,6 @@ public class GameController : MonoBehaviour
 
     public InventoryManager inventory;
 
-    public PlayerController playerController;
-
     public int isTutorialOn = 1;
 
     public int tutorialStage = 0;
@@ -143,7 +141,7 @@ public class GameController : MonoBehaviour
             inventory.ClearUnused();
 
             // add star
-            playerController.AddStars();
+            character.GetComponent<PlayerController>().AddStars();
 
             MessageBox msg = _uiManager.CreateMsgBox("Congratulations!", "Congratulations! You've passed this level!");
             yield return new WaitUntil(() => msg == null);

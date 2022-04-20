@@ -26,6 +26,7 @@ public class InterfaceManager : MonoBehaviour
     public GameObject storeItemSlot;
     public GameObject storeItemDetailPanel;
     public GameObject buyButton;
+    public TMP_Text coinPrompt;
 
     [Header("Collection")]
     // collection interface outlets
@@ -53,17 +54,17 @@ public class InterfaceManager : MonoBehaviour
         storeItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
         storeItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
         buyButton.SetActive(false);
+        coinPrompt.enabled = false;
         // Collection
         collectionItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
         collectionItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
         useButton.SetActive(false);
     }
 
-    // Move the in-game interface upward to hide any message or item box behind
+    // Move the to the top to hide any message or item box behind
     public void MoveUpwardInHierarchy()
     {
-        int index = transform.GetSiblingIndex();
-        transform.SetSiblingIndex(index + 1);
+        transform.SetAsLastSibling();
     }
 
     // Switch interface
@@ -213,7 +214,9 @@ public class InterfaceManager : MonoBehaviour
                 }
                 else
                 {
-                    playerController.buffPrompt.text = "<gradient=GoldWhite>Not enough coins.</gradient>";
+                    coinPrompt.enabled = true;
+                    coinPrompt.canvasRenderer.SetAlpha(1f);
+                    coinPrompt.CrossFadeAlpha(0f, 2f, false);
                 }
                 break;
             case "Potion":
@@ -225,7 +228,9 @@ public class InterfaceManager : MonoBehaviour
                 }
                 else
                 {
-                    playerController.buffPrompt.text = "<gradient=GoldWhite>Not enough coins.</gradient>";
+                    coinPrompt.enabled = true;
+                    coinPrompt.canvasRenderer.SetAlpha(1f);
+                    coinPrompt.CrossFadeAlpha(0f, 2f, false);
                 }
                 break;
             default:
