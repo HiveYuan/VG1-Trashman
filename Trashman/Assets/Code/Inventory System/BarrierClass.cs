@@ -15,6 +15,8 @@ public class BarrierClass : ItemClass
         Monster // Monster will randomly move in the map, usually require more than one attack, will drop treasure
     }
 
+    public int bounty;
+
     [Header("Type: Barrier/Monster")]
     public int hp;
     public List<ToolClass> availableTools;

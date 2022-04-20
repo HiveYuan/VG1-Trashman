@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.Linq;
+using Trashman;
 
 public class InterfaceManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class InterfaceManager : MonoBehaviour
     public GameObject gameManager;
     public GameController gameController;
     public InventoryManager inventory;
+    public PlayerController playerController;
 
     [Header("Store")]
     // store interface outlets
@@ -197,18 +199,32 @@ public class InterfaceManager : MonoBehaviour
         }
     }
 
-    // Put item in the inventory bar.
-    // TODO: Unuse item will disappear after current level? or return money?
-    // TODO: add price and money checking
+    // Buy item and put in the inventory bar.
     public void BuyItem()
     {
         switch (currentStoreCategory.name.Split(" ")[0])
         {
             case "Clothes":
-                inventory.Add(inventory.clothes[currentStoreItemName], false);
+                if (inventory.clothes[currentStoreItemName].price <= PlayerPrefs.GetInt("coin", 0))
+                {
+                    inventory.Add(inventory.clothes[currentStoreItemName], false);
+                    playerController.SubCoins(inventory.clothes[currentStoreItemName].price);
+                }
+                else
+                {
+                    playerController.buffPrompt.text = "<gradient=GoldWhite>Not enough coins.</gradient>";
+                }
                 break;
             case "Potion":
-                inventory.Add(inventory.potions[currentStoreItemName], false);
+                if (inventory.potions[currentStoreItemName].price <= PlayerPrefs.GetInt("coin", 0))
+                {
+                    inventory.Add(inventory.potions[currentStoreItemName], false);
+                    playerController.SubCoins(inventory.potions[currentStoreItemName].price);
+                }
+                else
+                {
+                    playerController.buffPrompt.text = "<gradient=GoldWhite>Not enough coins.</gradient>";
+                }
                 break;
             default:
                 break;
@@ -296,8 +312,7 @@ public class InterfaceManager : MonoBehaviour
                 {
                     PlayerPrefs.SetInt(currentCollectionItemName + "_quantity", currentQuantity - 1);
                     inventory.Add(inventory.treasures[currentCollectionItemName], false);
-                    RefreshUI(currentCollectionItemName, "Treasure");
-                    
+                    RefreshUI(currentCollectionItemName, "Treasure");  
                 }
                 else
                 {
@@ -326,6 +341,7 @@ public class InterfaceManager : MonoBehaviour
                     introText += "Type: <gradient=GoldWhite>" + item.GetTool().toolType + "</gradient>\n";
                     introText += "Damage: <gradient=GoldWhite>" + item.GetTool().damage + "</gradient>\n";
                     introText += "Range: <gradient=GoldWhite>" + item.GetTool().range + "</gradient>\n";
+                    introText += "Bounty: <gradient=GoldWhite>" + item.GetTool().bounty + "</gradient>\n";
                     useButton.SetActive(false);
                     break;
                 case "Treasure":
@@ -346,6 +362,7 @@ public class InterfaceManager : MonoBehaviour
                     item = inventory.foods[currentCollectionItemName];
                     introText += "Type: <gradient=GoldWhite>" + item.GetFood().foodType + "</gradient>\n";
                     introText += "Gain HP: <gradient=GoldWhite>" + item.GetFood().healthAdded + "</gradient>\n";
+                    introText += "Bounty: <gradient=GoldWhite>" + item.GetFood().bounty + "</gradient>\n";
                     useButton.SetActive(false);
                     break;
                 case "Barrier":
@@ -368,6 +385,7 @@ public class InterfaceManager : MonoBehaviour
                         }
                         introText += "</gradient>\n";
                     }
+                    introText += "Bounty: <gradient=GoldWhite>" + item.GetBarrier().bounty + "</gradient>\n";
                     useButton.SetActive(false);
                     break;
                 default:

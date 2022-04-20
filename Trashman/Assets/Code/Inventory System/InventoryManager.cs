@@ -251,8 +251,9 @@ public class InventoryManager : MonoBehaviour
         return item;
     }
 
-    public void PutUnusedTreasureBack()
+    public void ClearUnused()
     {
+        int coins = 0;
         foreach (SlotClass slot in items)
         {
             ItemClass item = slot.GetItem();
@@ -264,6 +265,23 @@ public class InventoryManager : MonoBehaviour
                 PlayerPrefs.SetInt(treasureName + "_quantity", currentQuantity + quantity);
                 interfaceManager.RefreshUI(treasureName, "Treasure");
             }
+            else if (item.GetTool() != null)
+            {
+                coins += item.GetTool().bounty * quantity;
+            }
+            else if (item.GetFood() != null)
+            {
+                coins += item.GetFood().bounty * quantity;
+            }
+            else if (item.GetPotion() != null)
+            {
+                coins += item.GetPotion().price * quantity;
+            }
+            else if (item.GetClothes() != null)
+            {
+                coins += item.GetClothes().price * quantity;
+            }
         }
+        playerController.AddCoins(coins);
     }
 }

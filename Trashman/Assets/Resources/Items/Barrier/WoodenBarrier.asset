@@ -15,6 +15,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: 764a5315238f14e4fbeaf7b89544224f, type: 3}
   itemIntro: Chop it or burn it!
   barrierType: 0
+  bounty: 1
   hp: 1
   availableTools:
   - {fileID: 11400000, guid: 25678c26a39814f41b5ee89724553464, type: 2}

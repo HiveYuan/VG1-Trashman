@@ -24,6 +24,8 @@ public class GameController : MonoBehaviour
 
     public InventoryManager inventory;
 
+    public PlayerController playerController;
+
     public int isTutorialOn = 1;
 
     public int tutorialStage = 0;
@@ -135,10 +137,12 @@ public class GameController : MonoBehaviour
 
         IEnumerator successReload()
         {
-            // TODO: change unused items to money/coin/star
+            // change unused items to coin, put treasure back
+            inventory.ClearUnused();
 
-            // put treasure back
-            inventory.PutUnusedTreasureBack();
+            // add star
+            playerController.AddStars();
+
             MessageBox msg = _uiManager.CreateMsgBox("Congratulations!", "Congratulations! You've passed this level!");
             yield return new WaitUntil(() => msg == null);
             int currentLevel = PlayerPrefs.GetInt("Level", 0);

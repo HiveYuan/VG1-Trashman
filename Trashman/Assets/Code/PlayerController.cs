@@ -32,7 +32,10 @@ namespace Trashman {
         int maxRangeBuff = 4;
         int maxPickBuff = 4;
         float maxLuckyBuff = 1;
-        
+
+        public GameObject statePanel;
+        TMP_Text coin;
+        TMP_Text star;
 
         AudioSource walkSound;
         public TMP_Text buffPrompt;
@@ -73,6 +76,10 @@ namespace Trashman {
             range = buffPanel.transform.GetChild(1).transform.GetComponent<TMP_Text>();
             pick = buffPanel.transform.GetChild(2).transform.GetComponent<TMP_Text>();
             lucky = buffPanel.transform.GetChild(3).transform.GetComponent<TMP_Text>();
+            coin = statePanel.transform.GetChild(0).transform.GetChild(1).transform.GetComponent<TMP_Text>();
+            star = statePanel.transform.GetChild(1).transform.GetChild(1).transform.GetComponent<TMP_Text>();
+            coin.text = "" + PlayerPrefs.GetInt("coin", 0);
+            star.text = "" + PlayerPrefs.GetInt("star", 0);
 
             prompt.enabled = false;
             buffPrompt.text = "";
@@ -425,6 +432,7 @@ namespace Trashman {
                             BarrierController barrierController = hit.gameObject.GetComponent<BarrierController>();
                             if (barrierController.LoseHP(item.GetTool().damage * damageBuff) <= 0)
                             {
+                                AddCoins(barrier.bounty);
                                 DropTreasure(barrier);
                                 Destroy(hit.gameObject);
                             }
@@ -476,6 +484,9 @@ namespace Trashman {
                         {
                             inventory.Remove(inventoryIndex);
                             _animator.SetTrigger("Attack");
+
+                            // add coins
+                            AddCoins(barrier.bounty);
 
                             // Destroy trader
                             Destroy(hit.gameObject);
@@ -535,6 +546,30 @@ namespace Trashman {
                 }
                 lowerBoundary += (int)(barrier.dropTreasureProbs[i] * 10000 * (1 + luckyBuff));
             }
+        }
+
+        // Add coins
+        public void AddCoins(int quantity)
+        {
+            int currentCoinQuantity = PlayerPrefs.GetInt("coin", 0);
+            PlayerPrefs.SetInt("coin", currentCoinQuantity + quantity);
+            coin.text = "" + PlayerPrefs.GetInt("coin");
+        }
+
+        // Sub coins
+        public void SubCoins(int quantity)
+        {
+            int currentCoinQuantity = PlayerPrefs.GetInt("coin");
+            PlayerPrefs.SetInt("coin", currentCoinQuantity - quantity);
+            coin.text = "" + PlayerPrefs.GetInt("coin");
+        }
+
+        // Add stars
+        public void AddStars()
+        {
+            int currentStarQuantity = PlayerPrefs.GetInt("star", 0);
+            PlayerPrefs.SetInt("star", currentStarQuantity + 1);
+            star.text = "" + PlayerPrefs.GetInt("star");
         }
 
         // Health - By Hou

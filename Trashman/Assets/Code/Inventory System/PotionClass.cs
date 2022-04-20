@@ -16,9 +16,9 @@ public class PotionClass : ItemClass
         LuckyPower // Upgrade possibility to drop items after destroy barriers
     }
 
+    public int price;
     public float lucky;
     public int buff;
-    public int price;
 
     public override ItemClass GetItem() { return this; }
     public override PotionClass GetPotion() { return this; }

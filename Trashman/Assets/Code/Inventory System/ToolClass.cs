@@ -14,6 +14,7 @@ public class ToolClass : ItemClass
         CircleAttack // Can attack objects in adjcent 4 directions
     }
 
+    public int bounty;
     public int damage;
     public int range;
 

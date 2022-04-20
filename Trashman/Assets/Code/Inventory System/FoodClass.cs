@@ -13,6 +13,7 @@ public class FoodClass : ItemClass
         GainHealth // Use to gain health
     }
 
+    public int bounty;
     public float healthAdded;
 
     public override ItemClass GetItem() { return this; }
