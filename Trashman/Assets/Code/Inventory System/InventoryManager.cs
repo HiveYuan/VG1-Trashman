@@ -262,7 +262,7 @@ public class InventoryManager : MonoBehaviour
                 string treasureName = item.GetTreasure().name;
                 int currentQuantity = PlayerPrefs.GetInt(treasureName + "_quantity");
                 PlayerPrefs.SetInt(treasureName + "_quantity", currentQuantity + quantity);
-                interfaceManager.RefreshUI(treasureName, "Treasure");
+                interfaceManager.RefreshStoreUI(treasureName, "Treasure");
             }
             else if (item.GetTool() != null)
             {

@@ -9,17 +9,22 @@ using Trashman;
 
 public class MenuManager : MonoBehaviour
 {
+    SoundManager soundManager;
+
     public GameObject mainMenu;
     public GameObject levelsMenu;
     public GameObject settingsMenu;
+    public Button soundButton;
+    public Sprite soundEnable;
+    public Sprite soundDisable;
 
-    // TODO: more level groups
     [SerializeField] private GameObject levelGroups;
     private List<Button> levels = new();
 
     // Start is called before the first frame update
     void Start()
     {
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         ShowMainMenu();
 
         // set all the levels
@@ -38,7 +43,7 @@ public class MenuManager : MonoBehaviour
     }
 
     // More organized version
-    public void RefreshUI()
+    public void RefreshLevelUI()
     {
         int currentLevel = PlayerPrefs.GetInt("Level", 0);
         for (int i = 0; i < levels.Count; i++)
@@ -53,6 +58,18 @@ public class MenuManager : MonoBehaviour
                 levels[i].transform.GetChild(0).GetComponent<TMP_Text>().text = "";
                 levels[i].transform.GetChild(1).GetComponent<Image>().enabled = true;
             }
+        }
+    }
+
+    public void RefreshSettingUI()
+    {
+        if (PlayerPrefs.GetInt("Sound", 1) == 1)
+        {
+            soundButton.GetComponent<Image>().sprite = soundEnable;
+        }
+        else
+        {
+            soundButton.GetComponent<Image>().sprite = soundDisable;
         }
     }
 
@@ -75,13 +92,14 @@ public class MenuManager : MonoBehaviour
     // Load settings menu.
     public void ShowSettingsMenu()
     {
+        RefreshSettingUI();
         SwitchMenu(settingsMenu);
     }
 
     // Load levels menu.
     public void ShowLevelsMenu()
     {
-        RefreshUI();
+        RefreshLevelUI();
         SwitchMenu(levelsMenu);
     }
 
@@ -96,7 +114,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    // TODO: current function set to clear the level and first-time prefs to test functionality
+    // TODO: current function set to clear the level, first-time and sound prefs to test functionality
     public void QuitGame() {
         PlayerPrefs.DeleteAll();
     }
@@ -121,20 +139,21 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    // TODO: Set sound preference.
     public void SetSound() {
-
-    }
-
-    // TODO: Set display preference.
-    public void SetDisplay() {
-
-    }
-
-    // TODO: Set keyboard preference.
-    public void SetKeyboard()
-    {
-
+        // Disable sound
+        if (PlayerPrefs.GetInt("Sound", 1) == 1)
+        {
+            soundButton.GetComponent<Image>().sprite = soundDisable;
+            PlayerPrefs.SetInt("Sound", 0);
+            soundManager.DisableAll();
+            
+        }
+        else // Enable sound
+        {
+            soundButton.GetComponent<Image>().sprite = soundEnable;
+            PlayerPrefs.SetInt("Sound", 1);
+            soundManager.EnableAll();
+        }
     }
 
 }

@@ -8,6 +8,7 @@ namespace Trashman {
         public static SoundManager instance;
 
         //outlets
+        AudioListener audioListener;
         AudioSource audioSource;
         public AudioClip winSound;
         public AudioClip buttonClickSound;
@@ -29,12 +30,27 @@ namespace Trashman {
 
         // Start is called before the first frame update
         void Start() {
+            audioListener = FindObjectOfType<AudioListener>();
             audioSource = GetComponent<AudioSource>();
+            if (PlayerPrefs.GetInt("Sound", 1) == 0)
+            {
+                DisableAll();
+            }
+            else
+            {
+                EnableAll();
+            }
         }
 
-        // Update is called once per frame
-        void Update() {
+        // Disable all sounds in the game
+        public void DisableAll() {
+            audioListener.enabled = false;
+        }
 
+        // Enable all sounds in the game
+        public void EnableAll()
+        {
+            audioListener.enabled = true;
         }
 
         public void PlaySoundWin() {

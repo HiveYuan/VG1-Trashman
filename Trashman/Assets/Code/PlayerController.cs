@@ -141,7 +141,7 @@ namespace Trashman {
                                         _uiManager.CreateHintBox(objName, barrier.itemIntro, barrier.itemIcon, barrier.getToolNameList(), barrier.getDropNameList());
                                     }
                                     PlayerPrefs.SetInt(objName + "_new", 0);
-                                    interfaceManager.RefreshUI(objName, "Barrier");
+                                    interfaceManager.RefreshStoreUI(objName, "Barrier");
                                 }
                             }
                             //Debug.Log("collided with " + hit.collider.tag);
@@ -259,25 +259,25 @@ namespace Trashman {
                                     attackZones.Add(addAttackZone);
                                 }
                             }
-                            int result = 0;
+                            int toBeRemoved = 0;
                             for (int j = 0; j < item.GetTool().range * rangeBuff; j++)
                             {
                                 Transform[] attackZonesGroup = attackZones[j].GetComponentsInChildren<Transform>(); // length=5
                                 if (item.GetTool().toolType == ToolClass.ToolType.Attack)
                                 {
                                     Transform attackZone = attackZonesGroup[facingDirectionIndex + 1]; // +1: skip the transform of itself
-                                    result += Attack(attackZone, item, i);
+                                    toBeRemoved += Attack(attackZone, item, i);
                                 }
                                 else if (item.GetTool().toolType == ToolClass.ToolType.CircleAttack)
                                 {
                                     for (int k = 0; k < 4; k++)
                                     {
                                         Transform attackZone = attackZonesGroup[k + 1]; // +1: skip the transform of itself
-                                        result += Attack(attackZone, item, i);
+                                        toBeRemoved += Attack(attackZone, item, i);
                                     }
                                 }
                             }
-                            if (result != 0)
+                            if (toBeRemoved != 0)
                             {
                                 inventory.Remove(i);
                             }
@@ -385,7 +385,7 @@ namespace Trashman {
                 {
                     _uiManager.CreateItemBox(objName, food.itemIntro, food.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
-                    interfaceManager.RefreshUI(objName, "Food");
+                    interfaceManager.RefreshStoreUI(objName, "Food");
                 }
                 inventory.Add(food, true);
                 SoundManager.instance.PlaySoundFoodPickup();
@@ -406,7 +406,7 @@ namespace Trashman {
                 {
                     _uiManager.CreateItemBox(objName, tool.itemIntro, tool.itemIcon);
                     PlayerPrefs.SetInt(objName + "_new", 0);
-                    interfaceManager.RefreshUI(objName, "Tool");
+                    interfaceManager.RefreshStoreUI(objName, "Tool");
                 }
                 inventory.Add(tool, true);
                 SoundManager.instance.PlaySoundToolPickup();
@@ -430,7 +430,7 @@ namespace Trashman {
 
         int Attack(Transform attackZone, ItemClass item, int inventoryIndex)
         {
-            int rtn = 0;
+            int toRemove = 0;
             // What objects are within a circle at that attack zone
             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
             if (hits.Length == 0) // facing no obstacles
@@ -451,7 +451,7 @@ namespace Trashman {
                         if (barrier.availableTools.Contains(item.GetTool()))
                         {
                             //inventory.Remove(inventoryIndex);
-                            rtn = 1;
+                            toRemove = 1;
                             _animator.SetTrigger("Attack");
 
                             // Destroy barrier
@@ -469,28 +469,28 @@ namespace Trashman {
                             {
                                 gameController.tutorialStageChange = (int)TutorialStages.GetStar;
                             }
-                            return rtn;
+                            return toRemove;
                         }
                         else // tool does not match the barrier/monster
                         {
                             
                             print(barrier.name + " can not be destroyed by " + item.name);
-                            return rtn;
+                            return toRemove;
                         }
                     }
                     else // trader type barrier
                     {
                         print(barrier.name + " is a trader " + item.name);
-                        return rtn;
+                        return toRemove;
                     }
                 }
                 else // facing some obstacles but not barrier 
                 {
                     print("There is no barrier to be destroyed.");
-                    return rtn;
+                    return toRemove;
                 }
             }
-            return rtn;
+            return toRemove;
         }
 
         void Trade(Transform attackZone, ItemClass item, int inventoryIndex)
@@ -570,7 +570,7 @@ namespace Trashman {
                     // Add to collection
                     int currentQuantity = PlayerPrefs.GetInt(treasure.name + "_quantity", 0);
                     PlayerPrefs.SetInt(treasure.name + "_quantity", currentQuantity + 1);
-                    interfaceManager.RefreshUI(treasure.name, "Treasure");
+                    interfaceManager.RefreshStoreUI(treasure.name, "Treasure");
 
                     SoundManager.instance.PlaySoundToolPickup();
                     break;

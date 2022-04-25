@@ -19,6 +19,7 @@ public class InterfaceManager : MonoBehaviour
     public GameController gameController;
     public InventoryManager inventory;
     public PlayerController playerController;
+    SoundManager soundManager;
 
     [Header("Store")]
     // store interface outlets
@@ -35,6 +36,12 @@ public class InterfaceManager : MonoBehaviour
     public GameObject collectionItemDetailPanel;
     public GameObject useButton;
 
+    [Header("Settings")]
+    // settings interface outlets
+    public Button soundButton;
+    public Sprite soundEnable;
+    public Sprite soundDisable;
+
 
     // Tracking state
     GameObject currentInterface;
@@ -50,6 +57,7 @@ public class InterfaceManager : MonoBehaviour
     {
         gameObject.SetActive(false);
         gameController = gameManager.GetComponent<GameController>();
+        soundManager = GameObject.Find("SoundManager").GetComponent<SoundManager>();
         // Store
         storeItemDetailPanel.transform.GetChild(0).GetComponent<Image>().enabled = false;
         storeItemDetailPanel.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().enabled = false;
@@ -304,7 +312,7 @@ public class InterfaceManager : MonoBehaviour
         string category = objName[0];
         currentCollectionItemName = objName[1];
 
-        RefreshUI(currentCollectionItemName, category);
+        RefreshStoreUI(currentCollectionItemName, category);
     }
 
     // Put item in the inventory bar.
@@ -318,7 +326,7 @@ public class InterfaceManager : MonoBehaviour
                 {
                     PlayerPrefs.SetInt(currentCollectionItemName + "_quantity", currentQuantity - 1);
                     inventory.Add(inventory.treasures[currentCollectionItemName], false);
-                    RefreshUI(currentCollectionItemName, "Treasure");  
+                    RefreshStoreUI(currentCollectionItemName, "Treasure");  
                 }
                 else
                 {
@@ -331,7 +339,7 @@ public class InterfaceManager : MonoBehaviour
     }
 
     // Refesh current selected item shows in the detail panel
-    public void RefreshUI(string changedItem, string category)
+    public void RefreshStoreUI(string changedItem, string category)
     {
         if (changedItem == currentCollectionItemName)
         {
@@ -464,9 +472,40 @@ public class InterfaceManager : MonoBehaviour
 
 
 
-    // TODO: Load settings interface
+    // ------ Settings interface ------ 
     public void ShowSettingsInterface()
     {
         SwitchInterface(settingsInterface);
+    }
+
+    // toggle sound
+    public void SetSound()
+    {
+        // Disable sound
+        if (PlayerPrefs.GetInt("Sound", 1) == 1)
+        {
+            soundButton.GetComponent<Image>().sprite = soundDisable;
+            PlayerPrefs.SetInt("Sound", 0);
+            soundManager.DisableAll();
+
+        }
+        else // Enable sound
+        {
+            soundButton.GetComponent<Image>().sprite = soundEnable;
+            PlayerPrefs.SetInt("Sound", 1);
+            soundManager.EnableAll();
+        }
+    }
+
+    public void RefreshSettingUI()
+    {
+        if (PlayerPrefs.GetInt("Sound", 1) == 1)
+        {
+            soundButton.GetComponent<Image>().sprite = soundEnable;
+        }
+        else
+        {
+            soundButton.GetComponent<Image>().sprite = soundDisable;
+        }
     }
 }

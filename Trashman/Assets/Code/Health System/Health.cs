@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 
 namespace Trashman {
-    // FIXME: fix the hp value
     public class Health : MonoBehaviour {
         public Image fill;
         public TMP_Text hp;
