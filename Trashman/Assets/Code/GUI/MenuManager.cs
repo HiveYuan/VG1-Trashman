@@ -124,7 +124,7 @@ public class MenuManager : MonoBehaviour
         string levelString = EventSystem.current.currentSelectedGameObject.GetComponentInChildren<TMP_Text>().text;
         if (levelString == "")
         {
-            // TODO: play wrong/unclickable sound or msg box to inform player
+            SoundManager.instance.PlaySoundAlert();
             Debug.Log("Locked level!");
         }
         else

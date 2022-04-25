@@ -23,6 +23,7 @@ namespace Trashman {
         public AudioClip pickUpFoodSound;
         public AudioClip pickUpToolSound;
         public AudioClip explosionSound;
+        public AudioClip alertSound;
 
         void Awake() {
             instance = this;
@@ -91,6 +92,10 @@ namespace Trashman {
         }
         public void PlaySoundExplosion() {
             audioSource.PlayOneShot(explosionSound);
+        }
+        public void PlaySoundAlert()
+        {
+            audioSource.PlayOneShot(alertSound);
         }
     }
 }

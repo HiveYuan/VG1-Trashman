@@ -43,7 +43,6 @@ namespace myGUI{
         public void onClickConfirm()
         {
             string btn = EventSystem.current.currentSelectedGameObject.name;
-            Debug.Log(btn);
             SoundManager.instance.PlaySoundButtonClick();
             gameController.EnableWholeScene();
             Destroy(gameObject);

@@ -329,7 +329,8 @@ public class InterfaceManager : MonoBehaviour
                     RefreshStoreUI(currentCollectionItemName, "Treasure");  
                 }
                 else
-                {
+                {   
+                    SoundManager.instance.PlaySoundAlert();
                     print("There is no " + currentCollectionItemName + " to use!");
                 }
                 break;

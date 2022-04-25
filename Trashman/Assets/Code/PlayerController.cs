@@ -106,7 +106,6 @@ namespace Trashman {
             if (Math.Abs(v) > float.Epsilon) {
                 h = 0;
             }
-            // Debug.Log(currentHealth);
 
             float posX = _rigidbody2D.position.x - center_offset_x;
             float posY = _rigidbody2D.position.y - center_offset_y;
@@ -119,7 +118,6 @@ namespace Trashman {
 
                     //in the center
                     if (Math.Abs(posX - Math.Round(posX)) < 0.05f && Math.Abs(posY - Math.Round(posY)) < 0.05f) {
-                        //Debug.Log("detected");
                         _collider.enabled = false;
                         RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + new Vector2(h, v));
                         _collider.enabled = true;
@@ -144,7 +142,6 @@ namespace Trashman {
                                     interfaceManager.RefreshStoreUI(objName, "Barrier");
                                 }
                             }
-                            //Debug.Log("collided with " + hit.collider.tag);
                             _rigidbody2D.velocity = new Vector2(0, 0);
                             move = true;
                         } else {
@@ -367,7 +364,8 @@ namespace Trashman {
                     }
                     else
                     {
-                        //TODO: User try to use non-existing item
+                        // User try to use non-existing item
+                        SoundManager.instance.PlaySoundAlert();
                         print("Player try to use non-existing item.");
                     }
                 }
@@ -435,6 +433,7 @@ namespace Trashman {
             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
             if (hits.Length == 0) // facing no obstacles
             {
+                SoundManager.instance.PlaySoundAlert();
                 print("There is no barrier to be destroyed.");
             }
 
@@ -464,7 +463,6 @@ namespace Trashman {
                             }
 
                             //trigger "Get Star" tutorial
-                            print("trigger last tutorial! " + gameController.tutorialStageChange);
                             if (gameController.isTutorialOn == 1 && gameController.tutorialStageChange == (int)TutorialStages.AttackBarrier)
                             {
                                 gameController.tutorialStageChange = (int)TutorialStages.GetStar;
@@ -473,19 +471,21 @@ namespace Trashman {
                         }
                         else // tool does not match the barrier/monster
                         {
-                            
+                            SoundManager.instance.PlaySoundAlert();
                             print(barrier.name + " can not be destroyed by " + item.name);
                             return toRemove;
                         }
                     }
                     else // trader type barrier
                     {
-                        print(barrier.name + " is a trader " + item.name);
+                        SoundManager.instance.PlaySoundAlert();
+                        print(barrier.name + " does not like " + item.name);
                         return toRemove;
                     }
                 }
                 else // facing some obstacles but not barrier 
                 {
+                    SoundManager.instance.PlaySoundAlert();
                     print("There is no barrier to be destroyed.");
                     return toRemove;
                 }
@@ -499,6 +499,7 @@ namespace Trashman {
             Collider2D[] hits = Physics2D.OverlapCircleAll(attackZone.position, 0.1f);
             if (hits.Length == 0) // facing no obstacles
             {
+                SoundManager.instance.PlaySoundAlert();
                 print("There is no trader to trade with.");
             }
 
@@ -525,16 +526,19 @@ namespace Trashman {
                         }
                         else // treasure does not match the trader
                         {
+                            SoundManager.instance.PlaySoundAlert();
                             print(barrier.name + " does not like " + item.name);
                         }
                     }
                     else // barrier or monster type barrier
                     {
-                        print(barrier.name + " is not a trader " + item.name);
+                        SoundManager.instance.PlaySoundAlert();
+                        print(barrier.name + " can not be destroyed by " + item.name);
                     }
                 }
                 else // facing some obstacles but not barrier 
                 {
+                    SoundManager.instance.PlaySoundAlert();
                     print("There is no trader to trade with.");
                 }
             }

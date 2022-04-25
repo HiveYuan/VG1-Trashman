@@ -50,7 +50,6 @@ namespace myGUI
 
         public void onClickHint()
         {
-            Debug.Log(EventSystem.current.currentSelectedGameObject);
             EventSystem.current.currentSelectedGameObject.SetActive(false);
             if (hintDropList.Count == 0)
             {

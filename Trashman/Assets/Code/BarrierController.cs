@@ -89,16 +89,13 @@ public class BarrierController : MonoBehaviour {
             Vector2 leftV = new Vector2(-1, 0);
             Vector2[] direction_vector = { upV, rightV, downV, leftV };
 
-            //Debug.Log("detect");
             _collider.enabled = false;
             RaycastHit2D hit = Physics2D.Linecast(_rigidbody2D.position, _rigidbody2D.position + direction_vector[direction]);
             _collider.enabled = true;
 
             //hit wall or barrier
             if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier" || hit.collider.tag == "Tool" || hit.collider.tag == "Food" || hit.collider.tag == "Monster")) {
-                //Debug.Log("collided with " + hit.collider.tag);
                 blocked[direction] = true;
-
             } else {
                 _collider.enabled = false;
                 RaycastHit2D hit1 = Physics2D.Linecast(_rigidbody2D.position + direction_vector[direction], _rigidbody2D.position + direction_vector[direction] + direction_vector[direction]);
@@ -107,7 +104,6 @@ public class BarrierController : MonoBehaviour {
                 _collider.enabled = true;
 
                 if (hit1.collider != null && hit1.collider.tag == "Monster" && hit2.collider != null && hit2.collider.tag == "Monster" && hit3.collider != null && hit3.collider.tag == "Monster") {
-                    //Debug.Log("collided with " + hit.collider.tag);
                     blocked[direction] = true;
                 } else {
                     targetPos += direction_vector[direction];

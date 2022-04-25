@@ -12846,6 +12846,7 @@ MonoBehaviour:
   pickUpFoodSound: {fileID: 8300000, guid: 6be8d898571d39549af692f74a64e32a, type: 3}
   pickUpToolSound: {fileID: 8300000, guid: 515e546b12eac70428beb58b7858c818, type: 3}
   explosionSound: {fileID: 8300000, guid: 3bc263e0d50ddc44e8ea185b44b4c841, type: 3}
+  alertSound: {fileID: 8300000, guid: df1ce0a758d234d0290bd3cd4b14c4fe, type: 3}
 --- !u!82 &1951678334
 AudioSource:
   m_ObjectHideFlags: 0

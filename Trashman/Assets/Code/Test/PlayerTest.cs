@@ -48,7 +48,6 @@ namespace Trashman
             if (Math.Abs(v) > float.Epsilon) {
                 h = 0;
             }
-            Debug.Log(currentHealth);
             if (currentHealth > 1e-5) {
                 _rigidbody2D.velocity = new Vector2(h, v) * moveSpeed;
                 if (Math.Abs(h) > float.Epsilon || Math.Abs(v) > float.Epsilon) {
@@ -84,9 +83,7 @@ namespace Trashman
         }
 
         void OnCollisionEnter2D( Collision2D other ) {
-            Debug.Log("collision in player");
             if (other.gameObject.CompareTag("Food")) {
-                Debug.Log("collision with food");
                 GainHealth(2f);
                 Destroy(other.gameObject);
             }
