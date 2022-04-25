@@ -123,8 +123,8 @@ namespace Trashman {
                         _collider.enabled = true;
 
                         //hit wall or barrier
-                        if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier")) {
-                            if (hit.collider.tag == "Barrier")
+                        if (hit.collider != null && (hit.collider.tag == "Wall" || hit.collider.tag == "Barrier" || hit.collider.tag == "Monster")) {
+                            if (hit.collider.tag == "Barrier" || hit.collider.tag == "Monster")
                             {
                                 string objName = hit.collider.name.Split(" ")[0];
                                 BarrierClass barrier = inventory.barriers[objName];

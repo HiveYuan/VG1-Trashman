@@ -7676,7 +7676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 1337604364}
   playerController: {fileID: 0}
-  interfaceManager: {fileID: 0}
+  interfaceManager: {fileID: 2118214859}
   slotHolder: {fileID: 1338760101}
   items: []
 --- !u!224 &1102135399

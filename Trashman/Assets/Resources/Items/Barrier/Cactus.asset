@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20711a873ad8d45f4b928b37301152f5, type: 3}
   m_Name: Cactus
   m_EditorClassIdentifier: 
-  itemIcon: {fileID: 21300000, guid: edd3fe087c2274e6cba235a001c72b86, type: 3}
-  itemIntro: Chop it or burn it!
+  itemIcon: {fileID: 21300000, guid: 3ecd8e669ef314a4288230212aba3466, type: 3}
+  itemIntro: 'Kill or run or die! '
   barrierType: 2
   bounty: 6
   hp: 4

@@ -9,7 +9,6 @@ using Trashman;
 
 namespace myGUI
 {
-    // FIXME: fix the scroll view
     public class HintBox : MonoBehaviour
     {
         public TMP_Text title;
@@ -38,11 +37,11 @@ namespace myGUI
             barrier.sprite = itemIcon;
             hintRequiredList = requiredList;
             hintDropList = dropList;
+            hint.text = "";
         }
 
         public void onClickConfirm()
         {
-            string btn = EventSystem.current.currentSelectedGameObject.name;
             SoundManager.instance.PlaySoundButtonClick();
             gameController.EnableWholeScene();
             Destroy(gameObject);

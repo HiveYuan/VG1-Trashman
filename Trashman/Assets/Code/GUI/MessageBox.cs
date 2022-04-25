@@ -7,7 +7,6 @@ using TMPro;
 using Trashman;
 
 namespace myGUI{
-    // FIXME: fix the scroll view
     public class MessageBox : MonoBehaviour
     {
         public TMP_Text title;
